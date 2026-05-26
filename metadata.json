@@ -1,0 +1,6 @@
+{
+  "name": "AI Vacation Planner",
+  "description": "Plan your dream vacation with personalized destination search, budget forecasts, hotel recommendations, and customizable and interactive day-by-day itineraries.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
