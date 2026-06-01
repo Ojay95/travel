@@ -1,0 +1,65 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Default-deny safety net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Schema validation for Plan document
+    function isValidPlan(data) {
+      return data.id is string 
+        && data.id.size() <= 128
+        && data.title is string 
+        && data.title.size() <= 256
+        && data.userId is string 
+        && data.userId.size() <= 128
+        && data.userEmail is string 
+        && data.userEmail.size() <= 256
+        && data.daysCount is int
+        && data.daysCount >= 1
+        && data.daysCount <= 30;
+    }
+
+    match /plans/{planId} {
+      allow get: if true; // Public access for direct plan sharing (by specific ID)
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      
+      allow create: if isSignedIn() 
+        && isValidId(planId)
+        && isValidPlan(incoming())
+        && incoming().userId == request.auth.uid;
+        
+      allow update: if isSignedIn()
+        && isValidId(planId)
+        && isValidPlan(incoming())
+        && existing().userId == request.auth.uid
+        && incoming().userId == request.auth.uid;
+        
+      allow delete: if isSignedIn()
+        && isOwner(existing().userId);
+    }
+  }
+}

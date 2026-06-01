@@ -1,0 +1,28 @@
+{
+  "entities": {
+    "Plan": {
+      "title": "Travel Plan",
+      "description": "A saved AI-molded travel itinerary plan with flight cost indicators, lodging selections and daily companion activity programs.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "destination": { "type": "object" },
+        "selectedHotel": { "type": "object" },
+        "daysCount": { "type": "number" },
+        "itinerary": { "type": "array" },
+        "userInputs": { "type": "object" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "userId": { "type": "string" },
+        "userEmail": { "type": "string", "format": "email" }
+      },
+      "required": ["id", "title", "destination", "selectedHotel", "daysCount", "itinerary", "userInputs", "userId", "userEmail"]
+    }
+  },
+  "firestore": {
+    "/plans/{planId}": {
+      "schema": "Plan",
+      "description": "Collection of traveler vacation itineraries"
+    }
+  }
+}

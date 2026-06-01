@@ -56,6 +56,7 @@ export interface UserInputs {
   interests: string[];
   budgetCategory: 'Budget' | 'Midrange' | 'Luxury';
   additionalDetails: string;
+  specificDestination?: string;
 }
 
 export interface VacationPlan {

@@ -5,9 +5,12 @@ import DestinationSelector from './components/DestinationSelector';
 import ItineraryWorkspace from './components/ItineraryWorkspace';
 import SavedPlansList from './components/SavedPlansList';
 import AventurLandingAuth from './components/AventurLandingAuth';
+import { auth } from './lib/firebase';
+import { getUserPlans, getPlanById, saveUserPlan, deleteUserPlan } from './lib/firestoreService';
 import { 
   Compass, Luggage, Map, Sparkles, FolderUp, 
-  HelpCircle, CheckCircle, Info, PlaneTakeoff, Heart, Globe, LogOut
+  HelpCircle, CheckCircle, Info, PlaneTakeoff, Heart, Globe, LogOut,
+  Share2, Copy
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -36,7 +39,99 @@ export default function App() {
   // File drag states
   const [isDraggingFile, setIsDraggingFile] = useState(false);
 
-  // Sync state on Mount
+  // Full stack shared states
+  const [sharedPlan, setSharedPlan] = useState<VacationPlan | null>(null);
+  const [isLoadingShared, setIsLoadingShared] = useState(false);
+  const [shareInfoMessage, setShareInfoMessage] = useState<string | null>(null);
+
+  // Sync users plans list from firestore database
+  const fetchUserPlans = async (email: string) => {
+    try {
+      const currentUser = auth.currentUser;
+      if (currentUser) {
+        const data = await getUserPlans(currentUser.uid);
+        setSavedPlans(data);
+        localStorage.setItem('aventur_vacation_plans', JSON.stringify(data));
+      }
+    } catch (err) {
+      console.error("Failed to sync plans from Firestore database:", err);
+    }
+  };
+
+  // Sync single saved plan with firestore database
+  const syncSinglePlanToServer = async (plan: VacationPlan, email: string) => {
+    try {
+      const currentUser = auth.currentUser;
+      if (currentUser) {
+        await saveUserPlan(currentUser.uid, currentUser.email || email, plan);
+      }
+    } catch (e) {
+      console.error("Failed to sync plan to Firestore database:", e);
+    }
+  };
+
+  // Delete plan records from firestore
+  const deletePlanFromServer = async (planId: string, email: string) => {
+    try {
+      await deleteUserPlan(planId);
+    } catch (e) {
+      console.error("Failed to delete plan on Firestore database:", e);
+    }
+  };
+
+  // Fetch specific shared plan from public link on Mount
+  const loadSharedItinerary = async (shareId: string) => {
+    setIsLoadingShared(true);
+    setShareInfoMessage(null);
+    try {
+      const data = await getPlanById(shareId);
+      if (!data) {
+        throw new Error("Shared travel plan not found.");
+      }
+      setSharedPlan(data);
+      
+      // Load directly into the interactive Workspace!
+      setSelectedDestination(data.destination);
+      setSelectedHotel(data.selectedHotel);
+      setUserInputs(data.userInputs);
+      setItinerary(data.itinerary);
+      setActivePlanId(data.id);
+      setActivePhase('workspace');
+      
+      setShareInfoMessage(`🌎 You are viewing a shared travel configuration: "${data.title}" by other adventurer. Choose "Clone Itinerary" above to copy it to your personal workspace!`);
+    } catch (err: any) {
+      console.error(err);
+      setErrorHeader(err.message || "Failed to load public shared destination link.");
+    } finally {
+      setIsLoadingShared(false);
+    }
+  };
+
+  // Clone a shared plan into personal Vacation Journal list
+  const handleClonePlan = async () => {
+    if (!sharedPlan) return;
+    
+    const cleanId = `plan-cloned-${Date.now()}`;
+    const clonedObj: VacationPlan = {
+      ...sharedPlan,
+      id: cleanId,
+      title: `Cloned: ${sharedPlan.title}`,
+      createdAt: new Date().toISOString()
+    };
+
+    const updated = [clonedObj, ...savedPlans];
+    savePlansToLocal(updated);
+    setActivePlanId(cleanId);
+    
+    if (user) {
+      await syncSinglePlanToServer(clonedObj, user.email);
+    }
+
+    setSharedPlan(null); // Now editing user's active clone
+    setShareInfoMessage("🎉 Successfully cloned this beautiful itinerary to your custom Vacation Journal!");
+  };
+
+  // Sync state on Mount & parse shared itinerary query params
   useEffect(() => {
     try {
       const persisted = localStorage.getItem('aventur_vacation_plans');
@@ -45,11 +140,37 @@ export default function App() {
       }
       const persistedUser = localStorage.getItem('aventur_user_session');
       if (persistedUser) {
-        setUser(JSON.parse(persistedUser));
+        const parsedUser = JSON.parse(persistedUser);
+        setUser(parsedUser);
+        // Sync user list directly from database
+        fetchUserPlans(parsedUser.email);
+      }
+
+      // Detect and process public shared links
+      const params = new URLSearchParams(window.location.search);
+      const shareId = params.get('share');
+      if (shareId) {
+        loadSharedItinerary(shareId);
       }
     } catch (e) {
       console.error("Local storage read error on mounting:", e);
     }
+  }, []);
+
+  // Sync state dynamically with real Firebase Auth credentials
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((firebaseUser) => {
+      if (firebaseUser) {
+        const parsed = {
+          name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || "Traveler",
+          email: firebaseUser.email || ""
+        };
+        setUser(parsed);
+        localStorage.setItem('aventur_user_session', JSON.stringify(parsed));
+        fetchUserPlans(parsed.email);
+      }
+    });
+    return () => unsubscribe();
   }, []);
 
   // Handler to update local storage
@@ -164,8 +285,8 @@ export default function App() {
     }
   };
 
-  // Save active vacation plan to Local Journals
-  const handleSavePlan = (title: string, updatedDays: ItineraryDay[]) => {
+  // Save active vacation plan to Local Journals with backend db syncing
+  const handleSavePlan = async (title: string, updatedDays: ItineraryDay[]) => {
     if (!selectedDestination || !selectedHotel || !userInputs) return;
 
     const planId = activePlanId || `plan-${Date.now()}`;
@@ -190,10 +311,18 @@ export default function App() {
     
     setActivePlanId(planId);
     savePlansToLocal(updatedPlans);
+
+    // Sync saved plans to backend database if user is logged in
+    if (user) {
+      await syncSinglePlanToServer(refreshedPlan, user.email);
+    }
   };
 
   // Load old vacation from list
   const handleLoadPlan = (plan: VacationPlan) => {
+    // Clear shared state since we load a personal saved copy
+    setSharedPlan(null);
+    setShareInfoMessage(null);
     setSelectedDestination(plan.destination);
     setSelectedHotel(plan.selectedHotel);
     setUserInputs(plan.userInputs);
@@ -202,12 +331,15 @@ export default function App() {
     setActivePhase('workspace');
   };
 
-  // Delete plan card
-  const handleDeletePlan = (id: string) => {
+  // Delete plan card and sync with backend
+  const handleDeletePlan = async (id: string) => {
     const updated = savedPlans.filter(p => p.id !== id);
     savePlansToLocal(updated);
     if (activePlanId === id) {
       setActivePlanId(null);
+    }
+    if (user) {
+      await deletePlanFromServer(id, user.email);
     }
   };
 
@@ -334,6 +466,7 @@ export default function App() {
                 </span>
                 <button
                   onClick={() => {
+                    auth.signOut().catch(console.error);
                     localStorage.removeItem('aventur_user_session');
                     setUser(null);
                     setUserInputs(null);
@@ -463,7 +596,12 @@ export default function App() {
         {/* Phase router viewports with animations */}
         <AnimatePresence mode="wait">
           
-          {!user ? (
+          {isLoadingShared ? (
+            <div className="w-full flex flex-col justify-center items-center py-24 space-y-4">
+              <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+              <p className="text-sm font-mono text-slate-500">Retrieving shared travel itinerary...</p>
+            </div>
+          ) : !user && !sharedPlan ? (
             <motion.div
               key="auth-landing-view"
               initial={{ opacity: 0, scale: 0.99, y: 15 }}
@@ -474,10 +612,28 @@ export default function App() {
               <AventurLandingAuth onAuthSuccess={(profile) => {
                 setUser(profile);
                 setActivePhase('journal');
+                // Fetch saved items on successful login
+                fetchUserPlans(profile.email);
               }} />
             </motion.div>
           ) : (
             <div className="w-full space-y-6">
+              {/* Share Info Notification Alert */}
+              {shareInfoMessage && (
+                <div className="bg-blue-50 border border-blue-200 text-blue-800 p-4 rounded-2xl flex items-center justify-between gap-4 font-sans text-xs animate-fade-in">
+                  <div className="flex items-center gap-2">
+                    <span className="text-base">🌎</span>
+                    <span className="font-medium">{shareInfoMessage}</span>
+                  </div>
+                  <button
+                    onClick={() => setShareInfoMessage(null)}
+                    className="text-blue-500 hover:text-blue-700 font-bold px-2 cursor-pointer"
+                  >
+                    Dismiss
+                  </button>
+                </div>
+              )}
+
               {/* Phase 0: The journal diary */}
               {activePhase === 'journal' && (
                 <motion.div
@@ -578,16 +734,22 @@ export default function App() {
                   userInputs={userInputs}
                   itinerary={itinerary}
                   onBack={() => {
-                    if (activePlanId) {
+                    if (user) {
                       setActivePhase('journal');
                     } else {
-                      setActivePhase('choices');
+                      // Exit public viewer mode back to signing desk
+                      setSharedPlan(null);
+                      setShareInfoMessage(null);
+                      setActivePhase('journal');
                     }
                   }}
                   onSavePlan={handleSavePlan}
                   onRemixDay={handleRemixDay}
                   isRemixing={isRemixing}
                   remixError={remixError}
+                  isSharedView={!!sharedPlan}
+                  onClonePlan={handleClonePlan}
+                  userLoggedIn={!!user}
                 />
               )}
             </div>

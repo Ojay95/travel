@@ -40,6 +40,8 @@ export default function VacationForm({ onSubmit, isLoading }: VacationFormProps)
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [budgetCategory, setBudgetCategory] = useState<'Budget' | 'Midrange' | 'Luxury'>('Midrange');
   const [additionalDetails, setAdditionalDetails] = useState('');
+  const [planningMode, setPlanningMode] = useState<'recommend' | 'specific'>('recommend');
+  const [specificDestination, setSpecificDestination] = useState('');
 
   React.useEffect(() => {
     const inspiration = localStorage.getItem('aventur_deep_inspiration');
@@ -71,13 +73,15 @@ export default function VacationForm({ onSubmit, isLoading }: VacationFormProps)
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!origin.trim()) return;
+    if (planningMode === 'specific' && !specificDestination.trim()) return;
     onSubmit({
       origin: origin.trim(),
       duration,
       companions,
       interests: selectedInterests,
       budgetCategory,
-      additionalDetails: additionalDetails.trim()
+      additionalDetails: additionalDetails.trim(),
+      specificDestination: planningMode === 'specific' ? specificDestination.trim() : undefined
     });
   };
 
@@ -150,6 +154,62 @@ export default function VacationForm({ onSubmit, isLoading }: VacationFormProps)
             </div>
             <p className="text-xs text-slate-400 mt-1.5">AI custom models support 1 to 14 days</p>
           </div>
+        </div>
+
+        {/* Row 1.5: Destination Choice Mode Selection */}
+        <div className="bg-slate-50/70 p-4 rounded-xl border border-slate-150 space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <span className="block text-sm font-semibold text-slate-800">Planning Mode</span>
+              <span className="text-xs text-slate-400">Do you want AI recommendations, or a specific destination?</span>
+            </div>
+            
+            <div className="flex bg-slate-200/80 p-1 rounded-xl">
+              <button
+                type="button"
+                id="btn-mode-recommend"
+                onClick={() => setPlanningMode('recommend')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 cursor-pointer ${
+                  planningMode === 'recommend'
+                    ? 'bg-blue-600 text-white shadow-sm'
+                    : 'text-slate-650 hover:text-slate-900'
+                }`}
+              >
+                <Sparkles className="w-3.5 h-3.5 animate-pulse" />
+                Let AI Match
+              </button>
+              <button
+                type="button"
+                id="btn-mode-specific"
+                onClick={() => setPlanningMode('specific')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 cursor-pointer ${
+                  planningMode === 'specific'
+                    ? 'bg-blue-600 text-white shadow-sm'
+                    : 'text-slate-650 hover:text-slate-900'
+                }`}
+              >
+                <MapPin className="w-3.5 h-3.5" />
+                Specific City
+              </button>
+            </div>
+          </div>
+
+          {planningMode === 'specific' && (
+            <div className="pt-1">
+              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+                Where do you want to go?
+              </label>
+              <input
+                id="specific-destination-input"
+                type="text"
+                required={planningMode === 'specific'}
+                placeholder="e.g. Paris, France or Tokyo, Japan or Bali"
+                value={specificDestination}
+                onChange={(e) => setSpecificDestination(e.target.value)}
+                className="w-full px-4 py-2.5 bg-white border border-slate-250 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none text-sm text-slate-900 placeholder-slate-400 transition shadow-sm animate-fadeIn"
+              />
+            </div>
+          )}
         </div>
 
         {/* Row 2: Companions */}

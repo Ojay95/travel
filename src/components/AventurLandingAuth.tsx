@@ -5,6 +5,14 @@ import {
   Sparkles, Check, ChevronRight, ListCollapse, Play
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { auth } from '../lib/firebase';
+import { 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword, 
+  signInWithPopup, 
+  GoogleAuthProvider,
+  updateProfile
+} from 'firebase/auth';
 
 interface AventurLandingAuthProps {
   onAuthSuccess: (user: { name: string; email: string }) => void;
@@ -131,7 +139,7 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
     setTestimonialIdx((prev) => (prev + 1) % testimonials.length);
   };
 
-  const handleAuthSubmit = (e: React.FormEvent) => {
+  const handleAuthSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormError(null);
 
@@ -146,18 +154,66 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
 
     setIsLoading(true);
 
-    // Dynamic timeout simulating secure authentication
-    setTimeout(() => {
+    try {
+      if (authMode === 'signup') {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(userCredential.user, { displayName: name });
+        const payload = {
+          name: name.charAt(0).toUpperCase() + name.slice(1),
+          email: userCredential.user.email || email.toLowerCase()
+        };
+        localStorage.setItem('aventur_user_session', JSON.stringify(payload));
+        onAuthSuccess(payload);
+      } else {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const displayName = userCredential.user.displayName || email.split('@')[0];
+        const payload = {
+          name: displayName.charAt(0).toUpperCase() + displayName.slice(1),
+          email: userCredential.user.email || email.toLowerCase()
+        };
+        localStorage.setItem('aventur_user_session', JSON.stringify(payload));
+        onAuthSuccess(payload);
+      }
+    } catch (err: any) {
+      console.error(err);
+      let message = err.message || "Authentication failed.";
+      if (err.code === "auth/invalid-credential" || err.code === "auth/wrong-password" || err.code === "auth/user-not-found") {
+        message = "Incorrect email coordinates or passphrase secret.";
+      } else if (err.code === "auth/weak-password") {
+        message = "Passphrase secret must be at least 6 characters long.";
+      } else if (err.code === "auth/email-already-in-use") {
+        message = "This email coordinates is already registered with another traveler account.";
+      } else if (err.code === "auth/operation-not-allowed") {
+        message = "Email/Password sign-in method is not enabled. Please use the Google sign-in option below, or verify provider settings in Firebase Console.";
+      }
+      setFormError(message);
+    } finally {
       setIsLoading(false);
-      const chosenName = authMode === 'signup' ? name : email.split('@')[0];
+    }
+  };
+
+  // Google Sign-In helper
+  const handleGoogleSignIn = async () => {
+    setIsLoading(true);
+    setFormError(null);
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const userObj = result.user;
       const payload = {
-        name: chosenName.charAt(0).toUpperCase() + chosenName.slice(1),
-        email: email.toLowerCase()
+        name: userObj.displayName || userObj.email?.split('@')[0] || "Traveler",
+        email: userObj.email || "unknown@domain.com"
       };
-      // Store session
       localStorage.setItem('aventur_user_session', JSON.stringify(payload));
       onAuthSuccess(payload);
-    }, 900);
+    } catch (err: any) {
+      console.error(err);
+      if (err.code !== "auth/popup-closed-by-user" && err.code !== "auth/cancelled-popup-request") {
+        setFormError(err.message || "Failed to authenticate via Google Account.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Instant demo helper
@@ -295,21 +351,34 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
               </button>
             </form>
 
-            <div className="relative my-5 text-center select-none">
+            <div className="relative my-4 text-center select-none">
               <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 border-t border-slate-150" />
-              <span className="relative bg-white px-3.5 text-[10px] text-slate-400 font-bold uppercase tracking-widest">Or Fast Track</span>
+              <span className="relative bg-white px-3.5 text-[10px] text-slate-400 font-bold uppercase tracking-widest">Or access Desk via</span>
             </div>
 
-            {/* Core Convenience Shortcut Option */}
-            <button
-              type="button"
-              onClick={triggerDemoLogin}
-              id="btn-quick-one-click-login"
-              className="w-full py-3 border border-slate-200 bg-slate-55/70 text-slate-800 rounded-xl hover:border-slate-350 hover:bg-slate-50 text-xs font-bold font-display cursor-pointer transition flex items-center justify-center gap-1.5 whitespace-nowrap"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-blue-500 shrink-0" />
-              <span>Explore Instant Demo Guest</span>
-            </button>
+            <div className="space-y-2.5">
+              {/* Google Secure Integration */}
+              <button
+                type="button"
+                onClick={handleGoogleSignIn}
+                disabled={isLoading}
+                className="w-full py-3 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 rounded-xl font-display font-extrabold text-xs cursor-pointer transition flex items-center justify-center gap-2 shadow-sm"
+              >
+                <Globe className="w-4 h-4 text-blue-600" />
+                <span>Continue with Google Secure Accounts</span>
+              </button>
+
+              {/* Core Convenience Shortcut Option */}
+              <button
+                type="button"
+                onClick={triggerDemoLogin}
+                id="btn-quick-one-click-login"
+                className="w-full py-3 border border-slate-250 bg-slate-50 text-slate-700 rounded-xl hover:bg-slate-100 text-xs font-bold font-display cursor-pointer transition flex items-center justify-center gap-1.5 whitespace-nowrap"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                <span>Explore Instant Guest Account (Demo)</span>
+              </button>
+            </div>
           </div>
 
           <div className="pt-5 mt-5 border-t border-slate-100 flex items-center justify-between text-xs select-none">

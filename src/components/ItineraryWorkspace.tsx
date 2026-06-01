@@ -4,7 +4,8 @@ import {
   Calendar, Check, Plus, Edit, Trash2, ArrowLeft, Heart, 
   MapPin, Coffee, Utensils, Lightbulb, ClipboardList, 
   Sparkles, DollarSign, Bookmark, Share2, Printer, 
-  Compass, RotateCcw, AlertTriangle, X, MessageSquare, Send, ExternalLink, Plane, Hotel
+  Compass, RotateCcw, AlertTriangle, X, MessageSquare, Send, ExternalLink, Plane, Hotel,
+  FolderUp, Copy
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -18,6 +19,10 @@ interface ItineraryWorkspaceProps {
   onRemixDay: (dayNumber: number, prompt: string) => Promise<void>;
   isRemixing: boolean;
   remixError?: string;
+  isSharedView?: boolean;
+  onClonePlan?: () => void;
+  userLoggedIn?: boolean;
+  activePlanId?: string | null;
 }
 
 function getDynamicGuides(destinationName: string, country: string) {
@@ -191,12 +196,19 @@ export default function ItineraryWorkspace({
   onSavePlan,
   onRemixDay,
   isRemixing,
-  remixError
+  remixError,
+  isSharedView = false,
+  onClonePlan,
+  userLoggedIn = false,
+  activePlanId
 }: ItineraryWorkspaceProps) {
   const [activeDay, setActiveDay] = useState<number>(1);
   const [localDays, setLocalDays] = useState<ItineraryDay[]>(itinerary);
   const [tripTitle, setTripTitle] = useState(`${userInputs.duration}-Day Escape in ${destination.name}`);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
+  
+  // Link sharing state variables
+  const [isShareCopied, setIsShareCopied] = useState(false);
 
   // Dynamic guide profiles based on destination country
   const guideProfiles = getDynamicGuides(destination.name, destination.country);
@@ -313,6 +325,21 @@ export default function ItineraryWorkspace({
     setTimeout(() => setIsSaved(false), 3000);
   };
 
+  const copyShareLink = () => {
+    // Force save list to trigger database synchronization
+    onSavePlan(tripTitle, localDays);
+
+    const activeId = activePlanId || `plan-${Date.now()}`;
+    const targetUrl = `${window.location.origin}?share=${activeId}`;
+
+    navigator.clipboard.writeText(targetUrl).then(() => {
+      setIsShareCopied(true);
+      setTimeout(() => setIsShareCopied(false), 3000);
+    }).catch(err => {
+      console.error("Clipboard copy error:", err);
+    });
+  };
+
   const exportPlanAsJSON = () => {
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({
       tripTitle,
@@ -395,24 +422,50 @@ export default function ItineraryWorkspace({
           <button
             onClick={exportPlanAsJSON}
             title="Download itinerary backup file (JSON)"
-            className="p-2.5 rounded-xl bg-white border border-slate-150 shadow-sm hover:bg-slate-50 text-slate-700 cursor-pointer transition flex items-center gap-1 text-sm font-sans"
+            className="p-2.5 rounded-xl bg-white border border-slate-150 shadow-sm hover:bg-slate-50 text-slate-700 cursor-pointer transition flex items-center gap-1.5 text-sm font-sans"
           >
-            <Share2 className="w-4 h-4 text-blue-600" />
-            <span className="hidden sm:inline font-bold">Export File</span>
+            <FolderUp className="w-4 h-4 text-blue-650" />
+            <span className="hidden sm:inline font-bold">Export Backup File</span>
           </button>
 
+          {/* Secure Cloud Link Sharing */}
           <button
-            onClick={handleSave}
-            id="btn-save-trip"
-            className={`px-4 py-2.5 rounded-xl font-display font-extrabold text-sm flex items-center gap-1.5 shadow-md shadow-blue-500/10 cursor-pointer transition ${
-              isSaved 
-                ? 'bg-blue-600 text-white hover:bg-blue-700' 
-                : 'bg-blue-700 text-white hover:bg-blue-800'
+            onClick={copyShareLink}
+            title="Create and copy a secure traveler URL link to share with co-travellers"
+            className={`p-2.5 rounded-xl border shadow-sm cursor-pointer transition flex items-center gap-1.5 text-sm font-sans ${
+              isShareCopied 
+                ? 'bg-emerald-50 border-emerald-200 text-emerald-800' 
+                : 'bg-white border-slate-150 hover:bg-slate-50 text-slate-700'
             }`}
           >
-            <Bookmark className="w-4 h-4" />
-            <span>{isSaved ? 'Saved to Diary!' : 'Save Trip to Diary'}</span>
+            <Share2 className={`w-4 h-4 ${isShareCopied ? 'text-emerald-600' : 'text-blue-600'}`} />
+            <span className="font-bold">{isShareCopied ? 'Co-adventurer Link Copied!' : 'Share Itinerary Link'}</span>
           </button>
+
+          {isSharedView && onClonePlan && (
+            <button
+              onClick={onClonePlan}
+              className="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-display font-extrabold text-sm flex items-center gap-1.5 shadow-md shadow-amber-500/10 cursor-pointer transition animate-pulse"
+            >
+              <Copy className="w-4 h-4" />
+              <span>Clone & Customize Itinerary</span>
+            </button>
+          )}
+
+          {!isSharedView && (
+            <button
+              onClick={handleSave}
+              id="btn-save-trip"
+              className={`px-4 py-2.5 rounded-xl font-display font-extrabold text-sm flex items-center gap-1.5 shadow-md shadow-blue-500/10 cursor-pointer transition ${
+                isSaved 
+                  ? 'bg-blue-600 text-white' 
+                  : 'bg-blue-700 text-white hover:bg-blue-850'
+              }`}
+            >
+              <Bookmark className="w-4 h-4" />
+              <span>{isSaved ? 'Saved to Diary!' : 'Save Trip to Diary'}</span>
+            </button>
+          )}
         </div>
       </div>
 
