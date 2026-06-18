@@ -1,0 +1,314 @@
+[
+  {
+    "id": "kyoto-japan",
+    "name": "Kyoto",
+    "country": "Japan",
+    "region": "Asia",
+    "tagline": "Step back in time through golden pavilions, serene Zen rock gardens, and traditional teahouses.",
+    "description": "Kyoto is the cultural heart of Japan. Famously preserved from destruction during WWII, it contains thousands of classical Buddhist temples, Shinto shrines, historic wooden machiya townhouses, and beautiful bamboo forests.",
+    "whyItFits": "Perfect for travelers looking for spiritual serenity, world-class culinary history (traditional kaiseki dining), historical exploration, and stunning walks through Gion and Arashiyama.",
+    "bestSeason": "October to April (Autumn foliage & Cherry blossoms)",
+    "localVibe": "Serene bamboo forests, red torii gates, Gion geisha districts, and silent temple rock gardens.",
+    "estimatedFlightCost": {
+      "minPrice": 750,
+      "maxPrice": 1400,
+      "advice": "Fly into Osaka Kansai (KIX) and take the Haruka Express train directly to Kyoto Station for cheap transit."
+    },
+    "recommendedHotels": [
+      {
+        "name": "Gion Guest House",
+        "tier": "budget",
+        "costPerNight": 45,
+        "description": "Traditional tatami mat rooms in a restored Gion townhome close to main shrines.",
+        "highlights": ["Free bicycle rentals", "Shared kitchen", "Historic neighborhood location"]
+      },
+      {
+        "name": "Kyoto Royal Hotel & Spa",
+        "tier": "mid",
+        "costPerNight": 180,
+        "description": "Modern western comfort in downtown Kyoto close to Kamogawa River walks.",
+        "highlights": ["Onsite spa", "Traditional breakfast option", "Close to subway access"]
+      },
+      {
+        "name": "The Sowaka Ryokan",
+        "tier": "luxury",
+        "costPerNight": 650,
+        "description": "An exquisite premium traditional Japanese ryokan experience with private garden views.",
+        "highlights": ["Michelin-starred kaiseki dining", "Private wooden baths", "Personal concierge service"]
+      }
+    ]
+  },
+  {
+    "id": "rome-italy",
+    "name": "Rome",
+    "country": "Italy",
+    "region": "Europe",
+    "tagline": "Marvel at colossal ancient ruins and vibrant piazzas while enjoying the finest pasta.",
+    "description": "The Eternal City boasts nearly 3,000 years of globally influential art, architecture, and culture. From the colossal Colosseum to the majestic Vatican City, Rome is a living museum.",
+    "whyItFits": "Perfect for history buffs, art collectors, architectural explorers, and travelers wanting authentic Roman trattorias, pizza, and regional Italian wines.",
+    "bestSeason": "April to June and September to November (Mild weather & lower crowds)",
+    "localVibe": "Colosseum structures, winding cobblestone alleys, bustling piazzas, and the aroma of fresh espresso.",
+    "estimatedFlightCost": {
+      "minPrice": 550,
+      "maxPrice": 1100,
+      "advice": "Book flights directly into Fiumicino Airport (FCO) and use the Leonardo Express train to reach Termini station under 32 minutes."
+    },
+    "recommendedHotels": [
+      {
+        "name": "Trastevere Cozy Hostel",
+        "tier": "budget",
+        "costPerNight": 40,
+        "description": "Fun, clean youth hostel in the bohemian Trastevere district known for lively dining.",
+        "highlights": ["Rooftop terrace", "Social bar events", "Free walking tours"]
+      },
+      {
+        "name": "Hotel Nazionale Piazza Montecitorio",
+        "tier": "mid",
+        "costPerNight": 195,
+        "description": "Elegant rooms inside a historic building steps from the Pantheon and Trevi Fountain.",
+        "highlights": ["Montecitorio square views", "Vibrant buffet breakfast", "Excellent walking proximity"]
+      },
+      {
+        "name": "The J.K. Place Roma",
+        "tier": "luxury",
+        "costPerNight": 850,
+        "description": "Ultra-luxe boutique stay featuring custom designer furniture and high-touch private tours.",
+        "highlights": ["Complimentary minibar", "Fine Italian dining room", "Private chauffeur services"]
+      }
+    ]
+  },
+  {
+    "id": "santorini-greece",
+    "name": "Santorini",
+    "country": "Greece",
+    "region": "Europe",
+    "tagline": "Watch magnificent golden sunsets from blue-domed villas cliff-hung above an ancient caldera.",
+    "description": "Santorini is a volcanic island in the Cyclades group of Greek islands. It is famous for dramatic views, white-washed houses with blue roofs in Oia, and beaches composed of black, red, and white volcanic pebbles.",
+    "whyItFits": "Perfect for romantic getaways, beach-side relaxation, Aegean seafood lovers, and gorgeous catamaran cruises.",
+    "bestSeason": "May to October (Warm sunny weather)",
+    "localVibe": "Whitewashed houses, azure dome churches, sheer cliff trails, and dramatic volcanic sunset horizons.",
+    "estimatedFlightCost": {
+      "minPrice": 600,
+      "maxPrice": 1300,
+      "advice": "Fly budget airlines like Aegean or Ryanair from Athens to Santorini (JTR) to save compared to direct long-hauls."
+    },
+    "recommendedHotels": [
+      {
+        "name": "Fira Cliff Hostel",
+        "tier": "budget",
+        "costPerNight": 35,
+        "description": "Budget-friendly shared lodging overlooking the town of Fira with ocean views.",
+        "highlights": ["Pool access", "Shared kitchen", "WIFI & bus station proximity"]
+      },
+      {
+        "name": "Caldera View Suites",
+        "tier": "mid",
+        "costPerNight": 220,
+        "description": "Traditional cave-style apartments with private balconies overlooking the caldera sea.",
+        "highlights": ["Outdoor pool", "Complimentary local wine", "Daily organic breakfast buffet"]
+      },
+      {
+        "name": "Grace Hotel Santorini",
+        "tier": "luxury",
+        "costPerNight": 950,
+        "description": "Clifftop sanctuary offering bespoke luxury with infinity pools and fine Mediterranean dining.",
+        "highlights": ["Caldera-facing infinity pool", "Private plunge pool options", "Champagne breakfast service"]
+      }
+    ]
+  },
+  {
+    "id": "serengeti-tanzania",
+    "name": "Serengeti",
+    "country": "Tanzania",
+    "region": "Africa",
+    "tagline": "Witness the great migration of wild herds across golden savannas.",
+    "description": "Tanzania's oldest and most popular national park, the Serengeti is famed for its annual migration of wildebeests and zebras, and its dense population of lions, leopards, cheetahs, and elephants.",
+    "whyItFits": "Ideal for wildlife enthusiasts, photographers, and travelers searching for the ultimate Big Five safari experience.",
+    "bestSeason": "June to October (Dry season, migration river crossings)",
+    "localVibe": "Golden native plains, roaring lions, acacia trees, acacia woodlands, and starlit open-sky campsites.",
+    "estimatedFlightCost": {
+      "minPrice": 900,
+      "maxPrice": 1700,
+      "advice": "Fly into Kilimanjaro International Airport (JRO) and book a local safari operator that packages bush-plane transit to Serengeti airstrips."
+    },
+    "recommendedHotels": [
+      {
+        "name": "Serengeti Adventure Campsite",
+        "tier": "budget",
+        "costPerNight": 60,
+        "description": "Basic canvas dome tents in public designated campsites inside the park for raw nature lovers.",
+        "highlights": ["Park ranger patrols", "Open-fire cooking", "Close wildlife proximity"]
+      },
+      {
+        "name": "Kubu Kubu Tented Lodge",
+        "tier": "mid",
+        "costPerNight": 350,
+        "description": "Comfortable permanent safari tents raised on wooden platforms with private en-suite bathrooms.",
+        "highlights": ["Infinity pool", "All-inclusive safari dining", "Private game drive options"]
+      },
+      {
+        "name": "Four Seasons Safari Lodge",
+        "tier": "luxury",
+        "costPerNight": 1400,
+        "description": "Ultra-luxury safari lodge built around an active elephant watering hole with premium game drives.",
+        "highlights": ["Waterhole-facing rooms", "Onsite spa and hot-air balloons", "Private naturalist guides"]
+      }
+    ]
+  },
+  {
+    "id": "machu-picchu-peru",
+    "name": "Machu Picchu",
+    "country": "Peru",
+    "region": "Americas",
+    "tagline": "Ascend high Andes mist to walk the mysterious hand-cut stone citadels of the Incas.",
+    "description": "Perched high in the Andes mountains of Peru, Machu Picchu is a 15th-century Inca citadel. Its giant agricultural terraces, temples, and valleys remain one of the ancient wonders of the world.",
+    "whyItFits": "Perfect for hikers (Inca Trail), cultural explorers, mountain climbers, and lovers of unique Andean cuisine.",
+    "bestSeason": "May to September (Dry sunny winter months)",
+    "localVibe": "Misty mountain peaks, llama-grazed terraces, ancient granite stone blocks, and historic Cusco plazas.",
+    "estimatedFlightCost": {
+      "minPrice": 500,
+      "maxPrice": 1100,
+      "advice": "Fly into Lima (LIM), take a short flight to Cusco (CUZ), and enjoy the scenic Vistadome train route to Aguas Calientes."
+    },
+    "recommendedHotels": [
+      {
+        "name": "Aguas Calientes Hostel",
+        "tier": "budget",
+        "costPerNight": 30,
+        "description": "Friendly, cheap hiker basecamp close to the hot springs and bus stops to the citadel.",
+        "highlights": ["Free luggage storage", "Early breakfast box for hikes", "Hot showers"]
+      },
+      {
+        "name": "El Mapi Hotel by Inkaterra",
+        "tier": "mid",
+        "costPerNight": 170,
+        "description": "Trendy, green design hotel offering organic breakfasts and comfortable rooms.",
+        "highlights": ["Complementary pisco sour", "Organic materials", "Included buffet dinner package"]
+      },
+      {
+        "name": "Belmond Sanctuary Lodge",
+        "tier": "luxury",
+        "costPerNight": 1200,
+        "description": "The only hotel located directly adjacent to the entrance gates of the Machu Picchu citadel.",
+        "highlights": ["Direct entrance proximity", "Private mountain view gardens", "Traditional shaman blessing sessions"]
+      }
+    ]
+  },
+  {
+    "id": "queenstown-new-zealand",
+    "name": "Queenstown",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "tagline": "Dive into the adventure capital of the world, surrounded by dramatic fjords and lakes.",
+    "description": "Queenstown sits on the shores of Lake Wakatipu beneath the dramatic Remarkables mountain range. It is famous for extreme sports like bungy jumping, jet boating, and snow sports.",
+    "whyItFits": "Perfect for adventure junkies, alpine hikers, wine lovers (Otago Pinot Noir), and Lord of the Rings location hunters.",
+    "bestSeason": "November to April (Warm summer hikes) or June to August (Snowboarding)",
+    "localVibe": "Glacial lakes, snowy peaks, jet boats, bungee bridges, and cozy fireplace pubs.",
+    "estimatedFlightCost": {
+      "minPrice": 950,
+      "maxPrice": 1800,
+      "advice": "Book flights directly to Queenstown (ZQN) using airline sales out of Sydney or Auckland."
+    },
+    "recommendedHotels": [
+      {
+        "name": "Nomads Queenstown",
+        "tier": "budget",
+        "costPerNight": 40,
+        "description": "Lively downtown hostel with a fireplace lounge and cinema room for budget backpackers.",
+        "highlights": ["Downtown location", "Shared sauna", "Free tea and coffee"]
+      },
+      {
+        "name": "Novotel Queenstown Lakeside",
+        "tier": "mid",
+        "costPerNight": 210,
+        "description": "Clean, modern rooms positioned directly on the edge of the lake with garden views.",
+        "highlights": ["Lakefront access", "Hot tubs", "Walking distance to Skyline Gondola"]
+      },
+      {
+        "name": "Eichardt's Private Hotel",
+        "tier": "luxury",
+        "costPerNight": 900,
+        "description": "Historic premium boutique suites located directly in the heart of Queenstown's waterfront.",
+        "highlights": ["Private fireplaces", "Opulent lakeview dining", "Complimentary luxury airport transfers"]
+      }
+    ]
+  },
+  {
+    "id": "paris-france",
+    "name": "Paris",
+    "country": "France",
+    "region": "Europe",
+    "tagline": "Sip café au lait along the Seine and stroll galleries containing centuries of masterpiece art.",
+    "description": "Paris, France's capital, is a global center for art, fashion, gastronomy, and culture. Its 19th-century cityscape is crisscrossed by wide boulevards and the River Seine.",
+    "whyItFits": "Perfect for romantic escapes, museum tours (Louvre, Musée d'Orsay), fashionistas, and gourmet dining enthusiasts.",
+    "bestSeason": "April to June and October to November (Charming spring & autumn colors)",
+    "localVibe": "Eiffel Tower silhouettes, street cafes, fresh baguettes, Seine river walks, and masterpiece galleries.",
+    "estimatedFlightCost": {
+      "minPrice": 450,
+      "maxPrice": 1000,
+      "advice": "Fly to Paris Charles de Gaulle (CDG) and take the RER B train directly into central Paris to beat traffic."
+    },
+    "recommendedHotels": [
+      {
+        "name": "Montmartre Youth Hostel",
+        "tier": "budget",
+        "costPerNight": 45,
+        "description": "Charming artist hostel in the Montmartre hills near the Sacré-Cœur.",
+        "highlights": ["Free continental breakfast", "Rooftop view of Sacré-Cœur", "WIFI & subway access"]
+      },
+      {
+        "name": "Hotel Regina Louvre",
+        "tier": "mid",
+        "costPerNight": 250,
+        "description": "Classic French design hotel opposite the Louvre Museum with traditional wood paneling.",
+        "highlights": ["Eiffel Tower views", "Classic bar", "Steps from Tuileries Gardens"]
+      },
+      {
+        "name": "The Ritz Paris",
+        "tier": "luxury",
+        "costPerNight": 1300,
+        "description": "Legendary ultra-luxury hotel on Place Vendôme offering grand decor, fine dining, and private spas.",
+        "highlights": ["Bar Hemingway", "Private garden courtyard", "Pool and health club"]
+      }
+    ]
+  },
+  {
+    "id": "petra-jordan",
+    "name": "Petra",
+    "country": "Jordan",
+    "region": "Middle East",
+    "tagline": "Discover ancient temples carved into sheer red-rose canyon cliffs.",
+    "description": "Petra is a famous archaeological site in Jordan's southwestern desert. Dating to around 300 B.C., it was the capital of the Nabataean Kingdom, accessed via a narrow canyon called the Siq.",
+    "whyItFits": "Perfect for adventure hikers, archaeological enthusiasts, desert stargazers, and Middle Eastern culinary explorers.",
+    "bestSeason": "March to May and September to November (Mild daytime hiking temperatures)",
+    "localVibe": "Rose-red canyons, carved sandstone treasuries, desert dunes, and Bedouin mint tea hospitality.",
+    "estimatedFlightCost": {
+      "minPrice": 700,
+      "maxPrice": 1300,
+      "advice": "Fly into Amman (AMM), purchase the Jordan Pass to save on visa/entry fees, and take the JETT bus to Wadi Musa."
+    },
+    "recommendedHotels": [
+      {
+        "name": "Valentine Inn",
+        "tier": "budget",
+        "costPerNight": 25,
+        "description": "Highly popular budget traveler hotel offering cheap local buffet dinners and shuttle rides.",
+        "highlights": ["Wadi Musa mountain views", "Bedouin tea lounge", "Shuttle to Petra main gates"]
+      },
+      {
+        "name": "Petra Palace Hotel",
+        "tier": "mid",
+        "costPerNight": 110,
+        "description": "Traditional stone hotel located only 3 minutes walk from the main entrance of Petra.",
+        "highlights": ["Two outdoor pools", "Turkish steam bath", "Location next to gates"]
+      },
+      {
+        "name": "Mövenpick Resort Petra",
+        "tier": "luxury",
+        "costPerNight": 320,
+        "description": "Premium luxury resort sitting directly at the entrance gates of Petra featuring Islamic architecture.",
+        "highlights": ["Direct entrance location", "Wellness spa & hammam", "Rooftop garden dining"]
+      }
+    ]
+  }
+]

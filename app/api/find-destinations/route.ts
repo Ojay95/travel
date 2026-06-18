@@ -1,22 +1,38 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Type } from "@google/genai";
 import { generateContentWithFallback, parseGeminiError } from "@/src/lib/gemini";
+import { findSimilarDestinations } from "@/src/lib/vectorSearch";
 
 export async function POST(req: NextRequest) {
   try {
     const { origin, duration, companions, interests, budgetCategory, additionalDetails, specificDestination } = await req.json();
     
+    // 1. Compile search query text
+    const queryText = [
+      interests && interests.length > 0 ? interests.join(", ") : "",
+      companions ? `with ${companions}` : "",
+      budgetCategory ? `budget level: ${budgetCategory}` : "",
+      additionalDetails || ""
+    ].filter(Boolean).join(" ");
+
+    // 2. Perform local similarity search (RAG retrieval)
+    console.log(`[find-destinations] Searching for matches with query: "${queryText}"`);
+    const matches = await findSimilarDestinations(queryText, 3);
+    const catalogMatches = matches.map(m => m.destination);
+    console.log(`[find-destinations] Retrieved ${catalogMatches.length} matches from catalog.`);
+
+    // 3. Compile prompt for Gemini
     let destPrompt = '';
     if (specificDestination && specificDestination.trim()) {
       destPrompt = `The traveler specifically wants to go to: "${specificDestination}".
       Your absolute top recommendation (the first item in the array) MUST be this exact destination with authentic country, local details, estimated flight costs from ${origin || "their departure location"}, and 3 tailored hotel options (budget, mid, and luxury).
-      The other 2 recommendations in the array should be alternative city or region choices that match similar vibes or are excellent nearby alternatives.`;
+      The remaining 2 recommendations in the array MUST be selected from the VERIFIED catalog options below. For these 2, you MUST copy their fields (id, name, country, tagline, description, bestSeason, localVibe, estimatedFlightCost, recommendedHotels) EXACTLY from the catalog payload without any modifications, to prevent pricing or location hallucination.`;
     } else {
-      destPrompt = `Analyze the traveler's profile and recommend exactly 3 highly customized vacation destinations that fit perfectly, drawn from a truly global perspective. 
-      You are explicitly instructed to search across all regions of the world, including Asia, Africa, Central & South America, Middle East, Oceania/Pacific Islands, North America, and Europe.`;
+      destPrompt = `You MUST select your 3 recommendations from the VERIFIED catalog options below.
+      For each recommendation, you MUST copy all their fields (id, name, country, tagline, description, bestSeason, localVibe, estimatedFlightCost, recommendedHotels) EXACTLY from the catalog payload without any modifications, to prevent pricing or location hallucination.`;
     }
     
-    const prompt = `Analyze the traveler's profile and suggest exactly 3 vacation destinations:
+    const prompt = `Analyze the traveler's profile and recommend exactly 3 vacation destinations:
     
     ${destPrompt}
     
@@ -28,13 +44,17 @@ export async function POST(req: NextRequest) {
     - Budget Level: ${budgetCategory || "Midrange"}
     - Specific Desires or Description: "${additionalDetails || "No further details"}"
     
-    Find destinations with a strong focus on matches for these vibes.
-    Provide realistic travel flight estimate ranges (from ${origin || "their region"}) and 3 hotel recommendations inside each destination (1 budget, 1 mid-range, 1 luxury) with average costs per night in USD.
-    Ensure values are realistic. Match Score must be an integer between 75 and 100 representing how well it aligns with their profile.`;
+    VERIFIED catalog options:
+    ${JSON.stringify(catalogMatches, null, 2)}
+    
+    Instructions:
+    1. For each recommendation, calculate an integer matchScore (75-100) based on how well it fits the profile.
+    2. Write a custom, personalized whyItFits explaining why this destination fits their specific interests, companions, and duration.
+    3. Ensure the return JSON schema is followed exactly.`;
 
     const destinationsText = await generateContentWithFallback(
       prompt,
-      "You are an elite, globe-trotting personal travel concierge. Seek out and suggest magnificent vacation destinations from any region or continent on Earth (including Asia, Africa, Central & South America, Europe, North America, the Middle East, and Oceania/Pacific Islands). Do NOT bias recommendations towards just Europe or the USA. Provide accurate, inspiring, and realistic travel recommendations with estimated prices in JSON format.",
+      "You are an elite, globe-trotting personal travel concierge. Provide accurate, inspiring, and realistic travel recommendations with estimated prices in JSON format.",
       {
         type: Type.ARRAY,
         description: "List of 3 recommended destinations.",
@@ -74,7 +94,7 @@ export async function POST(req: NextRequest) {
                     description: "List of 2-3 key attributes, e.g. ['Rooftop pool', 'Free traditional breakfast']"
                   }
                 },
-                required: ["name", "tier", "costPerNight", "description", "highlights"]
+                  required: ["name", "tier", "costPerNight", "description", "highlights"]
               }
             }
           },
