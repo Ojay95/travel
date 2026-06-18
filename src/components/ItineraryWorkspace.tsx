@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from 'react';
 import { Destination, ItineraryDay, RecommendedHotel, UserInputs } from '../types';
 import { 
@@ -244,18 +246,24 @@ export default function ItineraryWorkspace({
   const [stops, setStops] = useState<'all' | 'direct'>('all');
 
   // Monetization Live Simulator States
-  const [monetizationEarnings, setMonetizationEarnings] = useState<number>(() => {
-    const saved = localStorage.getItem('aventur_monetization_earnings');
-    return saved ? parseFloat(saved) : 0;
-  });
-  const [monetizationClicks, setMonetizationClicks] = useState<number>(() => {
-    const saved = localStorage.getItem('aventur_monetization_clicks');
-    return saved ? parseInt(saved, 10).valueOf() || 0 : 0;
-  });
-  const [earningsLogs, setEarningsLogs] = useState<{ id: string; type: string; title: string; payout: number; timestamp: string }[]>(() => {
-    const saved = localStorage.getItem('aventur_monetization_logs');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [monetizationEarnings, setMonetizationEarnings] = useState<number>(0);
+  const [monetizationClicks, setMonetizationClicks] = useState<number>(0);
+  const [earningsLogs, setEarningsLogs] = useState<{ id: string; type: string; title: string; payout: number; timestamp: string }[]>([]);
+
+  // Load from local storage on client mount
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedEarnings = localStorage.getItem('aventur_monetization_earnings');
+      if (savedEarnings) setMonetizationEarnings(parseFloat(savedEarnings));
+      
+      const savedClicks = localStorage.getItem('aventur_monetization_clicks');
+      if (savedClicks) setMonetizationClicks(parseInt(savedClicks, 10).valueOf() || 0);
+      
+      const savedLogs = localStorage.getItem('aventur_monetization_logs');
+      if (savedLogs) setEarningsLogs(JSON.parse(savedLogs));
+    }
+  }, []);
+
   const [toastNotification, setToastNotification] = useState<{ message: string; subMessage: string; payout: number } | null>(null);
 
   const triggerSimulatedAffiliateClick = (type: 'flight' | 'hotel' | 'activity' | 'food' | 'guide' | 'supporter', title: string, basePayout: number) => {

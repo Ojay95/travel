@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from 'react';
 import { UserInputs } from '../types';
 import { Compass, Calendar, Users, DollarSign, Sparkles, MapPin, Search } from 'lucide-react';

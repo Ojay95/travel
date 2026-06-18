@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import { VacationPlan } from '../types';
 import { Luggage, Trash2, Calendar, Users, DollarSign, Compass, ArrowRight } from 'lucide-react';

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from 'react';
 import { Destination, RecommendedHotel } from '../types';
 import { Plane, Calendar, Hotel, Check, Percent, Sparkles, MoveLeft, ArrowRight, ShieldCheck } from 'lucide-react';

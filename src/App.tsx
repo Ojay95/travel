@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import { Destination, ItineraryDay, RecommendedHotel, UserInputs, VacationPlan } from './types';
 import VacationForm from './components/VacationForm';
