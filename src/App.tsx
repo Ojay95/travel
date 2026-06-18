@@ -9,6 +9,9 @@ import SavedPlansList from './components/SavedPlansList';
 import AventurLandingAuth from './components/AventurLandingAuth';
 import { auth } from './lib/firebase';
 import { getUserPlans, getPlanById, saveUserPlan, deleteUserPlan } from './lib/firestoreService';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { db } from './lib/db';
+import { syncPlans } from './lib/syncService';
 import { 
   Compass, Luggage, Map, Sparkles, FolderUp, 
   HelpCircle, CheckCircle, Info, PlaneTakeoff, Heart, Globe, LogOut,
@@ -19,7 +22,38 @@ import { motion, AnimatePresence } from 'motion/react';
 export default function App() {
   const [user, setUser] = useState<{ name: string; email: string } | null>(null);
   const [activePhase, setActivePhase] = useState<'journal' | 'form' | 'choices' | 'workspace'>('journal');
-  const [savedPlans, setSavedPlans] = useState<VacationPlan[]>([]);
+
+  // Load plans reactively from Dexie IndexedDB local-first database
+  const savedPlans = useLiveQuery(
+    async () => {
+      if (!user) return [];
+      const localPlans = await db.plans
+        .where('userEmail')
+        .equalsIgnoreCase(user.email)
+        .toArray();
+      
+      // Filter out plans pending deletion and sort by creation date
+      return localPlans
+        .filter((p) => p.syncStatus !== 'pending-delete')
+        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    },
+    [user]
+  ) || [];
+
+  const [isOffline, setIsOffline] = useState(typeof window !== 'undefined' ? !navigator.onLine : false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const handleOnline = () => setIsOffline(false);
+      const handleOffline = () => setIsOffline(true);
+      window.addEventListener('online', handleOnline);
+      window.addEventListener('offline', handleOffline);
+      return () => {
+        window.removeEventListener('online', handleOnline);
+        window.removeEventListener('offline', handleOffline);
+      };
+    }
+  }, []);
   
   // Dynamic search inputs
   const [userInputs, setUserInputs] = useState<UserInputs | null>(null);
@@ -51,33 +85,28 @@ export default function App() {
     try {
       const currentUser = auth.currentUser;
       if (currentUser) {
-        const data = await getUserPlans(currentUser.uid);
-        setSavedPlans(data);
-        localStorage.setItem('aventur_vacation_plans', JSON.stringify(data));
+        console.log("[App] Fetching remote plans from Firestore...");
+        const remotePlans = await getUserPlans(currentUser.uid);
+        
+        // Merge remote plans into local IndexedDB
+        for (const plan of remotePlans) {
+          const existingLocal = await db.plans.get(plan.id);
+          // If local plan does not exist or remote is newer and local is already synced, update local
+          if (!existingLocal || (existingLocal.syncStatus === 'synced')) {
+            await db.plans.put({
+              ...plan,
+              userId: currentUser.uid,
+              userEmail: email.toLowerCase(),
+              syncStatus: 'synced',
+              localUpdatedAt: Date.now()
+            });
+          }
+        }
+        // Run background sync for any queued changes
+        syncPlans().catch(console.error);
       }
     } catch (err) {
       console.error("Failed to sync plans from Firestore database:", err);
-    }
-  };
-
-  // Sync single saved plan with firestore database
-  const syncSinglePlanToServer = async (plan: VacationPlan, email: string) => {
-    try {
-      const currentUser = auth.currentUser;
-      if (currentUser) {
-        await saveUserPlan(currentUser.uid, currentUser.email || email, plan);
-      }
-    } catch (e) {
-      console.error("Failed to sync plan to Firestore database:", e);
-    }
-  };
-
-  // Delete plan records from firestore
-  const deletePlanFromServer = async (planId: string, email: string) => {
-    try {
-      await deleteUserPlan(planId);
-    } catch (e) {
-      console.error("Failed to delete plan on Firestore database:", e);
     }
   };
 
@@ -121,12 +150,27 @@ export default function App() {
       createdAt: new Date().toISOString()
     };
 
-    const updated = [clonedObj, ...savedPlans];
-    savePlansToLocal(updated);
+    const currentUser = auth.currentUser;
+    const isOnline = typeof window !== 'undefined' && navigator.onLine;
+
+    // Save locally to Dexie IndexedDB
+    await db.plans.put({
+      ...clonedObj,
+      userId: currentUser?.uid || 'guest',
+      userEmail: currentUser?.email?.toLowerCase() || 'guest',
+      syncStatus: isOnline && currentUser ? 'synced' : 'pending-save',
+      localUpdatedAt: Date.now()
+    });
+
     setActivePlanId(cleanId);
-    
-    if (user) {
-      await syncSinglePlanToServer(clonedObj, user.email);
+
+    if (isOnline && currentUser) {
+      try {
+        await saveUserPlan(currentUser.uid, currentUser.email || '', clonedObj);
+      } catch (e) {
+        console.error("Failed to sync cloned plan to Firestore:", e);
+        await db.plans.update(cleanId, { syncStatus: 'pending-save' });
+      }
     }
 
     setSharedPlan(null); // Now editing user's active clone
@@ -136,10 +180,6 @@ export default function App() {
   // Sync state on Mount & parse shared itinerary query params
   useEffect(() => {
     try {
-      const persisted = localStorage.getItem('aventur_vacation_plans');
-      if (persisted) {
-        setSavedPlans(JSON.parse(persisted));
-      }
       const persistedUser = localStorage.getItem('aventur_user_session');
       if (persistedUser) {
         const parsedUser = JSON.parse(persistedUser);
@@ -175,15 +215,7 @@ export default function App() {
     return () => unsubscribe();
   }, []);
 
-  // Handler to update local storage
-  const savePlansToLocal = (newPlans: VacationPlan[]) => {
-    setSavedPlans(newPlans);
-    try {
-      localStorage.setItem('aventur_vacation_plans', JSON.stringify(newPlans));
-    } catch (e) {
-      console.error("Local storage save error:", e);
-    }
-  };
+  //savePlansToLocal removed since we use Dexie hooks
 
   // Submission of prompt to search choices
   const handleFormSubmit = async (inputs: UserInputs) => {
@@ -287,7 +319,7 @@ export default function App() {
     }
   };
 
-  // Save active vacation plan to Local Journals with backend db syncing
+  // Save active vacation plan to Local Journals with IndexedDB local-first storage & sync
   const handleSavePlan = async (title: string, updatedDays: ItineraryDay[]) => {
     if (!selectedDestination || !selectedHotel || !userInputs) return;
 
@@ -303,20 +335,29 @@ export default function App() {
       createdAt: new Date().toISOString()
     };
 
-    let updatedPlans: VacationPlan[] = [];
-    const exists = savedPlans.some(p => p.id === planId);
-    if (exists) {
-      updatedPlans = savedPlans.map(p => p.id === planId ? refreshedPlan : p);
-    } else {
-      updatedPlans = [refreshedPlan, ...savedPlans];
-    }
-    
-    setActivePlanId(planId);
-    savePlansToLocal(updatedPlans);
+    const currentUser = auth.currentUser;
+    const isOnline = typeof window !== 'undefined' && navigator.onLine;
 
-    // Sync saved plans to backend database if user is logged in
-    if (user) {
-      await syncSinglePlanToServer(refreshedPlan, user.email);
+    // Save locally to Dexie IndexedDB
+    await db.plans.put({
+      ...refreshedPlan,
+      userId: currentUser?.uid || 'guest',
+      userEmail: currentUser?.email?.toLowerCase() || 'guest',
+      syncStatus: isOnline && currentUser ? 'synced' : 'pending-save',
+      localUpdatedAt: Date.now()
+    });
+
+    setActivePlanId(planId);
+
+    // Sync saved plans to backend database if user is logged in and online
+    if (isOnline && currentUser) {
+      try {
+        await saveUserPlan(currentUser.uid, currentUser.email || '', refreshedPlan);
+      } catch (e) {
+        console.error("Failed to sync plan to Firestore on write:", e);
+        // Set syncStatus back to pending-save so background sync retries later
+        await db.plans.update(planId, { syncStatus: 'pending-save' });
+      }
     }
   };
 
@@ -335,18 +376,38 @@ export default function App() {
 
   // Delete plan card and sync with backend
   const handleDeletePlan = async (id: string) => {
-    const updated = savedPlans.filter(p => p.id !== id);
-    savePlansToLocal(updated);
+    const currentUser = auth.currentUser;
+    const isOnline = typeof window !== 'undefined' && navigator.onLine;
+
     if (activePlanId === id) {
       setActivePlanId(null);
     }
-    if (user) {
-      await deletePlanFromServer(id, user.email);
+
+    if (isOnline && currentUser) {
+      try {
+        await deleteUserPlan(id);
+        await db.plans.delete(id);
+      } catch (e) {
+        console.error("Failed to delete plan on Firestore, marking pending-delete:", e);
+        await db.plans.update(id, { syncStatus: 'pending-delete' });
+      }
+    } else {
+      // Offline or guest - mark for deletion sync
+      const plan = await db.plans.get(id);
+      if (plan) {
+        if (plan.syncStatus === 'pending-save') {
+          // Never synced to Firestore, delete locally immediately
+          await db.plans.delete(id);
+        } else {
+          // Mark pending-delete to propagate to Firestore later
+          await db.plans.update(id, { syncStatus: 'pending-delete' });
+        }
+      }
     }
   };
 
   // Parse backup travel JSON input safely
-  const handleImportJSON = (fileText: string) => {
+  const handleImportJSON = async (fileText: string) => {
     try {
       const obj = JSON.parse(fileText);
       // basic validate
@@ -361,10 +422,29 @@ export default function App() {
           userInputs: obj.userInputs,
           createdAt: obj.createdAt || new Date().toISOString()
         };
-        // Add to diary list
-        const updated = [parsedPlan, ...savedPlans.filter(p => p.id !== parsedPlan.id)];
-        savePlansToLocal(updated);
+
+        const currentUser = auth.currentUser;
+        const isOnline = typeof window !== 'undefined' && navigator.onLine;
+
+        // Save locally to Dexie IndexedDB
+        await db.plans.put({
+          ...parsedPlan,
+          userId: currentUser?.uid || 'guest',
+          userEmail: currentUser?.email?.toLowerCase() || 'guest',
+          syncStatus: isOnline && currentUser ? 'synced' : 'pending-save',
+          localUpdatedAt: Date.now()
+        });
+
         handleLoadPlan(parsedPlan);
+
+        if (isOnline && currentUser) {
+          try {
+            await saveUserPlan(currentUser.uid, currentUser.email || '', parsedPlan);
+          } catch (e) {
+            console.error("Failed to sync imported plan to Firestore:", e);
+            await db.plans.update(parsedPlan.id, { syncStatus: 'pending-save' });
+          }
+        }
       } else {
         throw new Error("JSON file missing required traveler fields (itinerary, selected hotel, inputs).");
       }
@@ -429,8 +509,15 @@ export default function App() {
               <Compass className="w-5 h-5 shrink-0" />
             </div>
             <div>
-              <span className="font-display font-extrabold text-lg text-slate-950 tracking-tight block">Aventur</span>
-              <span className="text-[10px] text-slate-400 font-bold block uppercase tracking-widest leading-none">AI Vacation Concierge</span>
+              <span className="font-display font-extrabold text-lg text-slate-950 tracking-tight block flex items-center gap-1.5 leading-none">
+                Aventur
+                {isOffline && (
+                  <span className="text-[9px] font-black text-amber-800 bg-amber-100 border border-amber-200 px-1.5 py-0.5 rounded-md uppercase tracking-wider animate-pulse inline-block leading-none">
+                    Offline
+                  </span>
+                )}
+              </span>
+              <span className="text-[10px] text-slate-400 font-bold block uppercase tracking-widest leading-none mt-0.5">AI Vacation Concierge</span>
             </div>
           </div>
 

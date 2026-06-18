@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import './globals.css';
+import PWARegistration from './PWARegistration';
 
 export const metadata: Metadata = {
   title: 'Aventur — AI Vacation Concierge',
@@ -16,8 +17,11 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#2563eb" />
       </head>
       <body>
+        <PWARegistration />
         {children}
       </body>
     </html>
