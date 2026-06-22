@@ -34,7 +34,7 @@ export async function fetchLivePricing(params: {
  */
 export function generateTravelpayoutsLink(destinationUrl: string, subId: string): string {
   const marker = process.env.NEXT_PUBLIC_TRAVELPAYOUTS_MARKER || "534729";
-  const baseUrl = "https://da.travelpayouts.com/click";
+  const baseUrl = "https://tp.media/click";
   
   // Travelpayouts tracks SubID by appending it to the partner ID (marker) with a dot
   const shmarker = subId ? `${marker}.${subId}` : marker;
