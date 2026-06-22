@@ -1,10 +1,9 @@
 {
-  "projectId": "modern-portal-tsjh2",
-  "appId": "1:786322830967:web:35f7ffdc6fbe13f63eb872",
-  "apiKey": "AIzaSyDZViTCttwzqFWF7ajRJs472abADISF13g",
-  "authDomain": "modern-portal-tsjh2.firebaseapp.com",
-  "firestoreDatabaseId": "ai-studio-6f059f9a-e0c3-4af7-bc30-ef94f808add8",
-  "storageBucket": "modern-portal-tsjh2.firebasestorage.app",
-  "messagingSenderId": "786322830967",
-  "measurementId": ""
+  "projectId": "gen-lang-client-0453398820",
+  "appId": "1:890011967581:web:23a861b11a6e7337cbadb4",
+  "apiKey": "AIzaSyCeR2oWj9lnqPvt-skaxQEJdM2AUR6VsvU",
+  "authDomain": "gen-lang-client-0453398820.firebaseapp.com",
+  "storageBucket": "gen-lang-client-0453398820.firebasestorage.app",
+  "messagingSenderId": "890011967581",
+  "measurementId": "G-0KKFPFPSB3"
 }
