@@ -41,7 +41,9 @@ export function generateTravelpayoutsLink(destinationUrl: string, subId: string)
   
   const params = new URLSearchParams({
     shmarker: shmarker,
-    custom_url: destinationUrl
+    custom_url: destinationUrl,
+    source_type: "customlink",
+    type: "click"
   });
   
   return `${baseUrl}?${params.toString()}`;
