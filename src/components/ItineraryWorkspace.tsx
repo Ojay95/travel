@@ -10,6 +10,8 @@ import {
   FolderUp, Copy
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { auth } from '../lib/firebase';
+import { generateTravelpayoutsLink, constructSubId } from '../lib/travelpayouts';
 
 interface ItineraryWorkspaceProps {
   destination: Destination;
@@ -249,6 +251,28 @@ export default function ItineraryWorkspace({
   const [monetizationEarnings, setMonetizationEarnings] = useState<number>(0);
   const [monetizationClicks, setMonetizationClicks] = useState<number>(0);
   const [earningsLogs, setEarningsLogs] = useState<{ id: string; type: string; title: string; payout: number; timestamp: string }[]>([]);
+
+  const getUserIdOrSessionId = () => {
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+      return currentUser.uid.substring(0, 10);
+    }
+    if (typeof window !== 'undefined') {
+      let sessId = sessionStorage.getItem('aventur_session_id');
+      if (!sessId) {
+        sessId = 'sess' + Math.random().toString(36).substring(2, 8);
+        sessionStorage.setItem('aventur_session_id', sessId);
+      }
+      return sessId;
+    }
+    return 'sessguest';
+  };
+
+  const getDynamicBookingLink = (baseUrl: string, travelType: string) => {
+    const session = getUserIdOrSessionId();
+    const subId = constructSubId(destination.name, travelType, session);
+    return generateTravelpayoutsLink(baseUrl, subId);
+  };
 
   // Load from local storage on client mount
   React.useEffect(() => {
@@ -612,6 +636,40 @@ export default function ItineraryWorkspace({
                 </h3>
               </div>
 
+              {/* Travelpayouts Affiliate Booking Gateways */}
+              <div className="bg-gradient-to-r from-blue-50/50 via-indigo-50/50 to-purple-50/50 border border-indigo-100 p-5 rounded-2xl shadow-sm space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-black uppercase text-indigo-700 block tracking-widest leading-none">
+                    Verified Booking Gateways
+                  </span>
+                  <span className="text-[9px] font-bold text-slate-400 bg-white px-1.5 py-0.5 rounded border border-slate-200">
+                    Travelpayouts Partner Link
+                  </span>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <a
+                    href={getDynamicBookingLink(`https://www.skyscanner.com/transport/flights/anywhere/${encodeURIComponent(destination.name.toLowerCase())}/`, 'flight')}
+                    onClick={() => triggerSimulatedAffiliateClick('flight', `Flights to ${destination.name}`, 1.50)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 bg-white hover:bg-slate-50 border border-slate-200 text-slate-800 font-extrabold py-2.5 px-4 rounded-xl shadow-xs text-xs transition-all flex items-center justify-center gap-2 hover:border-blue-300 hover:text-blue-750"
+                  >
+                    <Plane className="w-4 h-4 text-blue-600 shrink-0" />
+                    <span>Book Flight via Skyscanner</span>
+                  </a>
+                  <a
+                    href={getDynamicBookingLink(`https://www.booking.com/searchresults.html?ss=${encodeURIComponent(selectedHotel.name + ' ' + destination.name)}`, 'hotel')}
+                    onClick={() => triggerSimulatedAffiliateClick('hotel', selectedHotel.name, 55.00)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-extrabold py-2.5 px-4 rounded-xl shadow-md text-xs transition-all flex items-center justify-center gap-2"
+                  >
+                    <Hotel className="w-4 h-4 text-white shrink-0" />
+                    <span>Check Availability on Booking.com</span>
+                  </a>
+                </div>
+              </div>
+
               {/* Time Blocks List */}
               <div className="space-y-4">
                 {currentDay.activities.map((act) => {
@@ -669,14 +727,16 @@ export default function ItineraryWorkspace({
                             <span>{act.locationName}</span>
                           </div>
                           
-                          {/* Simulated Monetization Affiliate Booking Link */}
-                          <button
-                            type="button"
+                          {/* Travelpayouts Affiliate Booking Link */}
+                          <a
+                            href={getDynamicBookingLink(`https://www.viator.com/search/${encodeURIComponent(act.title + ' ' + destination.name)}`, 'activity')}
                             onClick={() => triggerSimulatedAffiliateClick('activity', act.title, 8.50)}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="text-[10.5px] font-extrabold text-slate-600 hover:text-blue-700 bg-slate-100/75 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 select-none cursor-pointer"
                           >
-                            🎟️ Book Excursion with Viator <span className="text-slate-400 font-normal hidden xl:inline">(Earns 10% commission)</span>
-                          </button>
+                            🎟️ Book Excursion via Viator <span className="text-slate-400 font-normal hidden xl:inline">(Earns 10% commission)</span>
+                          </a>
                         </div>
                       </div>
                     </div>
@@ -695,11 +755,13 @@ export default function ItineraryWorkspace({
                   {currentDay.recommendedFood.map((food) => {
                     const isChecked = !!checkedFoods[`day-${activeDay}-${food.mealType}`];
                     return (
-                      <button
+                      <div
                         key={food.mealType}
                         id={`food-block-${activeDay}-${food.mealType}`}
-                        type="button"
                         onClick={() => handleToggleFood(food.mealType)}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { handleToggleFood(food.mealType); } }}
                         className={`text-left p-3.5 rounded-xl border transition-all flex items-start gap-3 cursor-pointer ${
                           isChecked 
                             ? 'border-blue-200 bg-blue-50/10 shadow-sm' 
@@ -729,18 +791,21 @@ export default function ItineraryWorkspace({
                               <Utensils className="w-3 h-3 text-blue-500 shrink-0" />
                               <span className="truncate">{food.venueRecommendation}</span>
                             </div>
-                            <span
+                            <a
+                              href={getDynamicBookingLink(`https://www.yelp.com/search?find_desc=${encodeURIComponent(food.dishName)}&find_loc=${encodeURIComponent(food.venueRecommendation + ' ' + destination.name)}`, 'food')}
                               onClick={(e) => {
                                 e.stopPropagation();
                                 triggerSimulatedAffiliateClick('food', `${food.dishName} Spot`, 1.50);
                               }}
+                              target="_blank"
+                              rel="noopener noreferrer"
                               className="text-[9.5px] font-black tracking-wide text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-2 py-1 rounded-md border border-emerald-200 transition leading-none whitespace-nowrap"
                             >
                               🍽️ Reserve Table
-                            </span>
+                            </a>
                           </div>
                         </div>
-                      </button>
+                      </div>
                     );
                   })}
                 </div>
@@ -1127,19 +1192,19 @@ export default function ItineraryWorkspace({
 
                     <div className="pt-2">
                       <a
-                        href={`https://www.google.com/travel/flights?q=Flights%20to%20${encodeURIComponent(destination.name)}%20from%20${encodeURIComponent(userInputs.origin)}&hl=en`}
+                        href={getDynamicBookingLink(`https://www.skyscanner.com/transport/flights/anywhere/${encodeURIComponent(destination.name.toLowerCase())}/`, 'flight')}
                         onClick={() => triggerSimulatedAffiliateClick('flight', `${userInputs.origin} ➔ ${destination.name}`, 1.50)}
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
                         className="w-full py-3 h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-md text-xs font-bold font-display transition flex items-center justify-center gap-1.5 whitespace-nowrap truncate"
                       >
-                        <span>Open Live Flights Finder</span>
+                        <span>Book Flight via Skyscanner</span>
                         <ExternalLink className="w-3.5 h-3.5 shrink-0" />
                       </a>
                     </div>
                   </div>
                 )}
-
+ 
                 {/* 2. HOTELS RESK */}
                 {bookingModalType === 'hotels' && (
                   <div className="space-y-4">
@@ -1150,11 +1215,11 @@ export default function ItineraryWorkspace({
                         <span className="text-xl font-black text-blue-700 mt-1 block">${selectedHotel.costPerNight} <span className="text-xs font-normal text-slate-400">/ night avg</span></span>
                       </div>
                     </div>
-
+ 
                     <p className="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-lg border border-slate-150">
                       <strong>Hotel Description:</strong> {selectedHotel.description}
                     </p>
-
+ 
                     <div className="space-y-2">
                       <span className="text-xs font-bold text-slate-600 block">Stay Amenities Highlighted:</span>
                       <div className="flex flex-wrap gap-1.5">
@@ -1165,21 +1230,21 @@ export default function ItineraryWorkspace({
                         ))}
                       </div>
                     </div>
-
+ 
                     <div className="p-4 bg-amber-50 rounded-xl text-xs text-amber-900 border border-amber-100">
                       <p className="font-semibold block mb-0.5">Est Hotel Stay Cost ({numDays} nights):</p>
                       <p className="text-sm font-black text-amber-950">${totalHotelCost} (all taxes included)</p>
                     </div>
-
+ 
                     <div className="pt-2">
                       <a
-                        href={`https://www.booking.com/searchresults.html?ss=${encodeURIComponent(selectedHotel.name + ' ' + destination.name)}`}
+                        href={getDynamicBookingLink(`https://www.booking.com/searchresults.html?ss=${encodeURIComponent(selectedHotel.name + ' ' + destination.name)}`, 'hotel')}
                         onClick={() => triggerSimulatedAffiliateClick('hotel', selectedHotel.name, 55.00)}
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
                         className="w-full py-3 h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-md text-xs font-bold font-display transition flex items-center justify-center gap-1.5 whitespace-nowrap truncate"
                       >
-                        <span>Inspect Live Hotel Rates</span>
+                        <span>Check Availability on Booking.com</span>
                         <ExternalLink className="w-3.5 h-3.5 shrink-0" />
                       </a>
                     </div>

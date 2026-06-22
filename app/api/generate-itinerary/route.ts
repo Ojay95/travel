@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Type } from "@google/genai";
 import { generateContentWithFallback, parseGeminiError } from "@/src/lib/gemini";
+import { fetchLivePricing } from "@/src/lib/travelpayouts";
 
 export async function POST(req: NextRequest) {
   try {
@@ -8,6 +9,17 @@ export async function POST(req: NextRequest) {
     
     if (!destination || !userInputs) {
       return NextResponse.json({ error: "Missing destination or traveler inputs to generate itinerary." }, { status: 400 });
+    }
+
+    // Future state: Travelpayouts live pricing API placeholder hook
+    try {
+      await fetchLivePricing({
+        origin: userInputs.origin,
+        destination: destination.name,
+        travelersCount: userInputs.duration || 5
+      });
+    } catch (pricingError) {
+      console.warn("[Travelpayouts] Live pricing fetch placeholder failed:", pricingError);
     }
 
     const duration = userInputs.duration || 5;
