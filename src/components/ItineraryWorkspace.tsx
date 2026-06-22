@@ -29,6 +29,16 @@ interface ItineraryWorkspaceProps {
   activePlanId?: string | null;
 }
 
+function formatCityForSkyscanner(cityStr: string): string {
+  if (!cityStr) return "any";
+  return cityStr
+    .split(',')[0]
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '');
+}
+
 function getDynamicGuides(destinationName: string, country: string) {
   const normCountry = country.toLowerCase();
   const normName = destinationName.toLowerCase();
@@ -648,7 +658,7 @@ export default function ItineraryWorkspace({
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a
-                    href={getDynamicBookingLink(`https://www.skyscanner.com/transport/flights/anywhere/${encodeURIComponent(destination.name.toLowerCase())}/`, 'flight')}
+                    href={getDynamicBookingLink(`https://www.skyscanner.com/transport/flights/${formatCityForSkyscanner(userInputs.origin)}/${formatCityForSkyscanner(destination.name)}/`, 'flight')}
                     onClick={() => triggerSimulatedAffiliateClick('flight', `Flights to ${destination.name}`, 1.50)}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -1192,7 +1202,7 @@ export default function ItineraryWorkspace({
 
                     <div className="pt-2">
                       <a
-                        href={getDynamicBookingLink(`https://www.skyscanner.com/transport/flights/anywhere/${encodeURIComponent(destination.name.toLowerCase())}/`, 'flight')}
+                        href={getDynamicBookingLink(`https://www.skyscanner.com/transport/flights/${formatCityForSkyscanner(userInputs.origin)}/${formatCityForSkyscanner(destination.name)}/`, 'flight')}
                         onClick={() => triggerSimulatedAffiliateClick('flight', `${userInputs.origin} ➔ ${destination.name}`, 1.50)}
                         target="_blank"
                         rel="noopener noreferrer"
