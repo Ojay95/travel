@@ -34,19 +34,20 @@ export async function fetchLivePricing(params: {
  */
 export function generateTravelpayoutsLink(destinationUrl: string, subId: string): string {
   const marker = process.env.NEXT_PUBLIC_TRAVELPAYOUTS_MARKER || "534729";
-  const baseUrl = "https://tp.media/click";
   
   // Travelpayouts tracks SubID by appending it to the partner ID (marker) with a dot
   const shmarker = subId ? `${marker}.${subId}` : marker;
   
+  // To prevent 404s and parameter errors in the sandbox demo environment where the
+  // Travelpayouts marker might not be active/joined to the programs (especially Skyscanner
+  // which is not hosted on Travelpayouts), we route the redirects through our local tracked
+  // redirect endpoint, which logs the click and safely opens the travel provider page.
   const params = new URLSearchParams({
-    shmarker: shmarker,
-    custom_url: destinationUrl,
-    source_type: "customlink",
-    type: "click"
+    dest: destinationUrl,
+    subId: shmarker
   });
   
-  return `${baseUrl}?${params.toString()}`;
+  return `/api/redirect?${params.toString()}`;
 }
 
 /**
