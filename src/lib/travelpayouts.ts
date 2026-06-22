@@ -34,13 +34,14 @@ export async function fetchLivePricing(params: {
  */
 export function generateTravelpayoutsLink(destinationUrl: string, subId: string): string {
   const marker = process.env.NEXT_PUBLIC_TRAVELPAYOUTS_MARKER || "534729";
-  const baseUrl = "https://tp.media/r";
+  const baseUrl = "https://travelpayouts.com/click";
+  
+  // Travelpayouts tracks SubID by appending it to the partner ID (marker) with a dot
+  const shmarker = subId ? `${marker}.${subId}` : marker;
   
   const params = new URLSearchParams({
-    marker: marker,
-    u: destinationUrl,
-    sub_id: subId, // primary Travelpayouts SubID
-    subid: subId   // fallback for compatibility
+    shmarker: shmarker,
+    custom_url: destinationUrl
   });
   
   return `${baseUrl}?${params.toString()}`;
