@@ -8,7 +8,7 @@ import ItineraryWorkspace from './components/ItineraryWorkspace';
 import SavedPlansList from './components/SavedPlansList';
 import AventurLandingAuth from './components/AventurLandingAuth';
 import { auth } from './lib/firebase';
-import { getUserPlans, getPlanById, saveUserPlan, deleteUserPlan } from './lib/firestoreService';
+import { getUserPlans, getPlanById, saveUserPlan, deleteUserPlan, logTrafficEvent } from './lib/firestoreService';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from './lib/db';
 import { syncPlans } from './lib/syncService';
@@ -54,6 +54,24 @@ export default function App() {
       };
     }
   }, []);
+
+  // Track visitor traffic session lands (Google Analytics functions)
+  useEffect(() => {
+    let sessId = 'sessguest';
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+      sessId = currentUser.uid.substring(0, 10);
+    } else if (typeof window !== 'undefined') {
+      let savedSess = sessionStorage.getItem('aventur_session_id');
+      if (!savedSess) {
+        savedSess = 'sess' + Math.random().toString(36).substring(2, 8);
+        sessionStorage.setItem('aventur_session_id', savedSess);
+      }
+      sessId = savedSess;
+    }
+    
+    logTrafficEvent(sessId).catch(err => console.error('[Traffic Monitor] Failed:', err));
+  }, [user]);
   
   // Dynamic search inputs
   const [userInputs, setUserInputs] = useState<UserInputs | null>(null);

@@ -257,11 +257,6 @@ export default function ItineraryWorkspace({
   const [cabinClass, setCabinClass] = useState<'economy' | 'business'>('economy');
   const [stops, setStops] = useState<'all' | 'direct'>('all');
 
-  // Monetization Live Simulator States
-  const [monetizationEarnings, setMonetizationEarnings] = useState<number>(0);
-  const [monetizationClicks, setMonetizationClicks] = useState<number>(0);
-  const [earningsLogs, setEarningsLogs] = useState<{ id: string; type: string; title: string; payout: number; timestamp: string }[]>([]);
-
   const getUserIdOrSessionId = () => {
     const currentUser = auth.currentUser;
     if (currentUser) {
@@ -284,58 +279,8 @@ export default function ItineraryWorkspace({
     return generateTravelpayoutsLink(baseUrl, subId);
   };
 
-  // Load from local storage on client mount
-  React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const savedEarnings = localStorage.getItem('aventur_monetization_earnings');
-      if (savedEarnings) setMonetizationEarnings(parseFloat(savedEarnings));
-      
-      const savedClicks = localStorage.getItem('aventur_monetization_clicks');
-      if (savedClicks) setMonetizationClicks(parseInt(savedClicks, 10).valueOf() || 0);
-      
-      const savedLogs = localStorage.getItem('aventur_monetization_logs');
-      if (savedLogs) setEarningsLogs(JSON.parse(savedLogs));
-    }
-  }, []);
-
-  const [toastNotification, setToastNotification] = useState<{ message: string; subMessage: string; payout: number } | null>(null);
-
   const triggerSimulatedAffiliateClick = (type: 'flight' | 'hotel' | 'activity' | 'food' | 'guide' | 'supporter', title: string, basePayout: number) => {
-    setMonetizationClicks(prev => {
-      const updated = prev + 1;
-      localStorage.setItem('aventur_monetization_clicks', updated.toString());
-      return updated;
-    });
-
-    setMonetizationEarnings(prev => {
-      const updated = parseFloat((prev + basePayout).toFixed(2));
-      localStorage.setItem('aventur_monetization_earnings', updated.toString());
-      return updated;
-    });
-
-    const newLog = {
-      id: `log-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
-      type,
-      title,
-      payout: basePayout,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })
-    };
-
-    setEarningsLogs(prev => {
-      const updated = [newLog, ...prev].slice(0, 8);
-      localStorage.setItem('aventur_monetization_logs', JSON.stringify(updated));
-      return updated;
-    });
-
-    setToastNotification({
-      message: `💸 Lead Commission Logged!`,
-      subMessage: `Simulated ${type === 'supporter' ? 'Donation' : 'Affiliate Partner tracking'} for "${title}"`,
-      payout: basePayout
-    });
-
-    setTimeout(() => {
-      setToastNotification(null);
-    }, 4500);
+    // Affiliate clicks are logged server-side in the /api/redirect route to prevent exposing commissions to travelers.
   };
 
   // Sync state if itinerary prop updates from a remix
@@ -459,30 +404,7 @@ export default function ItineraryWorkspace({
       exit={{ opacity: 0 }}
       className="space-y-6 relative"
     >
-      {/* Floating Monetization Simulation Live Notification Toast */}
-      <AnimatePresence>
-        {toastNotification && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: -20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: -20 }}
-            className="fixed top-24 right-4 z-[99] max-w-sm w-full bg-slate-900 border border-emerald-500/30 text-white p-4 rounded-2xl shadow-2xl flex items-start gap-3.5 mr-2"
-          >
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center font-bold text-lg shrink-0 animate-bounce">
-              💸
-            </div>
-            <div className="flex-1 min-w-0">
-              <span className="text-[10px] font-black uppercase text-text-emerald-400 text-emerald-400 block tracking-widest leading-none mb-1">Affiliate Simulator Alert</span>
-              <h4 className="text-xs font-black text-white">{toastNotification.message}</h4>
-              <p className="text-[11px] text-slate-300 block mt-0.5 leading-normal">{toastNotification.subMessage}</p>
-              <div className="flex items-center gap-1.5 mt-2 bg-emerald-500/10 px-2.5 py-1 rounded w-fit border border-emerald-500/20">
-                <span className="text-[9px] font-black text-emerald-400 tracking-wider">EST COMMISSION:</span>
-                <span className="text-xs font-black text-emerald-300">+${toastNotification.payout.toFixed(2)}</span>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+
       {/* Header and Controls */}
       <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
         <div>
@@ -537,6 +459,17 @@ export default function ItineraryWorkspace({
               />
             </div>
           </div>
+
+          <a
+            href="/admin"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Access the secure analytics admin control center"
+            className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 shadow-sm hover:bg-slate-800 hover:border-slate-700 text-white cursor-pointer transition flex items-center gap-1.5 text-sm font-sans"
+          >
+            <Compass className="w-4 h-4 text-emerald-400 shrink-0" />
+            <span className="hidden sm:inline font-bold">Admin Portal</span>
+          </a>
 
           <button
             onClick={exportPlanAsJSON}
@@ -923,103 +856,7 @@ export default function ItineraryWorkspace({
             </div>
           </div>
 
-          {/* 💸 Monetization Strategy Live Simulator */}
-          <div className="bg-gradient-to-br from-slate-900 via-slate-950 to-blue-950 rounded-2xl border border-slate-800 p-5 space-y-4 font-sans text-white shadow-xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 transform translate-x-3 -translate-y-3 opacity-15">
-              <span className="text-4xl">🪙</span>
-            </div>
 
-            <div>
-              <div className="flex items-center justify-between">
-                <span className="text-[9px] font-black uppercase text-emerald-400 tracking-widest bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                  Creator Edition
-                </span>
-                <span className="text-[10px] text-slate-400 font-mono">Platform Sandbox</span>
-              </div>
-              <h3 className="text-sm font-bold text-white flex items-center gap-1.5 font-display mt-2">
-                💰 Monetization Simulator Hub
-              </h3>
-              <p className="text-[10.5px] text-slate-350 leading-normal mt-1">
-                Aventur stays <strong>100% free</strong> for travelers. Check out how traveler click actions generate passive income commission!
-              </p>
-            </div>
-
-            {/* Live Counter Display */}
-            <div className="bg-white/5 border border-white/10 p-3.5 rounded-xl flex items-center justify-between gap-3 relative">
-              <div>
-                <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">Simulated Referral Balance</span>
-                <span className="text-xl font-black text-emerald-400 font-mono tracking-tight block">
-                  ${monetizationEarnings.toFixed(2)}
-                </span>
-              </div>
-              <div className="text-right">
-                <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">Total Click Leads</span>
-                <span className="text-sm font-black text-slate-200 font-mono block">
-                  {monetizationClicks} events
-                </span>
-              </div>
-            </div>
-
-            {/* Simulated Triggers */}
-            <div className="space-y-1.5">
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-wider block">Optional Voluntary Channels</span>
-              
-              {/* Coffee supporter simulator option */}
-              <button
-                type="button"
-                onClick={() => triggerSimulatedAffiliateClick('supporter', 'Voluntary Creator Supporter', 15.00)}
-                className="w-full text-left bg-gradient-to-r from-amber-500/10 to-orange-500/10 hover:from-amber-500/20 hover:to-orange-500/20 text-amber-200 hover:text-white border border-amber-500/20 rounded-xl p-2.5 text-[11px] font-bold transition flex items-center justify-between cursor-pointer"
-              >
-                <span className="flex items-center gap-1.5 leading-none">
-                  ☕ Support Creator Coffee Tip
-                </span>
-                <span className="font-black font-mono text-amber-300">+$15.00</span>
-              </button>
-
-              <div className="p-2.5 bg-white/5 border border-white/5 rounded-xl text-[10px] text-slate-300 leading-normal mt-2 space-y-1.5">
-                <p className="font-semibold text-slate-200">Three ways this app generates income:</p>
-                <div className="grid grid-cols-1 gap-1 pl-1 text-[9.5px] text-slate-400 space-y-0.5">
-                  <div className="flex items-start gap-1">
-                    <span className="text-emerald-400 font-bold shrink-0">1.</span>
-                    <span><strong>Flight Referral Fee:</strong> Earn $1.50 Lead commission per ticket exploration.</span>
-                  </div>
-                  <div className="flex items-start gap-1">
-                    <span className="text-emerald-400 font-bold shrink-0">2.</span>
-                    <span><strong>Stay Referral Fee:</strong> earn $55.00 on hotel reservations (Booking.com affiliate network).</span>
-                  </div>
-                  <div className="flex items-start gap-1">
-                    <span className="text-emerald-400 font-bold shrink-0">3.</span>
-                    <span><strong>Viator Guided Excursions:</strong> Earn 10% on ticket packages (~$8.50 per attraction booking).</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Live Referral Logs Feed */}
-            {earningsLogs.length > 0 && (
-              <div className="space-y-1.5 pt-1.5 border-t border-white/5">
-                <span className="text-[9px] font-black text-slate-400 uppercase tracking-wider block">Live Stream Revenue Feed</span>
-                <div className="space-y-1 max-h-24 overflow-y-auto pr-1">
-                  {earningsLogs.map((log) => (
-                    <div key={log.id} className="text-[9.5px] bg-white/5 border border-white/10 p-1.5 rounded flex items-center justify-between gap-1 h-8">
-                      <span className="text-[9px] text-slate-400 shrink-0 font-mono">{log.timestamp}</span>
-                      <span className="text-slate-200 truncate font-semibold flex-1 ml-1">
-                        {log.type === 'flight' && '✈️'}
-                        {log.type === 'hotel' && '🏨'}
-                        {log.type === 'activity' && '🎟️'}
-                        {log.type === 'food' && '🍽️'}
-                        {log.type === 'guide' && '🤝'}
-                        {log.type === 'supporter' && '☕'} {log.title}
-                      </span>
-                      <span className="font-mono text-emerald-400 font-black">
-                        +${log.payout.toFixed(2)}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
 
           {/* New Interactive Booking Concierge Panel */}
           <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4 font-sans shadow-xs">

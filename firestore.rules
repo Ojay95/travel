@@ -61,5 +61,14 @@ service cloud.firestore {
       allow delete: if isSignedIn()
         && isOwner(existing().userId);
     }
+
+    match /traffic_logs/{logId} {
+      allow read, write: if true;
+    }
+
+    match /affiliate_clicks/{clickId} {
+      allow read, write: if true;
+    }
   }
 }
+
