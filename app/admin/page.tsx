@@ -160,15 +160,78 @@ export default function AdminDashboard() {
     }
   };
 
-  // Calculate metrics
-  const totalRevenue = clickLogs.reduce((acc, curr) => acc + (curr.payout || 0), 0);
-  const totalLeads = clickLogs.length;
-  const totalTraffic = trafficLogs.length;
+  // Data timeframe filter state
+  const [timeframe, setTimeframe] = useState<'24h' | '7d' | '30d' | 'all'>('all');
+
+  // Filter logs by timeframe helper
+  const getFilteredLogs = useCallback(<T extends { timestamp: string }>(logs: T[]): T[] => {
+    if (timeframe === 'all') return logs;
+    const now = new Date().getTime();
+    let limitMs = 0;
+    if (timeframe === '24h') limitMs = 24 * 60 * 60 * 1000;
+    else if (timeframe === '7d') limitMs = 7 * 24 * 60 * 60 * 1000;
+    else if (timeframe === '30d') limitMs = 30 * 24 * 60 * 60 * 1000;
+    
+    return logs.filter(log => {
+      const logTime = new Date(log.timestamp).getTime();
+      return now - logTime <= limitMs;
+    });
+  }, [timeframe]);
+
+  const filteredTraffic = getFilteredLogs(trafficLogs);
+  const filteredClicks = getFilteredLogs(clickLogs);
+
+  // CSV download helper
+  const downloadCSV = (data: any[], filename: string, headers: string[], rowMapper: (item: any) => string[]) => {
+    const csvContent = [
+      headers.join(','),
+      ...data.map(item => rowMapper(item).map(val => `"${String(val ?? '').replace(/"/g, '""')}"`).join(','))
+    ].join('\n');
+    
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // Export traffic logs to CSV
+  const exportTrafficCSV = () => {
+    downloadCSV(
+      filteredTraffic,
+      `aventur_traffic_report_${timeframe}_${Date.now()}.csv`,
+      ['Timestamp', 'User ID', 'Referrer', 'Source', 'Device', 'Country', 'Country Code', 'City', 'Path'],
+      (log) => [log.timestamp, log.userId, log.referrer, log.source, log.device, log.country, log.countryCode, log.city, log.path]
+    );
+    setSuccessMsg('Traffic CSV report downloaded.');
+    setTimeout(() => setSuccessMsg(''), 4000);
+  };
+
+  // Export click logs to CSV
+  const exportClicksCSV = () => {
+    downloadCSV(
+      filteredClicks,
+      `aventur_revenue_report_${timeframe}_${Date.now()}.csv`,
+      ['Timestamp', 'Brand', 'Category/Type', 'Destination City', 'Simulated Payout', 'Sub ID', 'Destination Link'],
+      (click) => [click.timestamp, click.brand, click.travelType, click.destinationCity, click.payout, click.subId, click.dest]
+    );
+    setSuccessMsg('Revenue Click CSV report downloaded.');
+    setTimeout(() => setSuccessMsg(''), 4000);
+  };
+
+  // Calculate metrics based on filtered logs
+  const totalRevenue = filteredClicks.reduce((acc, curr) => acc + (curr.payout || 0), 0);
+  const totalLeads = filteredClicks.length;
+  const totalTraffic = filteredTraffic.length;
   const epc = totalLeads > 0 ? totalRevenue / totalLeads : 0;
 
   // Grouping helpers
   // 1. Referrer / Source distribution
-  const sourceStats = trafficLogs.reduce((acc: Record<string, number>, log) => {
+  const sourceStats = filteredTraffic.reduce((acc: Record<string, number>, log) => {
     const src = log.source || 'Direct';
     acc[src] = (acc[src] || 0) + 1;
     return acc;
@@ -178,7 +241,7 @@ export default function AdminDashboard() {
     .sort((a, b) => b.count - a.count);
 
   // 2. Devices distribution
-  const deviceStats = trafficLogs.reduce((acc: Record<string, number>, log) => {
+  const deviceStats = filteredTraffic.reduce((acc: Record<string, number>, log) => {
     const dev = log.device || 'Desktop';
     acc[dev] = (acc[dev] || 0) + 1;
     return acc;
@@ -190,7 +253,7 @@ export default function AdminDashboard() {
   }));
 
   // 3. Top Countries
-  const countryStats = trafficLogs.reduce((acc: Record<string, { count: number; code: string }>, log) => {
+  const countryStats = filteredTraffic.reduce((acc: Record<string, { count: number; code: string }>, log) => {
     const countryName = log.country || 'Unknown';
     const code = log.countryCode || 'UN';
     if (!acc[countryName]) {
@@ -205,7 +268,7 @@ export default function AdminDashboard() {
     .slice(0, 5);
 
   // 4. Top Cities
-  const cityStats = trafficLogs.reduce((acc: Record<string, { count: number; code: string }>, log) => {
+  const cityStats = filteredTraffic.reduce((acc: Record<string, { count: number; code: string }>, log) => {
     const city = log.city || 'Unknown';
     const code = log.countryCode || 'UN';
     const key = `${city}, ${code}`;
@@ -224,7 +287,7 @@ export default function AdminDashboard() {
     .slice(0, 5);
 
   // 5. Affiliate program grid
-  const brandStats = clickLogs.reduce((acc: Record<string, { clicks: number; revenue: number }>, click) => {
+  const brandStats = filteredClicks.reduce((acc: Record<string, { clicks: number; revenue: number }>, click) => {
     const b = click.brand || 'Others';
     if (!acc[b]) {
       acc[b] = { clicks: 0, revenue: 0 };
@@ -260,8 +323,33 @@ export default function AdminDashboard() {
     })()
   ].sort((a, b) => b.revenue - a.revenue);
 
+  // Copy analytics summary report to clipboard
+  const copySummaryToClipboard = () => {
+    const timeLabel = timeframe === '24h' ? 'Last 24 Hours' : timeframe === '7d' ? 'Last 7 Days' : timeframe === '30d' ? 'Last 30 Days' : 'All Time';
+    const topCountry = sortedCountries[0] ? `${sortedCountries[0].name} (${sortedCountries[0].count} visits)` : 'N/A';
+    const topSource = sortedSources[0] ? `${sortedSources[0].source} (${sortedSources[0].count} views)` : 'N/A';
+    
+    const summaryText = `📊 Aventur Analytics Report (${timeLabel})
+----------------------------------------
+Gross Revenue: $${totalRevenue.toFixed(2)}
+Lead Referrals: ${totalLeads} clicks
+Total Site Traffic: ${totalTraffic} views
+Earnings Per Click (EPC): $${epc.toFixed(2)}
+
+Top Country: ${topCountry}
+Top Entry Channel: ${topSource}
+
+Report Generated on: ${new Date().toLocaleString()}
+----------------------------------------
+Generated via Aventur Admin Portal`;
+
+    navigator.clipboard.writeText(summaryText);
+    setSuccessMsg('Analytics summary copied to clipboard! You can now paste and share it.');
+    setTimeout(() => setSuccessMsg(''), 4000);
+  };
 
   if (!isAuthenticated) {
+
     return (
       <div 
         className="min-h-screen bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black text-slate-100 flex items-center justify-center p-4 relative overflow-hidden font-sans"
@@ -412,6 +500,79 @@ export default function AdminDashboard() {
             </button>
           </div>
         </header>
+
+        {/* Controls Toolbar: Time Filter & Exports */}
+        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-slate-900/30 border border-slate-800/80 p-4 rounded-2xl">
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider font-mono">Timeframe:</span>
+            <div className="inline-flex rounded-xl bg-slate-950 p-1 border border-slate-850">
+              <button
+                onClick={() => setTimeframe('24h')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
+                  timeframe === '24h' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                24 Hours
+              </button>
+              <button
+                onClick={() => setTimeframe('7d')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
+                  timeframe === '7d' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                7 Days
+              </button>
+              <button
+                onClick={() => setTimeframe('30d')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
+                  timeframe === '30d' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                30 Days
+              </button>
+              <button
+                onClick={() => setTimeframe('all')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
+                  timeframe === 'all' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                All Time
+              </button>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2.5 flex-wrap">
+            {/* Copy report summary */}
+            <button
+              onClick={copySummaryToClipboard}
+              className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-350 hover:text-white border border-slate-700 rounded-xl transition cursor-pointer flex items-center gap-1.5 text-xs font-bold"
+              title="Copy formatted text report of active insights to clipboard"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <span>Copy Report Summary</span>
+            </button>
+
+            {/* Export Traffic CSV */}
+            <button
+              onClick={exportTrafficCSV}
+              className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-350 hover:text-white border border-slate-700 rounded-xl transition cursor-pointer flex items-center gap-1.5 text-xs font-bold"
+              title="Download CSV report of page traffic entries"
+            >
+              <Globe className="w-3.5 h-3.5 text-blue-400" />
+              <span>Export Traffic CSV</span>
+            </button>
+
+            {/* Export Clicks CSV */}
+            <button
+              onClick={exportClicksCSV}
+              className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-350 hover:text-white border border-slate-700 rounded-xl transition cursor-pointer flex items-center gap-1.5 text-xs font-bold"
+              title="Download CSV report of affiliate outbound clicks"
+            >
+              <MousePointer className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Export Revenue CSV</span>
+            </button>
+          </div>
+        </div>
 
         {/* Global notification message banner */}
         <AnimatePresence>
@@ -743,7 +904,7 @@ export default function AdminDashboard() {
                 }`}
               >
                 <MousePointer className="w-3.5 h-3.5" />
-                <span>Affiliate Clicks Stream ({clickLogs.length})</span>
+                <span>Affiliate Clicks Stream ({filteredClicks.length})</span>
               </button>
 
               <button
@@ -756,7 +917,7 @@ export default function AdminDashboard() {
                 }`}
               >
                 <Users className="w-3.5 h-3.5" />
-                <span>Visitor Traffic Stream ({trafficLogs.length})</span>
+                <span>Visitor Traffic Stream ({filteredTraffic.length})</span>
               </button>
             </div>
 
@@ -770,12 +931,12 @@ export default function AdminDashboard() {
           <div className="flex-1 overflow-y-auto max-h-96 p-4 space-y-2">
             <AnimatePresence mode="popLayout">
               {activeTab === 'clicks' ? (
-                clickLogs.length === 0 ? (
+                filteredClicks.length === 0 ? (
                   <div className="h-48 flex items-center justify-center text-xs text-slate-500">
                     No clicks logged yet. Click outbound links in traveler view or click "Seed Demo Data".
                   </div>
                 ) : (
-                  clickLogs.map((click) => {
+                  filteredClicks.map((click) => {
                     const displayTime = new Date(click.timestamp).toLocaleTimeString();
                     return (
                       <motion.div
@@ -825,12 +986,12 @@ export default function AdminDashboard() {
                   })
                 )
               ) : (
-                trafficLogs.length === 0 ? (
+                filteredTraffic.length === 0 ? (
                   <div className="h-48 flex items-center justify-center text-xs text-slate-500">
                     No traffic logged yet.
                   </div>
                 ) : (
-                  trafficLogs.map((log) => {
+                  filteredTraffic.map((log) => {
                     const displayTime = new Date(log.timestamp).toLocaleTimeString();
                     return (
                       <motion.div
