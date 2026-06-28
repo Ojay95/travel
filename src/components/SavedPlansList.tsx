@@ -24,7 +24,7 @@ export default function SavedPlansList({
         <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-2 border border-blue-100">
           <Compass className="w-8 h-8 animate-spin-slow" />
         </div>
-        <h3 className="text-lg font-display font-extrabold text-slate-900">Your Vacation Journal is empty</h3>
+        <h3 className="text-lg font-display font-extrabold text-slate-900">Your Saved Trips & Itineraries list is empty</h3>
         <p className="text-sm text-slate-500 max-w-sm mx-auto">
           Create custom itineraries, configure your hotel stays, calculate pricing, and save them here.
         </p>
@@ -45,7 +45,7 @@ export default function SavedPlansList({
         <div>
           <h3 className="text-lg font-display font-extrabold text-slate-900 flex items-center gap-1.5">
             <Luggage className="w-5 h-5 text-blue-600" />
-            Your Vacation Journal & Saved Plans
+            Your Saved Trips & Itineraries
           </h3>
           <p className="text-xs text-slate-400">Instantly reload any planned trip or itinerary detail from local state memory.</p>
         </div>

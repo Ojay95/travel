@@ -550,7 +550,7 @@ export default function App() {
                   }`}
                 >
                   <Luggage className="w-4 h-4 shrink-0" />
-                  <span className="font-sans whitespace-nowrap hidden md:inline">Diary Journal</span>
+                  <span className="font-sans whitespace-nowrap hidden md:inline">Offline Itinerary</span>
                 </button>
                 <button
                   onClick={() => {
@@ -591,7 +591,7 @@ export default function App() {
             </div>
           ) : (
             <div className="flex items-center gap-1 text-xs select-none">
-              <span className="text-slate-400 font-bold hidden sm:inline tracking-wider uppercase text-[10px]">Secure Access Desk</span>
+              <span className="text-slate-400 font-bold hidden sm:inline tracking-wider uppercase text-[10px]">Login</span>
               <span className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse align-middle ml-1" />
             </div>
           )}
@@ -761,9 +761,9 @@ export default function App() {
                         <Sparkles className="w-3.5 h-3.5 text-blue-400 animate-pulse" />
                         <span>Next-gen vacation planner</span>
                       </div>
-                      <h1 className="text-3xl md:text-4xl font-display font-extrabold tracking-tight">Your Personalized Escape, Perfected by AI</h1>
+                      <h1 className="text-3xl md:text-4xl font-display font-extrabold tracking-tight">Your Personalized Trip, Perfected by AI</h1>
                       <p className="text-sm md:text-base text-slate-350 leading-relaxed font-sans">
-                        Set your matching travel guidelines, search cheapest pricing structures, choose lodging tiers, and customized dynamic itineraries – fully stored details preserved offline in your customized journey journal.
+                        Configure your travel details, find flight pricing options, select accommodation tiers, and generate custom itineraries—fully stored offline for easy access.
                       </p>
                       <div>
                         <button

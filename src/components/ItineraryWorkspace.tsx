@@ -515,7 +515,7 @@ export default function ItineraryWorkspace({
               }`}
             >
               <Bookmark className="w-4 h-4" />
-              <span>{isSaved ? 'Saved to Diary!' : 'Save Trip to Diary'}</span>
+              <span>{isSaved ? 'Itinerary Saved!' : 'Save Itinerary'}</span>
             </button>
           )}
         </div>
