@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { auth } from '../lib/firebase';
+import AventurLogo from './AventurLogo';
 import { 
   signInWithEmailAndPassword, 
   createUserWithEmailAndPassword, 
@@ -189,12 +190,7 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
       {/* Sticky Header Navbar */}
       <nav className="bg-white/80 backdrop-blur-md border-b border-slate-200 fixed top-0 left-0 w-full z-45 px-6 py-3 flex items-center justify-between shadow-xs">
         <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-blue-600 text-white rounded-lg flex items-center justify-center shadow-md">
-              <Compass className="w-4.5 h-4.5" />
-            </div>
-            <span className="font-display font-extrabold text-lg text-slate-950 tracking-tight">Aventur</span>
-          </div>
+          <AventurLogo size="sm" showTagline={true} />
 
           <div className="hidden md:flex items-center gap-6 text-sm font-semibold text-slate-600">
             <a href="#how-it-works" className="hover:text-blue-600 transition">How It Works</a>
@@ -888,12 +884,7 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
       <footer className="bg-slate-900 border-t border-slate-800 text-slate-500 py-12 text-xs font-medium text-left">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 bg-blue-600 text-white rounded flex items-center justify-center">
-                <Compass className="w-3.5 h-3.5" />
-              </div>
-              <span className="font-display font-extrabold text-sm text-white tracking-tight">Aventur</span>
-            </div>
+            <AventurLogo size="sm" showTagline={true} light={true} />
             <p className="text-[10px] text-slate-600 font-sans leading-relaxed">
               Your AI travel concierge, compiling optimal travel details and itineraries in seconds.
             </p>
@@ -961,9 +952,7 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
               </button>
 
               <div className="flex flex-col items-center text-center space-y-4 mb-6">
-                <div className="w-11 h-11 bg-blue-600 text-white rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
-                  <Compass className="w-5.5 h-5.5" />
-                </div>
+                <AventurLogo onlyIcon={true} size="md" />
                 <div>
                   <h3 className="text-xl font-display font-extrabold text-slate-900 tracking-tight">
                     {authMode === 'login' ? 'Sign In to Aventur' : 'Create Your Account'}

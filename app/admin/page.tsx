@@ -7,6 +7,7 @@ import {
   seedDemoData, 
   clearLogs 
 } from '@/src/lib/firestoreService';
+import AventurLogo from '@/src/components/AventurLogo';
 import { 
   Compass, 
   Lock, 
@@ -368,9 +369,7 @@ Generated via Aventur Admin Portal`;
           className="max-w-md w-full bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-3xl shadow-2xl relative z-10"
         >
           <div className="flex flex-col items-center text-center space-y-4 mb-8">
-            <div className="w-14 h-14 bg-gradient-to-tr from-blue-600 to-emerald-500 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20">
-              <Compass className="w-8 h-8 text-white animate-spin-slow" />
-            </div>
+            <AventurLogo onlyIcon={true} size="lg" />
             <div className="space-y-1">
               <h1 className="text-2xl font-display font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
                 Aventur Admin Portal
@@ -448,9 +447,7 @@ Generated via Aventur Admin Portal`;
         {/* Navigation Bar */}
         <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-slate-900/50 backdrop-blur-md border border-slate-800/80 p-5 rounded-2xl">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-tr from-blue-600 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
-              <Compass className="w-5 h-5 text-white" />
-            </div>
+            <AventurLogo onlyIcon={true} size="md" />
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-lg font-display font-extrabold tracking-tight">Admin Control Desk</h1>

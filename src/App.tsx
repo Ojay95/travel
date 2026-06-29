@@ -7,6 +7,7 @@ import DestinationSelector from './components/DestinationSelector';
 import ItineraryWorkspace from './components/ItineraryWorkspace';
 import SavedPlansList from './components/SavedPlansList';
 import AventurLandingAuth from './components/AventurLandingAuth';
+import AventurLogo from './components/AventurLogo';
 import { auth } from './lib/firebase';
 import { getUserPlans, getPlanById, saveUserPlan, deleteUserPlan, logTrafficEvent } from './lib/firestoreService';
 import { useLiveQuery } from 'dexie-react-hooks';
@@ -523,20 +524,12 @@ export default function App() {
             className={`flex items-center gap-2 group ${user ? 'cursor-pointer' : 'cursor-default'}`}
             id="brand-navigation-logo"
           >
-            <div className="w-9 h-9 bg-blue-600 text-white rounded-lg flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-105 transition">
-              <Compass className="w-5 h-5 shrink-0" />
-            </div>
-            <div>
-              <span className="font-display font-extrabold text-lg text-slate-950 tracking-tight block flex items-center gap-1.5 leading-none">
-                Aventur
-                {isOffline && (
-                  <span className="text-[9px] font-black text-amber-800 bg-amber-100 border border-amber-200 px-1.5 py-0.5 rounded-md uppercase tracking-wider animate-pulse inline-block leading-none">
-                    Offline
-                  </span>
-                )}
+            <AventurLogo size="sm" showTagline={true} />
+            {isOffline && (
+              <span className="text-[9px] font-black text-amber-800 bg-amber-100 border border-amber-200 px-1.5 py-0.5 rounded-md uppercase tracking-wider animate-pulse inline-block leading-none self-center ml-1">
+                Offline
               </span>
-              <span className="text-[10px] text-slate-400 font-bold block uppercase tracking-widest leading-none mt-0.5">AI Vacation Concierge</span>
-            </div>
+            )}
           </div>
 
           {/* Quick Nav elements / authenticated profile state */}
