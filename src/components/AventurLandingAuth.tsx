@@ -6,7 +6,7 @@ import {
   Star, ArrowRight, Eye, EyeOff, Globe, 
   Sparkles, Check, ChevronRight, Play, Lock,
   Calendar, Users, DollarSign, Laptop, MapPin, 
-  Phone, HelpCircle, ShieldCheck, Database, FileText
+  Phone, HelpCircle, ShieldCheck, Database, FileText, Menu, X
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { auth } from '../lib/firebase';
@@ -32,6 +32,7 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
   const [showPassword, setShowPassword] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // FAQ Toggle States
   const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(null);
@@ -188,10 +189,11 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
     <div className="w-full space-y-24 animate-fade-in font-sans text-slate-800 bg-slate-50/50">
       
       {/* Sticky Header Navbar */}
-      <nav className="bg-white/80 backdrop-blur-md border-b border-slate-200 fixed top-0 left-0 w-full z-45 px-6 py-3 flex items-center justify-between shadow-xs">
+      <nav className="bg-white/85 backdrop-blur-md border-b border-slate-200 fixed top-0 left-0 w-full z-45 px-6 py-3 shadow-xs">
         <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
           <AventurLogo size="sm" showTagline={true} />
 
+          {/* Desktop Nav Links */}
           <div className="hidden md:flex items-center gap-6 text-sm font-semibold text-slate-600">
             <a href="#how-it-works" className="hover:text-blue-600 transition">How It Works</a>
             <a href="#features" className="hover:text-blue-600 transition">Features</a>
@@ -200,14 +202,50 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
             <a href="#faq" className="hover:text-blue-600 transition">FAQ</a>
           </div>
 
-          <button
-            onClick={() => { setAuthMode('login'); setIsAuthModalOpen(true); }}
-            id="btn-nav-login"
-            className="px-4.5 py-2 bg-slate-950 hover:bg-slate-800 text-white font-bold text-xs rounded-xl shadow-sm transition cursor-pointer"
-          >
-            Sign In
-          </button>
+          <div className="flex items-center gap-3">
+            {/* Desktop Login Button */}
+            <button
+              onClick={() => { setAuthMode('login'); setIsAuthModalOpen(true); }}
+              id="btn-nav-login"
+              className="hidden md:block px-4.5 py-2 bg-slate-950 hover:bg-slate-800 text-white font-bold text-xs rounded-xl shadow-sm transition cursor-pointer"
+            >
+              Sign In
+            </button>
+
+            {/* Mobile Hamburger toggle */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="block md:hidden p-2 hover:bg-slate-50 text-slate-700 rounded-xl transition cursor-pointer"
+              aria-label="Toggle Mobile Menu"
+            >
+              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
         </div>
+
+        {/* Mobile Nav Links Dropdown Panel */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden overflow-hidden bg-white border-t border-slate-100 mt-3 pt-3 pb-4 px-2 space-y-3 flex flex-col text-sm font-bold text-slate-650"
+            >
+              <a href="#how-it-works" onClick={() => setIsMobileMenuOpen(false)} className="px-3 py-2 hover:bg-slate-50 hover:text-blue-600 rounded-lg transition">How It Works</a>
+              <a href="#features" onClick={() => setIsMobileMenuOpen(false)} className="px-3 py-2 hover:bg-slate-50 hover:text-blue-600 rounded-lg transition">Features</a>
+              <a href="#sample-itinerary" onClick={() => setIsMobileMenuOpen(false)} className="px-3 py-2 hover:bg-slate-50 hover:text-blue-600 rounded-lg transition">Sample Trip</a>
+              <a href="#pricing" onClick={() => setIsMobileMenuOpen(false)} className="px-3 py-2 hover:bg-slate-50 hover:text-blue-600 rounded-lg transition">Pricing</a>
+              <a href="#faq" onClick={() => setIsMobileMenuOpen(false)} className="px-3 py-2 hover:bg-slate-50 hover:text-blue-600 rounded-lg transition">FAQ</a>
+              <button
+                onClick={() => { setIsMobileMenuOpen(false); setAuthMode('login'); setIsAuthModalOpen(true); }}
+                className="w-full text-center py-2.5 bg-slate-950 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition cursor-pointer"
+              >
+                Sign In
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
 
       {/* SECTION 1: HERO SECTION */}
@@ -881,7 +919,7 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-900 border-t border-slate-800 text-slate-500 py-12 text-xs font-medium text-left">
+      <footer className="bg-slate-900 border-t border-slate-800 text-slate-500 pt-12 pb-24 md:pb-12 text-xs font-medium text-left">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-3">
             <AventurLogo size="sm" showTagline={true} light={true} />
@@ -921,6 +959,19 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
           © {new Date().getFullYear()} Aventur AI Concierge Inc. All rights reserved.
         </div>
       </footer>
+
+      {/* Sticky Bottom Mobile CTA Bar */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 p-3 flex justify-between items-center md:hidden shadow-lg">
+        <div className="flex items-center gap-1.5">
+          <AventurLogo size="sm" showTagline={false} />
+        </div>
+        <button
+          onClick={() => { setAuthMode('signup'); setIsAuthModalOpen(true); }}
+          className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-display font-extrabold text-xs rounded-xl shadow-md transition cursor-pointer select-none"
+        >
+          Plan My Trip
+        </button>
+      </div>
 
       {/* INJECTIVE AUTHENTICATION MODAL */}
       <AnimatePresence>
