@@ -82,33 +82,14 @@ export default function AventurLogo({
   }
 
   return (
-    <div className={`flex items-center gap-3 font-sans ${className} select-none`}>
-      {/* 1. Logo App Icon */}
-      {svgIcon}
-
-      {/* 2. Brand Name & Tagline */}
-      <div className="flex flex-col text-left justify-center">
-        {/* Wordmark "Aventur" with custom stylized A */}
-        <div className={`font-display font-extrabold leading-none tracking-tight flex items-baseline select-none ${light ? 'text-white' : 'text-slate-950'}`}>
-          <span className="relative">
-            A
-            {/* Small blue caret inside the main 'A' matching user brand design */}
-            <span className="absolute left-[3px] sm:left-[4.5px] bottom-[2px] sm:bottom-[3px] text-blue-500 font-black text-[0.45em] leading-none">
-              ▲
-            </span>
-          </span>
-          <span>ventur</span>
-        </div>
-
-        {/* Tagline: DREAM IT. AVENTUR PLANS IT. */}
-        {showTagline && (
-          <div className={`font-sans font-extrabold uppercase mt-1 leading-none whitespace-nowrap select-none ${taglineClass}`}>
-            <span className={light ? 'text-slate-300' : 'text-slate-700'}>Dream it. </span>
-            <span className="text-blue-600">Aventur </span>
-            <span className={light ? 'text-slate-300' : 'text-slate-700'}>plans it.</span>
-          </div>
-        )}
-      </div>
+    <div className={`inline-flex items-center ${className}`}>
+      <img 
+        src="/logo.png" 
+        alt="Aventur Logo" 
+        className={`h-auto object-contain select-none ${
+          size === 'sm' ? 'max-h-8' : size === 'lg' ? 'max-h-16' : 'max-h-12'
+        } ${light ? 'bg-white/95 py-1 px-2.5 rounded-xl shadow-xs border border-white/10' : ''}`}
+      />
     </div>
   );
 }
