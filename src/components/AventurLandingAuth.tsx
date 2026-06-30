@@ -253,7 +253,7 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
         <div className="lg:col-span-7 space-y-6">
           <div className="inline-flex items-center gap-1.5 bg-blue-50 border border-blue-100 text-blue-700 px-3.5 py-1.5 rounded-full text-xs font-bold leading-none select-none">
             <Sparkles className="w-3.5 h-3.5 text-blue-500 animate-pulse" />
-            <span>Introducing Aventur 2.0</span>
+            <span>Introducing Aventtur 2.0</span>
           </div>
 
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-950 font-display leading-[1.08] tracking-tight">
@@ -307,7 +307,7 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
                 <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
               </div>
-              <span className="text-[10px] text-slate-550 font-bold">AVENTUR WORKSPACE — LIVE PREVIEW</span>
+              <span className="text-[10px] text-slate-550 font-bold">AVENTTUR WORKSPACE — LIVE PREVIEW</span>
             </div>
 
             {/* Simulated UI Content */}
@@ -408,7 +408,7 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
           <span className="text-[10px] font-black uppercase tracking-widest text-blue-600 font-mono block">Complete Travel Suite</span>
           <h2 className="text-3xl font-extrabold text-slate-950 font-display tracking-tight">Everything You Need to Travel Smarter</h2>
           <p className="text-sm text-slate-500 leading-relaxed">
-            Aventur is more than a simple trip planner. It is a full travel optimizer combining AI customization with actual bookings.
+            Aventtur is more than a simple trip planner. It is a full travel optimizer combining AI customization with actual bookings.
           </p>
         </div>
 
@@ -469,9 +469,9 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
           
           <div className="lg:col-span-4 space-y-6">
             <span className="text-[10px] font-black uppercase tracking-widest text-blue-400 font-mono block">Product Output</span>
-            <h2 className="text-3xl font-extrabold text-white font-display">Aventur Itinerary Output</h2>
+            <h2 className="text-3xl font-extrabold text-white font-display">Aventtur Itinerary Output</h2>
             <p className="text-xs sm:text-sm text-slate-350 leading-relaxed">
-              This is a live output sample representing a curated, midrange trip to Japan. Aventur combines daily attractions, pricing tiers, flight advice, and hotel links into a single unified workspace.
+              This is a live output sample representing a curated, midrange trip to Japan. Aventtur combines daily attractions, pricing tiers, flight advice, and hotel links into a single unified workspace.
             </p>
             
             <div className="space-y-3 font-mono text-[11px] text-slate-400">
@@ -642,7 +642,7 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
                 {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-amber-500 shrink-0" />)}
               </div>
               <p className="text-xs sm:text-sm text-slate-650 leading-relaxed italic">
-                "Creating our Kyoto honeymoon itinerary manually was taking us weeks. Aventur planned the whole thing in 40 seconds, selected an exquisite Ryokan in Gion, and our guides were amazing!"
+                "Creating our Kyoto honeymoon itinerary manually was taking us weeks. Aventtur planned the whole thing in 40 seconds, selected an exquisite Ryokan in Gion, and our guides were amazing!"
               </p>
               <div className="flex items-center gap-3">
                 <img
@@ -842,15 +842,15 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
           {[
             {
               q: "Is my personal itinerary information private?",
-              a: "Yes. Aventur prioritizes data privacy. All saved plans, ticket coordinates, and travel schedules are stored privately in your browser's secure local IndexedDB database. We never sell or track your search data."
+              a: "Yes. Aventtur prioritizes data privacy. All saved plans, ticket coordinates, and travel schedules are stored privately in your browser's secure local IndexedDB database. We never sell or track your search data."
             },
             {
               q: "How does the pricing/payment model work?",
               a: "We offer a Free plan with 1 itinerary per month. The Pro and Premium plans are billed monthly. You can cancel at any time directly in your account settings. Payments are processed securely via SSL encrypted payment gateways."
             },
             {
-              q: "Does Aventur handle hotel or flight booking directly?",
-              a: "Aventur is an AI travel planner and concierge, not a booking platform. We recommend optimal flight departure schedules and certified lodging properties, then link you directly to Skyscanner and Booking.com verified checkout gates to finalize bookings."
+              q: "Does Aventtur handle hotel or flight booking directly?",
+              a: "Aventtur is an AI travel planner and concierge, not a booking platform. We recommend optimal flight departure schedules and certified lodging properties, then link you directly to Skyscanner and Booking.com verified checkout gates to finalize bookings."
             },
             {
               q: "Can I access my travel plans offline?",
@@ -949,14 +949,14 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
           <div className="space-y-3">
             <h4 className="text-white font-display text-[10px] font-bold uppercase tracking-wider">Support Desk</h4>
             <div className="flex flex-col gap-2">
-              <span className="flex items-center gap-1.5"><Mail className="w-3.5 h-3.5" /> support@aventur.com</span>
+              <span className="flex items-center gap-1.5"><Mail className="w-3.5 h-3.5" /> support@aventtur.com</span>
               <span className="flex items-center gap-1.5"><Phone className="w-3.5 h-3.5" /> FAQ Support Accordion</span>
             </div>
           </div>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-800/80 pt-6 mt-8 text-center text-[10px] text-slate-600 font-mono">
-          © {new Date().getFullYear()} Aventur AI Concierge Inc. All rights reserved.
+          © {new Date().getFullYear()} Aventtur AI Concierge Inc. All rights reserved.
         </div>
       </footer>
 
@@ -1006,7 +1006,7 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
                 <AventurLogo onlyIcon={true} size="md" />
                 <div>
                   <h3 className="text-xl font-display font-extrabold text-slate-900 tracking-tight">
-                    {authMode === 'login' ? 'Sign In to Aventur' : 'Create Your Account'}
+                    {authMode === 'login' ? 'Sign In to Aventtur' : 'Create Your Account'}
                   </h3>
                   <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider font-mono mt-0.5">
                     AI Travel Concierge Portal

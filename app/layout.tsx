@@ -4,7 +4,7 @@ import './globals.css';
 import PWARegistration from './PWARegistration';
 
 export const metadata: Metadata = {
-  title: 'Aventur — AI Vacation Concierge',
+  title: 'Aventtur — AI Vacation Concierge',
   description: 'Set your matching travel guidelines, search cheapest pricing structures, choose lodging tiers, and customized dynamic itineraries – fully stored details preserved offline in your customized journey journal.',
 };
 

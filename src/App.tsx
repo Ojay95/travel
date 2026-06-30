@@ -861,7 +861,7 @@ export default function App() {
       {/* Footer credits and details */}
       <footer className="bg-white border-t border-gray-100 py-6 text-center text-xs text-gray-400">
         <div className="max-w-7xl mx-auto px-4">
-          <p>© 2026 Aventur Companion Services. All customized routes structured via elite Gemini 3.5 Models.</p>
+          <p>© 2026 Aventtur Companion Services. All customized routes structured via elite Gemini 3.5 Models.</p>
         </div>
       </footer>
 
