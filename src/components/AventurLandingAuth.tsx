@@ -42,11 +42,8 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
     {
       name: "Kyoto Sanctuaries",
       country: "Japan",
-      season: "Spring / Autumn",
+      season: "Oct - May",
       cost: "$$$",
-      estCost: "$1,850",
-      matchScore: 96,
-      idealFor: ["Couples", "Food Lovers", "Culture Explorers"],
       image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=600&h=400&q=80",
       highlights: ["Fushimi Inari Torii", "Arashiyama Bamboo Forest", "Zen Gardens"]
     },
@@ -55,9 +52,6 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
       country: "Tanzania",
       season: "Jun - Oct",
       cost: "$$$$",
-      estCost: "$2,950",
-      matchScore: 94,
-      idealFor: ["Adventure Seekers", "Wildlife Enthusiasts"],
       image: "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=600&h=400&q=80",
       highlights: ["Nile River Crossings", "Big Five Safaris", "Glamping Tents"]
     },
@@ -66,9 +60,6 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
       country: "Peru",
       season: "May - Sep",
       cost: "$$",
-      estCost: "$1,450",
-      matchScore: 91,
-      idealFor: ["Hikers", "History Buffs", "Solo Travelers"],
       image: "https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=600&h=400&q=80",
       highlights: ["Inca Trail Paths", "Sacred Valley Hikes", "Sun Gate Vibe"]
     },
@@ -77,9 +68,6 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
       country: "Greece",
       season: "Jun - Sep",
       cost: "$$$$",
-      estCost: "$3,100",
-      matchScore: 98,
-      idealFor: ["Couples", "Luxury Seekers", "Sun Chasers"],
       image: "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=600&h=400&q=80",
       highlights: ["Oia Caldera Sunset", "Volcano Catamaran", "Blue Dome Villas"]
     },
@@ -88,9 +76,6 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
       country: "Jordan",
       season: "Mar - May",
       cost: "$$$",
-      estCost: "$1,980",
-      matchScore: 93,
-      idealFor: ["Archaeology Lovers", "Backpackers"],
       image: "https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?auto=format&fit=crop&w=600&h=400&q=80",
       highlights: ["Al-Khazneh Treasury", "Siq Canyon Walk", "Monastery Trails"]
     },
@@ -99,9 +84,6 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
       country: "New Zealand",
       season: "Nov - Apr",
       cost: "$$$",
-      estCost: "$2,650",
-      matchScore: 95,
-      idealFor: ["Adrenaline Seekers", "Nature Lovers"],
       image: "https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&w=600&h=400&q=80",
       highlights: ["Milford Sound Fiord", "Glacial Lake Cruise", "Adrenaline Jumps"]
     }
@@ -204,66 +186,8 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
   };
 
   return (
-    <div className="w-full space-y-24 animate-fade-in font-sans text-slate-800 bg-slate-50/50 relative overflow-hidden">
+    <div className="w-full space-y-24 animate-fade-in font-sans text-slate-800 bg-slate-50/50">
       
-      {/* Global CSS styles for floating elements and travel lines */}
-      <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-10px) rotate(0.3deg); }
-        }
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-        @keyframes subtle-drift {
-          0% { transform: translateX(0px) translateY(0px); }
-          50% { transform: translateX(15px) translateY(-5px); }
-          100% { transform: translateX(0px) translateY(0px); }
-        }
-        .animate-drift-slow {
-          animation: subtle-drift 15s ease-in-out infinite;
-        }
-      `}} />
-
-      {/* Ambient Travel Decorations Layer (Grids, topographic lines, and animated routes) */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 select-none">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#3b82f604_1px,transparent_1px),linear-gradient(to_bottom,#3b82f604_1px,transparent_1px)] bg-[size:4rem_4rem]" />
-        
-        {/* Radial glow effects in top right */}
-        <div className="absolute -top-40 right-[-10%] w-[600px] h-[600px] bg-gradient-to-br from-blue-500/10 via-indigo-500/5 to-transparent rounded-full blur-[120px]" />
-        
-        {/* Topographic outline path overlay (low opacity) */}
-        <svg className="absolute top-[8%] right-[-5%] w-[700px] h-[700px] text-blue-600/[0.025]" viewBox="0 0 500 500" fill="none" stroke="currentColor" strokeWidth="1">
-          <path d="M 50,150 C 120,130 220,190 290,140 C 360,110 420,210 490,180" />
-          <path d="M 30,190 C 110,160 190,230 280,180 C 350,150 410,240 480,210" />
-          <path d="M 10,230 C 100,200 170,270 270,220 C 340,190 400,280 470,250" />
-          <path d="M 70,110 C 130,90 230,150 290,110 C 360,80 410,180 480,150" />
-          
-          {/* Compass rose illustration */}
-          <g transform="translate(100, 340)" className="text-blue-600/[0.04]">
-            <circle cx="0" cy="0" r="30" stroke="currentColor" strokeWidth="1" strokeDasharray="3 3" />
-            <line x1="-40" y1="0" x2="40" y2="0" stroke="currentColor" strokeWidth="1" />
-            <line x1="0" y1="-40" x2="0" y2="40" stroke="currentColor" strokeWidth="1" />
-            <polygon points="0,-25 4,-5 0,0 -4,-5" fill="currentColor" />
-            <polygon points="0,25 4,5 0,0 -4,5" fill="currentColor" />
-            <polygon points="25,0 5,4 0,0 5,-4" fill="currentColor" />
-            <polygon points="-25,0 -5,4 0,0 -5,-4" fill="currentColor" />
-          </g>
-        </svg>
-
-        {/* Animated Flight Route Overlay */}
-        <svg className="absolute left-[-15%] top-[30%] w-[130%] h-[500px] text-blue-500/[0.035]" viewBox="0 0 1000 500" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path id="route-line-main" d="M 50,100 C 300,320 680,60 950,420" strokeDasharray="5 7" />
-          <g className="text-blue-500/25">
-            <animateMotion dur="28s" repeatCount="indefinite">
-              <mpath href="#route-line-main" />
-            </animateMotion>
-            {/* Tiny airplane vector */}
-            <path d="M-5,-5 L5,0 L-5,5 L-2,0 Z" fill="currentColor" transform="rotate(35)" />
-          </g>
-        </svg>
-      </div>
-
       {/* Sticky Header Navbar */}
       <nav className="bg-white/85 backdrop-blur-md border-b border-slate-200 fixed top-0 left-0 w-full z-45 px-6 py-3 shadow-xs">
         <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
@@ -325,7 +249,7 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
       </nav>
 
       {/* SECTION 1: HERO SECTION */}
-      <section className="pt-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center text-left relative z-10" id="hero">
+      <section className="pt-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center text-left" id="hero">
         <div className="lg:col-span-7 space-y-6">
           <div className="inline-flex items-center gap-1.5 bg-blue-50 border border-blue-100 text-blue-700 px-3.5 py-1.5 rounded-full text-xs font-bold leading-none select-none">
             <Sparkles className="w-3.5 h-3.5 text-blue-500 animate-pulse" />
@@ -336,8 +260,8 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
             Plan Your Perfect Trip in Minutes with <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">AI</span>
           </h1>
 
-          <p className="text-base sm:text-lg text-slate-655 leading-relaxed max-w-2xl">
-            Stop spending hours researching flights, hotels and activities. Tell Aventtur where you want to go and let AI handle the planning.
+          <p className="text-base sm:text-lg text-slate-650 leading-relaxed max-w-2xl">
+            Tell us your budget, interests, and travel dates. Our AI creates personalized itineraries, hotel suggestions, and activity recommendations instantly.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 pt-2">
@@ -371,9 +295,9 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
         </div>
 
         {/* Product Workspace CSS Mockup */}
-        <div className="lg:col-span-5 relative lg:scale-115 lg:translate-x-6 z-10 animate-float" id="hero-preview-workspace">
+        <div className="lg:col-span-5 relative" id="hero-preview-workspace">
           {/* Decorative glowing gradient in background */}
-          <div className="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-blue-500 to-indigo-500 opacity-20 blur-2xl pointer-events-none" />
+          <div className="absolute -inset-2 rounded-3xl bg-gradient-to-tr from-blue-500 to-indigo-500 opacity-20 blur-xl pointer-events-none" />
           
           <div className="relative bg-slate-900 border border-slate-800 p-4.5 rounded-2xl shadow-2xl space-y-4 text-xs font-mono text-slate-350">
             {/* Window bar */}
@@ -434,12 +358,9 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
       </section>
 
       {/* SECTION 2: HOW IT WORKS */}
-      <section className="relative py-20 bg-white border-y border-slate-200/60 overflow-hidden" id="how-it-works">
-        {/* Subtle background glow overlay */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-50/20 via-transparent to-transparent pointer-events-none" />
-        
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 z-10">
-          <div className="space-y-3 max-w-2xl mx-auto text-center">
+      <section className="bg-white border-y border-slate-200 py-20 text-center" id="how-it-works">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          <div className="space-y-3 max-w-2xl mx-auto">
             <span className="text-[10px] font-black uppercase tracking-widest text-blue-600 font-mono block">Zero Friction</span>
             <h2 className="text-3xl font-extrabold text-slate-950 font-display tracking-tight">How It Works</h2>
             <p className="text-sm text-slate-500 leading-relaxed">
@@ -448,12 +369,9 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white/80 border border-slate-200/80 p-6 rounded-2xl text-left space-y-4 hover:border-slate-350 hover:-translate-y-1 hover:shadow-md transition-all duration-300 shadow-xs relative overflow-hidden">
-              <div className="relative inline-block">
-                <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm select-none">
-                  <Globe className="w-5 h-5" />
-                </div>
-                <span className="absolute -top-1.5 -left-1.5 w-5 h-5 rounded-full bg-blue-600 text-white text-[10px] font-bold flex items-center justify-center">1</span>
+            <div className="bg-slate-50/50 border border-slate-200 p-6 rounded-2xl text-left space-y-4 hover:border-slate-300 transition shadow-xs">
+              <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-sm select-none">
+                1
               </div>
               <h3 className="text-base font-bold font-display text-slate-950">Tell Us About Your Trip</h3>
               <p className="text-xs text-slate-500 leading-relaxed">
@@ -461,12 +379,9 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
               </p>
             </div>
 
-            <div className="bg-white/80 border border-slate-200/80 p-6 rounded-2xl text-left space-y-4 hover:border-slate-350 hover:-translate-y-1 hover:shadow-md transition-all duration-300 shadow-xs relative overflow-hidden">
-              <div className="relative inline-block">
-                <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm select-none">
-                  <Sparkles className="w-5 h-5" />
-                </div>
-                <span className="absolute -top-1.5 -left-1.5 w-5 h-5 rounded-full bg-blue-600 text-white text-[10px] font-bold flex items-center justify-center">2</span>
+            <div className="bg-slate-50/50 border border-slate-200 p-6 rounded-2xl text-left space-y-4 hover:border-slate-300 transition shadow-xs">
+              <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-sm select-none">
+                2
               </div>
               <h3 className="text-base font-bold font-display text-slate-950">AI Builds Your Itinerary</h3>
               <p className="text-xs text-slate-500 leading-relaxed">
@@ -474,12 +389,9 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
               </p>
             </div>
 
-            <div className="bg-white/80 border border-slate-200/80 p-6 rounded-2xl text-left space-y-4 hover:border-slate-350 hover:-translate-y-1 hover:shadow-md transition-all duration-300 shadow-xs relative overflow-hidden">
-              <div className="relative inline-block">
-                <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm select-none">
-                  <Compass className="w-5 h-5" />
-                </div>
-                <span className="absolute -top-1.5 -left-1.5 w-5 h-5 rounded-full bg-blue-600 text-white text-[10px] font-bold flex items-center justify-center">3</span>
+            <div className="bg-slate-50/50 border border-slate-200 p-6 rounded-2xl text-left space-y-4 hover:border-slate-300 transition shadow-xs">
+              <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-sm select-none">
+                3
               </div>
               <h3 className="text-base font-bold font-display text-slate-950">Book and Enjoy the Journey</h3>
               <p className="text-xs text-slate-500 leading-relaxed">
@@ -491,72 +403,60 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
       </section>
 
       {/* SECTION 3: FEATURES */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 text-left relative z-10" id="features">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 text-left" id="features">
         <div className="space-y-3 max-w-2xl">
           <span className="text-[10px] font-black uppercase tracking-widest text-blue-600 font-mono block">Complete Travel Suite</span>
           <h2 className="text-3xl font-extrabold text-slate-950 font-display tracking-tight">Everything You Need to Travel Smarter</h2>
-          <p className="text-sm text-slate-550 leading-relaxed">
+          <p className="text-sm text-slate-500 leading-relaxed">
             Aventtur is more than a simple trip planner. It is a full travel optimizer combining AI customization with actual bookings.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="bg-white/70 border border-slate-200/60 p-6 rounded-2xl space-y-3 hover:border-blue-200/70 hover:-translate-y-1.5 hover:shadow-lg transition-all duration-300 backdrop-blur-sm group">
-            <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100/50 text-blue-650 flex items-center justify-center shadow-xs mb-1 group-hover:scale-105 transition-transform">
-              <Sparkles className="w-5 h-5 text-blue-600" />
-            </div>
+          <div className="bg-white border border-slate-200 p-6 rounded-2xl space-y-3 hover:shadow-md transition">
+            <Sparkles className="w-6 h-6 text-blue-600" />
             <h3 className="text-base font-bold font-display text-slate-950">Adaptive Itinerary Generation</h3>
             <p className="text-xs text-slate-500 leading-relaxed">
               Day-by-day schedules mapped dynamically. Request a remix for any specific day to switch activities, change restaurants, or modify hours instantly.
             </p>
           </div>
 
-          <div className="bg-white/70 border border-slate-200/60 p-6 rounded-2xl space-y-3 hover:border-blue-200/70 hover:-translate-y-1.5 hover:shadow-lg transition-all duration-300 backdrop-blur-sm group">
-            <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100/50 text-blue-650 flex items-center justify-center shadow-xs mb-1 group-hover:scale-105 transition-transform">
-              <DollarSign className="w-5 h-5 text-blue-600" />
-            </div>
+          <div className="bg-white border border-slate-200 p-6 rounded-2xl space-y-3 hover:shadow-md transition">
+            <DollarSign className="w-6 h-6 text-blue-600" />
             <h3 className="text-base font-bold font-display text-slate-950">Smart Budget Estimation</h3>
             <p className="text-xs text-slate-500 leading-relaxed">
               Provides real-time ranges for flights and hotel tiers (budget, mid, luxury) from your origin city, preventing unexpected pricing surprises at checkout.
             </p>
           </div>
 
-          <div className="bg-white/70 border border-slate-200/60 p-6 rounded-2xl space-y-3 hover:border-blue-200/70 hover:-translate-y-1.5 hover:shadow-lg transition-all duration-300 backdrop-blur-sm group">
-            <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100/50 text-blue-650 flex items-center justify-center shadow-xs mb-1 group-hover:scale-105 transition-transform">
-              <Laptop className="w-5 h-5 text-blue-600" />
-            </div>
+          <div className="bg-white border border-slate-200 p-6 rounded-2xl space-y-3 hover:shadow-md transition">
+            <Laptop className="w-6 h-6 text-blue-600" />
             <h3 className="text-base font-bold font-display text-slate-950">Offline Itinerary Access</h3>
             <p className="text-xs text-slate-500 leading-relaxed">
               All saved plans are stored privately in your browser's local cache. Pull up hotel names, tickets, and scheduled routes even with zero network coverage.
             </p>
           </div>
 
-          <div className="bg-white/70 border border-slate-200/60 p-6 rounded-2xl space-y-3 hover:border-blue-200/70 hover:-translate-y-1.5 hover:shadow-lg transition-all duration-300 backdrop-blur-sm group">
-            <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100/50 text-blue-650 flex items-center justify-center shadow-xs mb-1 group-hover:scale-105 transition-transform">
-              <MapPin className="w-5 h-5 text-blue-600" />
-            </div>
+          <div className="bg-white border border-slate-200 p-6 rounded-2xl space-y-3 hover:shadow-md transition">
+            <MapPin className="w-6 h-6 text-blue-600" />
             <h3 className="text-base font-bold font-display text-slate-950">Accommodation Suggestions</h3>
             <p className="text-xs text-slate-500 leading-relaxed">
               Curated hotel selections with actual rates and attributes linked directly to Booking.com verified portals for secure, transparent reservation checkout.
             </p>
           </div>
 
-          <div className="bg-white/70 border border-slate-200/60 p-6 rounded-2xl space-y-3 hover:border-blue-200/70 hover:-translate-y-1.5 hover:shadow-lg transition-all duration-300 backdrop-blur-sm group">
-            <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100/50 text-blue-650 flex items-center justify-center shadow-xs mb-1 group-hover:scale-105 transition-transform">
-              <Compass className="w-5 h-5 text-blue-600" />
-            </div>
+          <div className="bg-white border border-slate-200 p-6 rounded-2xl space-y-3 hover:shadow-md transition">
+            <Compass className="w-6 h-6 text-blue-600" />
             <h3 className="text-base font-bold font-display text-slate-950">Vetted Local Guides</h3>
             <p className="text-xs text-slate-500 leading-relaxed">
               Skip tourist traps and crowds. Connect directly with licensed native guides in Rome, Kyoto, Paris and other cities to coordinate customized private tours.
             </p>
           </div>
 
-          <div className="bg-white/70 border border-slate-200/60 p-6 rounded-2xl space-y-3 hover:border-blue-200/70 hover:-translate-y-1.5 hover:shadow-lg transition-all duration-300 backdrop-blur-sm group">
-            <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100/50 text-blue-650 flex items-center justify-center shadow-xs mb-1 group-hover:scale-105 transition-transform">
-              <ShieldCheck className="w-5 h-5 text-blue-600" />
-            </div>
+          <div className="bg-white border border-slate-200 p-6 rounded-2xl space-y-3 hover:shadow-md transition">
+            <ShieldCheck className="w-6 h-6 text-blue-600" />
             <h3 className="text-base font-bold font-display text-slate-950">Absolute Privacy First</h3>
-              <p className="text-xs text-slate-500 leading-relaxed">
+            <p className="text-xs text-slate-500 leading-relaxed">
               No invasive tracking. We prioritize data encryption and clear settings so you retain complete control over your private journeys and profile inputs.
             </p>
           </div>
@@ -565,139 +465,102 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
 
       {/* SECTION 4: SAMPLE AI GENERATED ITINERARY */}
       <section className="bg-slate-900 text-white py-20 text-left relative overflow-hidden" id="sample-itinerary">
-        {/* Glow spots in background */}
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-0 right-10 w-80 h-80 bg-indigo-600/10 rounded-full blur-[100px] pointer-events-none" />
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start relative z-10">
           
-          {/* User Prompt Input Simulator */}
-          <div className="max-w-3xl mx-auto bg-slate-950/80 border border-slate-850 p-5 rounded-3xl shadow-2xl relative">
-            <div className="flex items-center justify-between border-b border-slate-850 pb-3 mb-3">
-              <div className="flex items-center gap-2 text-[10px] text-slate-400 font-mono font-bold tracking-widest uppercase">
-                <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-                <span>Traveler Prompt Input</span>
-              </div>
-              <span className="text-[9px] font-bold text-slate-500 bg-slate-900 border border-slate-800 px-2 py-0.5 rounded">V2.0 Engine</span>
-            </div>
+          <div className="lg:col-span-4 space-y-6">
+            <span className="text-[10px] font-black uppercase tracking-widest text-blue-400 font-mono block">Product Output</span>
+            <h2 className="text-3xl font-extrabold text-white font-display">Aventtur Itinerary Output</h2>
+            <p className="text-xs sm:text-sm text-slate-350 leading-relaxed">
+              This is a live output sample representing a curated, midrange trip to Japan. Aventtur combines daily attractions, pricing tiers, flight advice, and hotel links into a single unified workspace.
+            </p>
             
-            <div className="flex items-center justify-between gap-4 font-sans">
-              <p className="text-sm font-medium text-slate-200">
-                "Plan a 7-day trip to Japan for me and my partner. We want a midrange budget focusing on culture, historical temples, and local food spots, departing SFO."
-              </p>
-              <span className="bg-blue-600 text-white font-display font-black text-[10px] px-3.5 py-1.5 rounded-xl uppercase tracking-wider shrink-0 select-none">
-                Sent to AI
+            <div className="space-y-3 font-mono text-[11px] text-slate-400">
+              <div className="flex justify-between border-b border-slate-800 pb-2">
+                <span>Trip Type:</span>
+                <span className="font-bold text-white">Couples Adventure</span>
+              </div>
+              <div className="flex justify-between border-b border-slate-800 pb-2">
+                <span>Duration:</span>
+                <span className="font-bold text-white">7 Days / 6 Nights</span>
+              </div>
+              <div className="flex justify-between border-b border-slate-800 pb-2">
+                <span>Estimated Cost:</span>
+                <span className="font-bold text-emerald-400 font-mono">$1,850 - $2,400</span>
+              </div>
+            </div>
+
+            <button
+              onClick={() => { setAuthMode('signup'); setIsAuthModalOpen(true); }}
+              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-md transition cursor-pointer select-none"
+            >
+              Generate Your Own Trip
+            </button>
+          </div>
+
+          <div className="lg:col-span-8 bg-slate-950 border border-slate-850 p-6 rounded-2xl shadow-xl space-y-6">
+            {/* Route preview details */}
+            <div className="flex justify-between items-center border-b border-slate-850 pb-4">
+              <div>
+                <h3 className="text-base font-bold text-white">7 Days in Japan (Kyoto & Tokyo Highlights)</h3>
+                <span className="text-[10px] text-slate-500 font-mono">ORIGIN: SFO DEPARTURE</span>
+              </div>
+              <span className="bg-emerald-950 text-emerald-400 font-bold border border-emerald-900 px-3 py-1 rounded-full text-[10px] uppercase font-mono tracking-wider">
+                Midrange Tier
               </span>
             </div>
-          </div>
 
-          {/* Dotted Flow Connector */}
-          <div className="flex flex-col items-center justify-center select-none">
-            <div className="h-10 w-px border-r border-dashed border-blue-500/60" />
-            <div className="bg-blue-900/40 text-blue-300 border border-blue-800/40 text-[9px] font-black font-mono px-3 py-1.5 rounded-full uppercase tracking-widest leading-none">
-              Gemini Concierge Processing
-            </div>
-            <div className="h-10 w-px border-r border-dashed border-blue-500/60" />
-          </div>
-
-          {/* AI Output Workspace columns */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-            
-            <div className="lg:col-span-4 space-y-6">
-              <span className="text-[10px] font-black uppercase tracking-widest text-blue-400 font-mono block">AI Output Workspace</span>
-              <h2 className="text-3xl font-extrabold text-white font-display">Aventtur Itinerary Output</h2>
-              <p className="text-xs sm:text-sm text-slate-350 leading-relaxed">
-                This is a live output sample representing a curated, midrange trip to Japan. Aventtur combines daily attractions, pricing tiers, flight advice, and hotel links into a single unified workspace.
+            {/* Flight cost advice */}
+            <div className="bg-slate-900/60 p-4 rounded-xl border border-slate-850 space-y-2">
+              <div className="flex justify-between font-mono text-[10px] text-slate-400">
+                <span>ESTIMATED FLIGHT COST:</span>
+                <span className="text-white font-bold">$750 - $1,100 / person</span>
+              </div>
+              <p className="text-[10px] text-slate-450 leading-relaxed font-sans">
+                💡 <strong>Insider Tip:</strong> Book at least 6 weeks in advance. Direct flights from SFO to Haneda are typically cheaper on Tuesdays and Wednesdays. Avoid weekend departures.
               </p>
-              
-              <div className="space-y-3 font-mono text-[11px] text-slate-400">
-                <div className="flex justify-between border-b border-slate-800 pb-2">
-                  <span>Trip Type:</span>
-                  <span className="font-bold text-white">Couples Adventure</span>
-                </div>
-                <div className="flex justify-between border-b border-slate-800 pb-2">
-                  <span>Duration:</span>
-                  <span className="font-bold text-white">7 Days / 6 Nights</span>
-                </div>
-                <div className="flex justify-between border-b border-slate-800 pb-2">
-                  <span>Estimated Cost:</span>
-                  <span className="font-bold text-emerald-450 font-mono">$1,850 - $2,400</span>
-                </div>
-              </div>
-
-              <button
-                onClick={() => { setAuthMode('signup'); setIsAuthModalOpen(true); }}
-                className="px-6 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-display font-extrabold text-xs rounded-xl shadow-md transition cursor-pointer select-none"
-              >
-                Generate Your Own Trip
-              </button>
             </div>
 
-            <div className="lg:col-span-8 bg-slate-950/80 border border-slate-850 p-6 rounded-2xl shadow-xl space-y-6">
-              {/* Route preview details */}
-              <div className="flex justify-between items-center border-b border-slate-850 pb-4">
-                <div>
-                  <h3 className="text-base font-bold text-white font-display">7 Days in Japan (Kyoto & Tokyo Highlights)</h3>
-                  <span className="text-[10px] text-slate-500 font-mono">ORIGIN: SFO DEPARTURE</span>
-                </div>
-                <span className="bg-emerald-950/60 text-emerald-400 font-bold border border-emerald-900/60 px-3 py-1 rounded-full text-[10px] uppercase font-mono tracking-wider">
-                  Midrange Tier
-                </span>
-              </div>
-
-              {/* Flight cost advice */}
-              <div className="bg-slate-900/60 p-4 rounded-xl border border-slate-850 space-y-2">
-                <div className="flex justify-between font-mono text-[10px] text-slate-400">
-                  <span>ESTIMATED FLIGHT COST:</span>
-                  <span className="text-white font-bold">$750 - $1,100 / person</span>
-                </div>
-                <p className="text-[10px] text-slate-455 leading-relaxed font-sans">
-                  💡 <strong>Insider Tip:</strong> Book at least 6 weeks in advance. Direct flights from SFO to Haneda are typically cheaper on Tuesdays and Wednesdays. Avoid weekend departures.
+            {/* Itinerary timeline split */}
+            <div className="space-y-4 font-sans text-xs">
+              <div className="border-l-2 border-blue-500 pl-4 space-y-2 relative">
+                <span className="absolute -left-1.5 top-0 w-3.5 h-3.5 rounded-full bg-blue-500 border-4 border-slate-950" />
+                <h4 className="font-bold text-slate-200 flex items-center gap-1.5">
+                  Day 1: Arrival & Historic Higashiyama District
+                </h4>
+                <p className="text-[10px] text-slate-400 leading-relaxed">
+                  Morning check-in at hotel. Spend your afternoon wandering the historic cobblestone lanes of Higashiyama. Catch the twilight views around the Yasaka Pagoda and dine at a local noodle spot.
                 </p>
               </div>
 
-              {/* Itinerary timeline split */}
-              <div className="space-y-4 font-sans text-xs">
-                <div className="border-l-2 border-blue-500 pl-4 space-y-2 relative">
-                  <span className="absolute -left-1.5 top-0 w-3.5 h-3.5 rounded-full bg-blue-500 border-4 border-slate-950" />
-                  <h4 className="font-bold text-slate-200 flex items-center gap-1.5 font-display">
-                    Day 1: Arrival & Historic Higashiyama District
-                  </h4>
-                  <p className="text-[10px] text-slate-450 leading-relaxed">
-                    Morning check-in at hotel. Spend your afternoon wandering the historic cobblestone lanes of Higashiyama. Catch the twilight views around the Yasaka Pagoda and dine at a local noodle spot.
-                  </p>
-                </div>
-
-                <div className="border-l-2 border-blue-500 pl-4 space-y-2 relative">
-                  <span className="absolute -left-1.5 top-0 w-3.5 h-3.5 rounded-full bg-blue-500 border-4 border-slate-950" />
-                  <h4 className="font-bold text-slate-200 flex items-center gap-1.5 font-display">
-                    Day 2: Zen Temples & Bamboo Forest Walk
-                  </h4>
-                  <p className="text-[10px] text-slate-455 leading-relaxed">
-                    Start early at Kinkaku-ji (Golden Pavilion), then take the local train to Arashiyama. Explore the peaceful bamboo forest paths and enjoy a traditional matcha tea ceremony.
-                  </p>
-                </div>
-              </div>
-
-              {/* Curated accommodation list */}
-              <div className="space-y-2 text-left">
-                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest font-mono">Curated Accommodations</span>
-                <div className="bg-slate-900 border border-slate-850 p-3.5 rounded-xl flex items-center justify-between text-xs font-sans">
-                  <div>
-                    <span className="font-bold text-slate-250 block font-display">The Thousand Kyoto</span>
-                    <span className="text-[10px] text-slate-500 block">Midrange Stay • Free hot breakfast • Steps from station</span>
-                  </div>
-                  <span className="font-bold text-slate-300 font-mono shrink-0">$185/night</span>
-                </div>
+              <div className="border-l-2 border-blue-500 pl-4 space-y-2 relative">
+                <span className="absolute -left-1.5 top-0 w-3.5 h-3.5 rounded-full bg-blue-500 border-4 border-slate-950" />
+                <h4 className="font-bold text-slate-200 flex items-center gap-1.5">
+                  Day 2: Zen Temples & Bamboo Forest Walk
+                </h4>
+                <p className="text-[10px] text-slate-400 leading-relaxed">
+                  Start early at Kinkaku-ji (Golden Pavilion), then take the local train to Arashiyama. Explore the peaceful bamboo forest paths and enjoy a traditional matcha tea ceremony.
+                </p>
               </div>
             </div>
 
+            {/* Curated accommodation list */}
+            <div className="space-y-2 text-left">
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest font-mono">Curated Accommodations</span>
+              <div className="bg-slate-900 border border-slate-850 p-3.5 rounded-xl flex items-center justify-between text-xs font-sans">
+                <div>
+                  <span className="font-bold text-slate-250 block">The Thousand Kyoto</span>
+                  <span className="text-[10px] text-slate-500 block">Midrange Stay • Free hot breakfast • Steps from station</span>
+                </div>
+                <span className="font-bold text-slate-300 font-mono shrink-0">$185/night</span>
+              </div>
+            </div>
           </div>
+
         </div>
       </section>
 
       {/* SECTION 5: DESTINATION INSPIRATION */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 text-left relative z-10" id="inspirations">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 text-left" id="inspirations">
         <div className="space-y-2">
           <span className="text-[10px] font-black uppercase tracking-widest text-blue-600 font-mono block">Curated Inspirations</span>
           <h2 className="text-3xl font-extrabold text-slate-950 font-display tracking-tight">Worldwide Handpicked Escapes</h2>
@@ -710,7 +573,7 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
           {popularDestinations.map((dest) => (
             <div 
               key={dest.name} 
-              className="bg-white/80 backdrop-blur-sm border border-slate-200 rounded-2xl overflow-hidden shadow-xs hover:shadow-lg hover:border-blue-200/50 transition-all duration-300 group flex flex-col justify-between"
+              className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs hover:shadow-lg hover:border-slate-300 transition-all duration-300 group flex flex-col justify-between"
             >
               <div className="relative h-48 overflow-hidden select-none">
                 <img 
@@ -720,17 +583,6 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
-                
-                {/* AI Match Badge */}
-                <div className="absolute top-3 left-3 bg-blue-600/90 backdrop-blur-xs text-white font-mono font-black text-[9px] px-2 py-1 rounded-lg uppercase tracking-wider shadow-sm">
-                  {dest.matchScore}% Match
-                </div>
-
-                {/* Starting Price Badge */}
-                <div className="absolute top-3 right-3 bg-slate-950/80 backdrop-blur-xs text-emerald-400 font-mono font-bold text-[9.5px] px-2.5 py-1 rounded-lg border border-slate-800">
-                  From {dest.estCost}
-                </div>
-
                 <div className="absolute bottom-3 left-3 right-3 text-white text-left">
                   <span className="text-xs font-mono font-bold text-blue-300 block">{dest.country}</span>
                   <h3 className="text-lg font-black font-display tracking-tight leading-none mt-0.5">{dest.name}</h3>
@@ -738,26 +590,12 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
               </div>
 
               <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
-                <div className="space-y-3">
-                  <div className="flex flex-wrap gap-1">
-                    {dest.highlights.map((tag) => (
-                      <span key={tag} className="bg-slate-50 border border-slate-150 text-slate-650 px-2 py-0.5 rounded-md text-[9px] font-mono whitespace-nowrap">
-                        ✦ {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Ideal Traveler Profile Bullets */}
-                  <div className="space-y-1.5 pt-2.5 border-t border-slate-100">
-                    <span className="block text-[8.5px] text-slate-400 font-bold uppercase tracking-wider leading-none text-left">Perfect For:</span>
-                    <div className="flex flex-col gap-1 text-[10.5px] text-slate-600 font-semibold text-left">
-                      {dest.idealFor.map(profile => (
-                        <span key={profile} className="flex items-center gap-1">
-                          <span className="text-emerald-500 font-bold">✓</span> {profile}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+                <div className="flex flex-wrap gap-1">
+                  {dest.highlights.map((tag) => (
+                    <span key={tag} className="bg-slate-50 border border-slate-150 text-slate-600 px-2 py-0.5 rounded-md text-[9px] font-mono whitespace-nowrap">
+                      ✦ {tag}
+                    </span>
+                  ))}
                 </div>
 
                 <div className="border-t border-slate-100 pt-3 flex items-center justify-between text-[11px] font-mono">
@@ -788,7 +626,7 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
       </section>
 
       {/* SECTION 6: TESTIMONIALS */}
-      <section className="bg-blue-50/20 border-y border-blue-100/50 py-20 text-left relative z-10" id="testimonials">
+      <section className="bg-blue-50/30 border-y border-blue-100/50 py-20 text-left" id="testimonials">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="space-y-3 max-w-2xl">
             <span className="text-[10px] font-black uppercase tracking-widest text-blue-600 font-mono block">Traveler Stories</span>
@@ -799,110 +637,65 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white/80 border border-slate-200/60 p-6 rounded-2xl space-y-4 shadow-xs hover:-translate-y-1 hover:shadow-md transition-all duration-300 backdrop-blur-sm flex flex-col justify-between">
-              <div className="space-y-3">
-                <div className="flex gap-1 text-amber-500 select-none">
-                  {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-amber-500 shrink-0" />)}
-                </div>
-                <p className="text-xs sm:text-sm text-slate-650 leading-relaxed italic">
-                  "Creating our Kyoto honeymoon itinerary manually was taking us weeks. Aventtur planned the whole thing in 40 seconds, selected an exquisite Ryokan in Gion, and our guides were amazing!"
-                </p>
+            <div className="bg-white border border-slate-150 p-6 rounded-2xl space-y-4 shadow-xs">
+              <div className="flex gap-1 text-amber-500 select-none">
+                {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-amber-500 shrink-0" />)}
               </div>
-              <div className="space-y-3 pt-3 border-t border-slate-100">
-                <div className="flex items-center gap-3">
-                  <img
-                    referrerPolicy="no-referrer"
-                    src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=120&h=120&q=80"
-                    alt="Jessica & Liam K."
-                    className="w-10 h-10 rounded-full object-cover border border-slate-200"
-                  />
-                  <div>
-                    <span className="text-xs font-black block text-slate-950 font-display">Jessica & Liam K.</span>
-                    <span className="text-[10px] text-slate-400 block font-mono">San Francisco, USA</span>
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-1.5 pt-0.5">
-                  <span className="bg-blue-50/80 border border-blue-100 text-blue-700 px-2 py-0.5 rounded text-[9px] font-mono font-bold">
-                    📍 Japan
-                  </span>
-                  <span className="bg-slate-100 border border-slate-200 text-slate-600 px-2 py-0.5 rounded text-[9px] font-mono font-bold">
-                    ⏱️ 7 Days
-                  </span>
-                  <span className="bg-purple-50 border border-purple-100 text-purple-700 px-2 py-0.5 rounded text-[9px] font-mono font-bold">
-                    💕 Honeymoon
-                  </span>
+              <p className="text-xs sm:text-sm text-slate-650 leading-relaxed italic">
+                "Creating our Kyoto honeymoon itinerary manually was taking us weeks. Aventtur planned the whole thing in 40 seconds, selected an exquisite Ryokan in Gion, and our guides were amazing!"
+              </p>
+              <div className="flex items-center gap-3">
+                <img
+                  referrerPolicy="no-referrer"
+                  src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=120&h=120&q=80"
+                  alt="Jessica & Liam K."
+                  className="w-10 h-10 rounded-full object-cover border border-slate-200"
+                />
+                <div>
+                  <span className="text-xs font-black block text-slate-950 font-display">Jessica & Liam K.</span>
+                  <span className="text-[10px] text-slate-400 block font-mono">San Francisco • 7 Days in Japan</span>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white/80 border border-slate-200/60 p-6 rounded-2xl space-y-4 shadow-xs hover:-translate-y-1 hover:shadow-md transition-all duration-300 backdrop-blur-sm flex flex-col justify-between">
-              <div className="space-y-3">
-                <div className="flex gap-1 text-amber-500 select-none">
-                  {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-amber-500 shrink-0" />)}
-                </div>
-                <p className="text-xs sm:text-sm text-slate-650 leading-relaxed italic">
-                  "The day-by-day remix with AI is marvelous. We had heavy rain on Day 3 in Paris, asked the concierge to remodel for indoor museums, and got local gems instead of long queues."
-                </p>
+            <div className="bg-white border border-slate-150 p-6 rounded-2xl space-y-4 shadow-xs">
+              <div className="flex gap-1 text-amber-500 select-none">
+                {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-amber-500 shrink-0" />)}
               </div>
-              <div className="space-y-3 pt-3 border-t border-slate-100">
-                <div className="flex items-center gap-3">
-                  <img
-                    referrerPolicy="no-referrer"
-                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&h=120&q=80"
-                    alt="Mathieu B."
-                    className="w-10 h-10 rounded-full object-cover border border-slate-200"
-                  />
-                  <div>
-                    <span className="text-xs font-black block text-slate-950 font-display">Mathieu B.</span>
-                    <span className="text-[10px] text-slate-400 block font-mono">Toronto, Canada</span>
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-1.5 pt-0.5">
-                  <span className="bg-blue-50/80 border border-blue-100 text-blue-700 px-2 py-0.5 rounded text-[9px] font-mono font-bold">
-                    📍 France
-                  </span>
-                  <span className="bg-slate-100 border border-slate-200 text-slate-600 px-2 py-0.5 rounded text-[9px] font-mono font-bold">
-                    ⏱️ 10 Days
-                  </span>
-                  <span className="bg-emerald-50 border border-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-[9px] font-mono font-bold">
-                    🏕️ Solo Explorer
-                  </span>
+              <p className="text-xs sm:text-sm text-slate-650 leading-relaxed italic">
+                "The day-by-day remix with AI is marvelous. We had heavy rain on Day 3 in Paris, asked the concierge to remodel for indoor museums, and got local gems instead of long queues."
+              </p>
+              <div className="flex items-center gap-3">
+                <img
+                  referrerPolicy="no-referrer"
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&h=120&q=80"
+                  alt="Mathieu B."
+                  className="w-10 h-10 rounded-full object-cover border border-slate-200"
+                />
+                <div>
+                  <span className="text-xs font-black block text-slate-950 font-display">Mathieu B.</span>
+                  <span className="text-[10px] text-slate-400 block font-mono">Toronto • 10 Days in France</span>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white/80 border border-slate-200/60 p-6 rounded-2xl space-y-4 shadow-xs hover:-translate-y-1 hover:shadow-md transition-all duration-300 backdrop-blur-sm flex flex-col justify-between">
-              <div className="space-y-3">
-                <div className="flex gap-1 text-amber-500 select-none">
-                  {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-amber-500 shrink-0" />)}
-                </div>
-                <p className="text-xs sm:text-sm text-slate-650 leading-relaxed italic">
-                  "The cost estimations here are genuinely accurate. Saved us nearly $600 by pointing out shoulder-season booking windows and direct flight structures. Highly recommended!"
-                </p>
+            <div className="bg-white border border-slate-150 p-6 rounded-2xl space-y-4 shadow-xs">
+              <div className="flex gap-1 text-amber-500 select-none">
+                {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-amber-500 shrink-0" />)}
               </div>
-              <div className="space-y-3 pt-3 border-t border-slate-100">
-                <div className="flex items-center gap-3">
-                  <img
-                    referrerPolicy="no-referrer"
-                    src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&h=120&q=80"
-                    alt="Priya M."
-                    className="w-10 h-10 rounded-full object-cover border border-slate-200"
-                  />
-                  <div>
-                    <span className="text-xs font-black block text-slate-950 font-display">Priya M.</span>
-                    <span className="text-[10px] text-slate-400 block font-mono">London, UK</span>
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-1.5 pt-0.5">
-                  <span className="bg-blue-50/80 border border-blue-100 text-blue-700 px-2 py-0.5 rounded text-[9px] font-mono font-bold">
-                    📍 Morocco
-                  </span>
-                  <span className="bg-slate-100 border border-slate-200 text-slate-600 px-2 py-0.5 rounded text-[9px] font-mono font-bold">
-                    ⏱️ 5 Days
-                  </span>
-                  <span className="bg-amber-50 border border-amber-100 text-amber-700 px-2 py-0.5 rounded text-[9px] font-mono font-bold">
-                    🎒 Budget Saver
-                  </span>
+              <p className="text-xs sm:text-sm text-slate-650 leading-relaxed italic">
+                "The cost estimations here are genuinely accurate. Saved us nearly $600 by pointing out shoulder-season booking windows and direct flight structures. Highly recommended!"
+              </p>
+              <div className="flex items-center gap-3">
+                <img
+                  referrerPolicy="no-referrer"
+                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&h=120&q=80"
+                  alt="Priya M."
+                  className="w-10 h-10 rounded-full object-cover border border-slate-200"
+                />
+                <div>
+                  <span className="text-xs font-black block text-slate-950 font-display">Priya M.</span>
+                  <span className="text-[10px] text-slate-400 block font-mono">London • 5 Days in Morocco</span>
                 </div>
               </div>
             </div>
@@ -1126,44 +919,8 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-950 border-t border-slate-900 text-slate-500 pt-12 pb-24 md:pb-12 text-xs font-medium text-left relative overflow-hidden">
-        {/* Glowing World Map Background Vector */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20 select-none z-0">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-blue-500/10 rounded-full blur-[100px]" />
-          
-          <svg className="absolute w-full h-full text-slate-800" viewBox="0 0 1000 500" fill="none" stroke="currentColor" strokeWidth="1">
-            <path d="M 0,100 L 1000,100 M 0,200 L 1000,200 M 0,300 L 1000,300 M 0,400 L 1000,400" strokeDasharray="4 8" opacity="0.4" />
-            <path d="M 200,0 L 200,500 M 400,0 L 400,500 M 600,0 L 600,500 M 800,0 L 800,500" strokeDasharray="4 8" opacity="0.4" />
-            
-            <path d="M 250,220 C 350,150 650,150 780,280" stroke="url(#footer-route-grad)" strokeWidth="1.5" strokeDasharray="3 6" />
-            <path d="M 250,220 C 150,150 50,350 200,420" stroke="url(#footer-route-grad)" strokeWidth="1.5" strokeDasharray="3 6" />
-            <path d="M 780,280 C 850,200 950,250 820,380" stroke="url(#footer-route-grad)" strokeWidth="1.5" strokeDasharray="3 6" />
-
-            <g className="text-blue-500">
-              <circle cx="250" cy="220" r="3" fill="currentColor" />
-              <circle cx="250" cy="220" r="8" stroke="currentColor" strokeWidth="1" className="animate-ping" style={{ transformOrigin: '250px 220px' }} />
-            </g>
-            <g className="text-blue-500">
-              <circle cx="780" cy="280" r="3" fill="currentColor" />
-              <circle cx="780" cy="280" r="8" stroke="currentColor" strokeWidth="1" className="animate-ping" style={{ transformOrigin: '780px 280px' }} />
-            </g>
-            <g className="text-indigo-400">
-              <circle cx="200" cy="420" r="3" fill="currentColor" />
-            </g>
-            <g className="text-indigo-400">
-              <circle cx="820" cy="380" r="3" fill="currentColor" />
-            </g>
-
-            <defs>
-              <linearGradient id="footer-route-grad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.8" />
-                <stop offset="100%" stopColor="#818cf8" stopOpacity="0.2" />
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8 relative z-10">
+      <footer className="bg-slate-900 border-t border-slate-800 text-slate-500 pt-12 pb-24 md:pb-12 text-xs font-medium text-left">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-3">
             <AventurLogo size="sm" showTagline={true} light={true} />
             <p className="text-[10px] text-slate-600 font-sans leading-relaxed">
@@ -1198,7 +955,7 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-900 pt-6 mt-8 text-center text-[10px] text-slate-600 font-mono relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-800/80 pt-6 mt-8 text-center text-[10px] text-slate-600 font-mono">
           © {new Date().getFullYear()} Aventtur AI Concierge Inc. All rights reserved.
         </div>
       </footer>
