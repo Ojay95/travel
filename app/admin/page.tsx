@@ -353,28 +353,28 @@ Generated via Aventur Admin Portal`;
 
     return (
       <div 
-        className="min-h-screen bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black text-slate-100 flex items-center justify-center p-4 relative overflow-hidden font-sans"
+        className="min-h-screen bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-slate-50 via-white to-slate-100 text-slate-800 flex items-center justify-center p-4 relative overflow-hidden font-sans"
         id="admin-login-viewport"
       >
-        <title>Admin Access Desk — Aventur</title>
+        <title>Admin Access Desk — Aventtur</title>
         
         {/* Glow circles in background */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-blue-500/10 blur-[128px] pointer-events-none" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-emerald-500/10 blur-[128px] pointer-events-none" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-blue-500/5 blur-[128px] pointer-events-none" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-emerald-500/5 blur-[128px] pointer-events-none" />
 
         <motion.div
           initial={{ opacity: 0, y: 30, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="max-w-md w-full bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-3xl shadow-2xl relative z-10"
+          className="max-w-md w-full bg-white border border-slate-200 p-8 rounded-3xl shadow-xl relative z-10"
         >
           <div className="flex flex-col items-center text-center space-y-4 mb-8">
             <AventurLogo onlyIcon={true} size="lg" />
             <div className="space-y-1">
-              <h1 className="text-2xl font-display font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
-                Aventur Admin Portal
+              <h1 className="text-2xl font-display font-extrabold tracking-tight text-slate-950">
+                Aventtur Admin Portal
               </h1>
-              <p className="text-xs text-slate-400 font-bold uppercase tracking-widest font-mono">
+              <p className="text-xs text-slate-500 font-bold uppercase tracking-widest font-mono">
                 Decoupled Analytics Control
               </p>
             </div>
@@ -384,7 +384,7 @@ Generated via Aventur Admin Portal`;
             <div className="space-y-2">
               <label 
                 htmlFor="admin-password-input" 
-                className="block text-xs font-bold text-slate-350 tracking-wide uppercase"
+                className="block text-xs font-bold text-slate-600 tracking-wide uppercase"
               >
                 Security Key
               </label>
@@ -395,10 +395,10 @@ Generated via Aventur Admin Portal`;
                   placeholder="Enter administrator passcode"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-slate-950/50 border border-slate-800 rounded-xl py-3 px-4 pl-11 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all font-mono"
+                  className="w-full bg-white border border-slate-250 rounded-xl py-3 px-4 pl-11 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all font-mono"
                   required
                 />
-                <Lock className="w-4 h-4 text-slate-500 absolute left-4 top-1/2 -translate-y-1/2" />
+                <Lock className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
               </div>
             </div>
 
@@ -406,10 +406,10 @@ Generated via Aventur Admin Portal`;
               <motion.div
                 initial={{ opacity: 0, y: -5 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex items-center gap-2 p-3 bg-red-950/30 border border-red-900/50 text-red-400 rounded-xl text-xs"
+                className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 text-red-700 rounded-xl text-xs"
                 id="admin-auth-error"
               >
-                <AlertCircle className="w-4 h-4 shrink-0" />
+                <AlertCircle className="w-4 h-4 shrink-0 text-red-550" />
                 <span className="font-medium">{authError}</span>
               </motion.div>
             )}
@@ -417,7 +417,7 @@ Generated via Aventur Admin Portal`;
             <button
               id="btn-admin-login-submit"
               type="submit"
-              className="w-full py-3 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-550 hover:to-blue-450 text-white font-bold text-sm rounded-xl transition-all shadow-lg shadow-blue-550/20 active:scale-[0.98] cursor-pointer flex items-center justify-center gap-1.5"
+              className="w-full py-3 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-750 hover:to-blue-650 text-white font-bold text-sm rounded-xl transition-all shadow-lg shadow-blue-500/10 active:scale-[0.98] cursor-pointer flex items-center justify-center gap-1.5"
             >
               Access Command Desk
               <ChevronRight className="w-4 h-4" />
@@ -425,7 +425,7 @@ Generated via Aventur Admin Portal`;
           </form>
 
           <div className="mt-8 text-center">
-            <span className="text-[10px] text-slate-500 font-medium">
+            <span className="text-[10px] text-slate-400 font-medium">
               Authorized personnel only. Sessions are audited and logged.
             </span>
           </div>
@@ -435,28 +435,28 @@ Generated via Aventur Admin Portal`;
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans" id="admin-dashboard-viewport">
-      <title>Admin Control Desk — Aventur</title>
+    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans" id="admin-dashboard-viewport">
+      <title>Admin Control Desk — Aventtur</title>
 
       {/* Decorative gradient overlay */}
-      <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-blue-950/20 to-transparent pointer-events-none" />
+      <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-slate-200/40 to-transparent pointer-events-none" />
 
       {/* Outer wrapper */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10 space-y-6">
         
         {/* Navigation Bar */}
-        <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-slate-900/50 backdrop-blur-md border border-slate-800/80 p-5 rounded-2xl">
+        <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white border border-slate-200 p-5 rounded-2xl shadow-sm">
           <div className="flex items-center gap-3">
             <AventurLogo onlyIcon={true} size="md" />
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-lg font-display font-extrabold tracking-tight">Admin Control Desk</h1>
+                <h1 className="text-lg font-display font-extrabold tracking-tight text-slate-950">Admin Control Desk</h1>
                 <span className="flex h-2 w-2 relative">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                 </span>
               </div>
-              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider font-mono">Affiliate & Traffic Hub</p>
+              <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider font-mono">Affiliate & Traffic Hub</p>
             </div>
           </div>
 
@@ -466,8 +466,8 @@ Generated via Aventur Admin Portal`;
               onClick={() => setIsAutoRefresh(!isAutoRefresh)}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer border ${
                 isAutoRefresh 
-                  ? 'bg-emerald-950/40 border-emerald-900/60 text-emerald-400' 
-                  : 'bg-slate-800 border-slate-700 text-slate-400'
+                  ? 'bg-emerald-50 border-emerald-200 text-emerald-750' 
+                  : 'bg-slate-100 border-slate-200 text-slate-600'
               }`}
               title="Toggle automatic pulling of logs every 5 seconds"
             >
@@ -480,7 +480,7 @@ Generated via Aventur Admin Portal`;
               id="btn-admin-refresh"
               onClick={() => fetchData()}
               disabled={loading}
-              className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-350 hover:text-white rounded-lg border border-slate-700 cursor-pointer disabled:opacity-50 transition flex items-center gap-1.5 text-xs font-bold"
+              className="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-905 rounded-lg border border-slate-200 cursor-pointer disabled:opacity-50 transition flex items-center gap-1.5 text-xs font-bold"
             >
               <RotateCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
               <span>{loading ? 'Refreshing...' : 'Refresh'}</span>
@@ -490,7 +490,7 @@ Generated via Aventur Admin Portal`;
             <button
               id="btn-admin-logout"
               onClick={handleLogout}
-              className="px-3.5 py-2 bg-red-950/40 hover:bg-red-950/60 text-red-400 hover:text-red-300 rounded-lg border border-red-900/50 cursor-pointer transition flex items-center gap-1.5 text-xs font-bold"
+              className="px-3.5 py-2 bg-red-50 hover:bg-red-100 text-red-700 hover:text-red-800 rounded-lg border border-red-200 cursor-pointer transition flex items-center gap-1.5 text-xs font-bold"
             >
               <LogOut className="w-3.5 h-3.5" />
               <span>Log Out</span>
@@ -499,14 +499,14 @@ Generated via Aventur Admin Portal`;
         </header>
 
         {/* Controls Toolbar: Time Filter & Exports */}
-        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-slate-900/30 border border-slate-800/80 p-4 rounded-2xl">
+        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-white border border-slate-200 p-4 rounded-2xl shadow-xs">
           <div className="flex items-center gap-3">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider font-mono">Timeframe:</span>
-            <div className="inline-flex rounded-xl bg-slate-950 p-1 border border-slate-850">
+            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono">Timeframe:</span>
+            <div className="inline-flex rounded-xl bg-slate-100 p-1 border border-slate-200">
               <button
                 onClick={() => setTimeframe('24h')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
-                  timeframe === '24h' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'
+                  timeframe === '24h' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-950 hover:bg-slate-200/50'
                 }`}
               >
                 24 Hours
@@ -514,7 +514,7 @@ Generated via Aventur Admin Portal`;
               <button
                 onClick={() => setTimeframe('7d')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
-                  timeframe === '7d' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'
+                  timeframe === '7d' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-950 hover:bg-slate-200/50'
                 }`}
               >
                 7 Days
@@ -522,7 +522,7 @@ Generated via Aventur Admin Portal`;
               <button
                 onClick={() => setTimeframe('30d')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
-                  timeframe === '30d' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'
+                  timeframe === '30d' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-950 hover:bg-slate-200/50'
                 }`}
               >
                 30 Days
@@ -530,7 +530,7 @@ Generated via Aventur Admin Portal`;
               <button
                 onClick={() => setTimeframe('all')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
-                  timeframe === 'all' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'
+                  timeframe === 'all' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-950 hover:bg-slate-200/50'
                 }`}
               >
                 All Time
@@ -542,30 +542,30 @@ Generated via Aventur Admin Portal`;
             {/* Copy report summary */}
             <button
               onClick={copySummaryToClipboard}
-              className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-350 hover:text-white border border-slate-700 rounded-xl transition cursor-pointer flex items-center gap-1.5 text-xs font-bold"
+              className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 rounded-xl transition cursor-pointer flex items-center gap-1.5 text-xs font-bold"
               title="Copy formatted text report of active insights to clipboard"
             >
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <Sparkles className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
               <span>Copy Report Summary</span>
             </button>
 
             {/* Export Traffic CSV */}
             <button
               onClick={exportTrafficCSV}
-              className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-350 hover:text-white border border-slate-700 rounded-xl transition cursor-pointer flex items-center gap-1.5 text-xs font-bold"
+              className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 rounded-xl transition cursor-pointer flex items-center gap-1.5 text-xs font-bold"
               title="Download CSV report of page traffic entries"
             >
-              <Globe className="w-3.5 h-3.5 text-blue-400" />
+              <Globe className="w-3.5 h-3.5 text-blue-500" />
               <span>Export Traffic CSV</span>
             </button>
 
             {/* Export Clicks CSV */}
             <button
               onClick={exportClicksCSV}
-              className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-350 hover:text-white border border-slate-700 rounded-xl transition cursor-pointer flex items-center gap-1.5 text-xs font-bold"
+              className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 rounded-xl transition cursor-pointer flex items-center gap-1.5 text-xs font-bold"
               title="Download CSV report of affiliate outbound clicks"
             >
-              <MousePointer className="w-3.5 h-3.5 text-emerald-400" />
+              <MousePointer className="w-3.5 h-3.5 text-emerald-650" />
               <span>Export Revenue CSV</span>
             </button>
           </div>
@@ -578,10 +578,10 @@ Generated via Aventur Admin Portal`;
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="bg-emerald-950/40 border border-emerald-900/50 text-emerald-450 p-4 rounded-xl flex items-center gap-3 text-xs"
+              className="bg-emerald-50 border border-emerald-200 text-emerald-800 p-4 rounded-xl flex items-center gap-3 text-xs"
               id="admin-alert-banner"
             >
-              <Check className="w-4 h-4 shrink-0 text-emerald-450" />
+              <Check className="w-4 h-4 shrink-0 text-emerald-655" />
               <span className="font-medium">{successMsg}</span>
             </motion.div>
           )}
@@ -590,70 +590,70 @@ Generated via Aventur Admin Portal`;
         {/* KPI Scorecard Grid */}
         <section className="grid grid-cols-2 lg:grid-cols-4 gap-4" id="kpi-metrics-grid">
           {/* Card 1: Gross Revenue */}
-          <div className="bg-slate-900/40 border border-slate-800/80 p-5 rounded-2xl relative overflow-hidden group hover:border-blue-500/30 transition-all duration-300">
+          <div className="bg-white border border-slate-200 p-5 rounded-2xl relative overflow-hidden group hover:border-blue-500/30 transition-all duration-300 shadow-xs">
             <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-full blur-2xl pointer-events-none" />
             <div className="flex items-center justify-between mb-3">
-              <span className="text-[10px] sm:text-xs font-bold text-slate-450 uppercase tracking-wider">Gross Revenue</span>
-              <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-450 flex items-center justify-center">
+              <span className="text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider">Gross Revenue</span>
+              <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
                 <DollarSign className="w-4 h-4" />
               </div>
             </div>
             <div className="space-y-1">
-              <span className="text-xl sm:text-2xl font-extrabold font-mono tracking-tight block">
+              <span className="text-xl sm:text-2xl font-extrabold font-mono tracking-tight text-slate-950 block">
                 ${totalRevenue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </span>
-              <span className="text-[10px] text-slate-500 font-medium block">Simulated affiliate commission</span>
+              <span className="text-[10px] text-slate-400 font-medium block">Simulated affiliate commission</span>
             </div>
           </div>
 
           {/* Card 2: Lead Referrals */}
-          <div className="bg-slate-900/40 border border-slate-800/80 p-5 rounded-2xl relative overflow-hidden group hover:border-emerald-500/30 transition-all duration-300">
+          <div className="bg-white border border-slate-200 p-5 rounded-2xl relative overflow-hidden group hover:border-emerald-500/30 transition-all duration-300 shadow-xs">
             <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl pointer-events-none" />
             <div className="flex items-center justify-between mb-3">
-              <span className="text-[10px] sm:text-xs font-bold text-slate-455 uppercase tracking-wider">Lead Referrals</span>
-              <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-450 flex items-center justify-center">
+              <span className="text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider">Lead Referrals</span>
+              <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100">
                 <MousePointer className="w-4 h-4" />
               </div>
             </div>
             <div className="space-y-1">
-              <span className="text-xl sm:text-2xl font-extrabold font-mono tracking-tight block">
+              <span className="text-xl sm:text-2xl font-extrabold font-mono tracking-tight text-slate-950 block">
                 {totalLeads}
               </span>
-              <span className="text-[10px] text-slate-500 font-medium block">Outgoing booking click events</span>
+              <span className="text-[10px] text-slate-400 font-medium block">Outgoing booking click events</span>
             </div>
           </div>
 
           {/* Card 3: Total Visitors */}
-          <div className="bg-slate-900/40 border border-slate-800/80 p-5 rounded-2xl relative overflow-hidden group hover:border-purple-500/30 transition-all duration-300">
+          <div className="bg-white border border-slate-200 p-5 rounded-2xl relative overflow-hidden group hover:border-purple-500/30 transition-all duration-300 shadow-xs">
             <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 rounded-full blur-2xl pointer-events-none" />
             <div className="flex items-center justify-between mb-3">
-              <span className="text-[10px] sm:text-xs font-bold text-slate-450 uppercase tracking-wider">Total Traffic</span>
-              <div className="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-450 flex items-center justify-center">
+              <span className="text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider">Total Traffic</span>
+              <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center border border-purple-100">
                 <Users className="w-4 h-4" />
               </div>
             </div>
             <div className="space-y-1">
-              <span className="text-xl sm:text-2xl font-extrabold font-mono tracking-tight block">
+              <span className="text-xl sm:text-2xl font-extrabold font-mono tracking-tight text-slate-950 block">
                 {totalTraffic}
               </span>
-              <span className="text-[10px] text-slate-500 font-medium block">Site visitor session views</span>
+              <span className="text-[10px] text-slate-400 font-medium block">Site visitor session views</span>
             </div>
           </div>
 
           {/* Card 4: Average EPC */}
-          <div className="bg-slate-900/40 border border-slate-800/80 p-5 rounded-2xl relative overflow-hidden group hover:border-amber-500/30 transition-all duration-300">
+          <div className="bg-white border border-slate-200 p-5 rounded-2xl relative overflow-hidden group hover:border-amber-500/30 transition-all duration-300 shadow-xs">
             <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full blur-2xl pointer-events-none" />
             <div className="flex items-center justify-between mb-3">
-              <span className="text-[10px] sm:text-xs font-bold text-slate-450 uppercase tracking-wider">Earnings Per Lead</span>
-              <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-450 flex items-center justify-center">
+              <span className="text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider">Earnings Per Lead</span>
+              <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-100">
                 <TrendingUp className="w-4 h-4" />
               </div>
             </div>
             <div className="space-y-1">
-              <span className="text-xl sm:text-2xl font-extrabold font-mono tracking-tight block">
+              <span className="text-xl sm:text-2xl font-extrabold font-mono tracking-tight text-slate-950 block">
                 ${epc.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </span>
-              <span className="text-[10px] text-slate-500 font-medium block">Average revenue generated per click</span>
+              <span className="text-[10px] text-slate-400 font-medium block">Average revenue generated per click</span>
             </div>
           </div>
         </section>
@@ -661,23 +661,22 @@ Generated via Aventur Admin Portal`;
         {/* Traffic Sources & Device Visualizations */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Traffic Referrers Panel */}
-          <section className="bg-slate-900/30 border border-slate-800/80 p-6 rounded-2xl space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+          <section className="bg-white border border-slate-200 p-6 rounded-2xl space-y-4 shadow-sm">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
               <div className="flex items-center gap-2">
                 <Layers className="w-4.5 h-4.5 text-blue-500" />
-                <h3 className="text-sm font-display font-extrabold">Referrer Entry Channels</h3>
+                <h3 className="text-sm font-display font-extrabold text-slate-950">Referrer Entry Channels</h3>
               </div>
-              <span className="text-[10px] font-mono text-slate-500">Distribution Share</span>
+              <span className="text-[10px] font-mono text-slate-450">Distribution Share</span>
             </div>
 
             {sortedSources.length === 0 ? (
-              <div className="h-48 flex items-center justify-center text-xs text-slate-500">
+              <div className="h-48 flex items-center justify-center text-xs text-slate-400">
                 No visitor traffic logged yet. Try seeding.
               </div>
             ) : (
               <div className="space-y-3.5">
                 {sortedSources.slice(0, 5).map((item, idx) => {
-                  // Progress color based on referrer rank or source type
                   let colorClass = 'bg-blue-600';
                   if (item.source.toLowerCase().includes('google')) colorClass = 'bg-emerald-500';
                   else if (item.source.toLowerCase().includes('twitter') || item.source.toLowerCase().includes('x.com')) colorClass = 'bg-sky-400';
@@ -687,14 +686,14 @@ Generated via Aventur Admin Portal`;
                   return (
                     <div key={item.source} className="space-y-1 text-xs">
                       <div className="flex justify-between font-medium">
-                        <span className="text-slate-300">{item.source}</span>
-                        <span className="text-slate-400 font-mono">
+                        <span className="text-slate-700">{item.source}</span>
+                        <span className="text-slate-500 font-mono">
                           {item.count} views ({item.percentage.toFixed(0)}%)
                         </span>
                       </div>
-                      <div className="w-full h-2.5 bg-slate-850 rounded-full overflow-hidden">
+                      <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
                         <div 
-                          className={`h-full ${colorClass} rounded-full transition-all duration-500`}
+                           className={`h-full ${colorClass} rounded-full transition-all duration-500`}
                           style={{ width: `${item.percentage}%` }}
                         />
                       </div>
@@ -706,23 +705,23 @@ Generated via Aventur Admin Portal`;
           </section>
 
           {/* Device Distribution Panel */}
-          <section className="bg-slate-900/30 border border-slate-800/80 p-6 rounded-2xl space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+          <section className="bg-white border border-slate-200 p-6 rounded-2xl space-y-4 shadow-sm">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
               <div className="flex items-center gap-2">
-                <Laptop className="w-4.5 h-4.5 text-emerald-500" />
-                <h3 className="text-sm font-display font-extrabold">Device & Platform Split</h3>
+                <Laptop className="w-4.5 h-4.5 text-emerald-600" />
+                <h3 className="text-sm font-display font-extrabold text-slate-950">Device & Platform Split</h3>
               </div>
-              <span className="text-[10px] font-mono text-slate-500">Browser User-Agents</span>
+              <span className="text-[10px] font-mono text-slate-455">Browser User-Agents</span>
             </div>
 
             {deviceList.length === 0 ? (
-              <div className="h-48 flex items-center justify-center text-xs text-slate-500">
+              <div className="h-48 flex items-center justify-center text-xs text-slate-400">
                 No device log details. Try seeding.
               </div>
             ) : (
               <div className="space-y-6">
                 {/* Horizontal split segment bar */}
-                <div className="w-full h-4 bg-slate-850 rounded-full overflow-hidden flex">
+                <div className="w-full h-4 bg-slate-100 rounded-full overflow-hidden flex">
                   {deviceList.map((item, idx) => {
                     const colors = ['bg-indigo-600', 'bg-emerald-500', 'bg-amber-500'];
                     return (
@@ -738,7 +737,6 @@ Generated via Aventur Admin Portal`;
 
                 <div className="grid grid-cols-3 gap-2">
                   {deviceList.map((item, idx) => {
-                    const textColors = ['text-indigo-400', 'text-emerald-400', 'text-amber-400'];
                     const dotColors = ['bg-indigo-600', 'bg-emerald-500', 'bg-amber-500'];
                     const icons = [
                       <Laptop key="lap" className="w-3.5 h-3.5 shrink-0" />,
@@ -747,16 +745,16 @@ Generated via Aventur Admin Portal`;
                     ];
 
                     return (
-                      <div key={item.device} className="bg-slate-900/50 border border-slate-800/60 p-3 rounded-xl flex flex-col items-center justify-center text-center space-y-1">
+                      <div key={item.device} className="bg-slate-50 border border-slate-200 p-3 rounded-xl flex flex-col items-center justify-center text-center space-y-1">
                         <div className="flex items-center gap-1.5">
                           <span className={`w-2 h-2 rounded-full ${dotColors[idx % dotColors.length]}`} />
-                          <span className="text-[10px] font-bold text-slate-450 uppercase tracking-wider">{item.device}</span>
+                          <span className="text-[10px] font-bold text-slate-550 uppercase tracking-wider">{item.device}</span>
                         </div>
-                        <div className="flex items-center gap-1 font-mono text-sm font-bold text-slate-200 mt-1">
+                        <div className="flex items-center gap-1 font-mono text-sm font-bold text-slate-800 mt-1">
                           {icons[item.device === 'Desktop' ? 0 : (item.device === 'Mobile' ? 1 : 2)]}
                           <span>{item.percentage.toFixed(0)}%</span>
                         </div>
-                        <span className="text-[9px] font-medium text-slate-500 font-mono">{item.count} sessions</span>
+                        <span className="text-[9px] font-medium text-slate-450 font-mono">{item.count} sessions</span>
                       </div>
                     );
                   })}
@@ -769,21 +767,21 @@ Generated via Aventur Admin Portal`;
         {/* Geographic Insights Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Countries List */}
-          <section className="bg-slate-900/30 border border-slate-800/80 p-6 rounded-2xl space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+          <section className="bg-white border border-slate-200 p-6 rounded-2xl space-y-4 shadow-sm">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
               <div className="flex items-center gap-2">
-                <Globe className="w-4.5 h-4.5 text-purple-500" />
-                <h3 className="text-sm font-display font-extrabold">Top Visitor Countries</h3>
+                <Globe className="w-4.5 h-4.5 text-purple-600" />
+                <h3 className="text-sm font-display font-extrabold text-slate-950">Top Visitor Countries</h3>
               </div>
-              <span className="text-[10px] font-mono text-slate-500">Geography</span>
+              <span className="text-[10px] font-mono text-slate-450">Geography</span>
             </div>
 
             {sortedCountries.length === 0 ? (
-              <div className="h-44 flex items-center justify-center text-xs text-slate-500">
+              <div className="h-44 flex items-center justify-center text-xs text-slate-400">
                 No location history recorded yet.
               </div>
             ) : (
-              <div className="divide-y divide-slate-850">
+              <div className="divide-y divide-slate-150">
                 {sortedCountries.map((country, idx) => (
                   <div key={country.name} className="flex items-center justify-between py-2.5 text-xs first:pt-0 last:pb-0">
                     <div className="flex items-center gap-2.5">
@@ -791,13 +789,13 @@ Generated via Aventur Admin Portal`;
                         {getFlagEmoji(country.code)}
                       </span>
                       <div>
-                        <span className="font-semibold text-slate-350">{country.name}</span>
-                        <span className="text-[9px] text-slate-500 font-mono block uppercase tracking-wider">{country.code}</span>
+                        <span className="font-semibold text-slate-700">{country.name}</span>
+                        <span className="text-[9px] text-slate-450 font-mono block uppercase tracking-wider">{country.code}</span>
                       </div>
                     </div>
                     <div className="text-right">
-                      <span className="font-bold text-slate-200 font-mono block">{country.count} visits</span>
-                      <span className="text-[9px] text-slate-400 font-medium font-mono">{country.percentage.toFixed(1)}%</span>
+                      <span className="font-bold text-slate-800 font-mono block">{country.count} visits</span>
+                      <span className="text-[9px] text-slate-500 font-medium font-mono">{country.percentage.toFixed(1)}%</span>
                     </div>
                   </div>
                 ))}
@@ -806,34 +804,34 @@ Generated via Aventur Admin Portal`;
           </section>
 
           {/* Cities List */}
-          <section className="bg-slate-900/30 border border-slate-800/80 p-6 rounded-2xl space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+          <section className="bg-white border border-slate-200 p-6 rounded-2xl space-y-4 shadow-sm">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
               <div className="flex items-center gap-2">
                 <MapPin className="w-4.5 h-4.5 text-amber-500" />
-                <h3 className="text-sm font-display font-extrabold">Top Cities</h3>
+                <h3 className="text-sm font-display font-extrabold text-slate-950">Top Cities</h3>
               </div>
-              <span className="text-[10px] font-mono text-slate-500">Metro Areas</span>
+              <span className="text-[10px] font-mono text-slate-450">Metro Areas</span>
             </div>
 
             {sortedCities.length === 0 ? (
-              <div className="h-44 flex items-center justify-center text-xs text-slate-500">
+              <div className="h-44 flex items-center justify-center text-xs text-slate-400">
                 No city coordinates logged.
               </div>
             ) : (
-              <div className="divide-y divide-slate-850">
+              <div className="divide-y divide-slate-150">
                 {sortedCities.map((city, idx) => (
                   <div key={`${city.city}-${idx}`} className="flex items-center justify-between py-3 first:pt-0 last:pb-0 text-xs">
                     <div className="flex items-center gap-2.5">
-                      <div className="w-6 h-6 rounded-md bg-slate-800 text-slate-450 flex items-center justify-center font-bold text-[10px] font-mono select-none">
+                      <div className="w-6 h-6 rounded-md bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-[10px] font-mono select-none border border-slate-200">
                         {idx + 1}
                       </div>
                       <div>
-                        <span className="font-semibold text-slate-300">{city.city}</span>
-                        <span className="text-[9px] text-slate-500 font-mono block uppercase tracking-wider">Region code: {city.countryCode}</span>
+                        <span className="font-semibold text-slate-700">{city.city}</span>
+                        <span className="text-[9px] text-slate-450 font-mono block uppercase tracking-wider">Region code: {city.countryCode}</span>
                       </div>
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <span className="text-xs font-bold text-slate-200 font-mono">{city.count} leads</span>
+                      <span className="text-xs font-bold text-slate-800 font-mono">{city.count} leads</span>
                       <span className="text-xl leading-none select-none">{getFlagEmoji(city.countryCode)}</span>
                     </div>
                   </div>
@@ -844,19 +842,19 @@ Generated via Aventur Admin Portal`;
         </div>
 
         {/* Affiliate Programs Performance Grid Table */}
-        <section className="bg-slate-900/30 border border-slate-800/80 rounded-2xl overflow-hidden">
-          <div className="p-5 border-b border-slate-800 flex items-center justify-between">
+        <section className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+          <div className="p-5 border-b border-slate-200 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Database className="w-4.5 h-4.5 text-blue-500" />
-              <h3 className="text-sm font-display font-extrabold">Affiliate Programs Performance</h3>
+              <h3 className="text-sm font-display font-extrabold text-slate-950">Affiliate Programs Performance</h3>
             </div>
-            <span className="text-[10px] font-mono text-slate-500 bg-slate-850 px-2 py-1 rounded-md">Simulated Network</span>
+            <span className="text-[10px] font-mono text-slate-500 bg-slate-100 px-2 py-1 rounded-md">Simulated Network</span>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="bg-slate-900/50 border-b border-slate-850 text-slate-400 font-bold uppercase tracking-wider font-mono">
+                <tr className="bg-slate-50 border-b border-slate-200 text-slate-650 font-bold uppercase tracking-wider font-mono">
                   <th className="py-3 px-5">Partner Program</th>
                   <th className="py-3 px-5 text-right">Referral Click Leads</th>
                   <th className="py-3 px-5 text-right">Conversion Leads (Sim)</th>
@@ -864,18 +862,18 @@ Generated via Aventur Admin Portal`;
                   <th className="py-3 px-5 text-right">Program EPC</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-850">
+              <tbody className="divide-y divide-slate-150">
                 {programPerformanceList.map((prog) => {
                   const conversions = Math.round(prog.clicks * 0.12); // Simulated conversion rate (approx 12%)
                   return (
-                    <tr key={prog.brand} className="hover:bg-slate-900/40 transition">
-                      <td className="py-3 px-5 font-bold text-slate-200">{prog.brand}</td>
-                      <td className="py-3 px-5 text-right font-mono text-slate-350">{prog.clicks}</td>
-                      <td className="py-3 px-5 text-right font-mono text-slate-400">{conversions}</td>
-                      <td className="py-3 px-5 text-right font-mono font-bold text-emerald-400">
+                    <tr key={prog.brand} className="hover:bg-slate-50/50 transition">
+                      <td className="py-3 px-5 font-bold text-slate-800">{prog.brand}</td>
+                      <td className="py-3 px-5 text-right font-mono text-slate-600">{prog.clicks}</td>
+                      <td className="py-3 px-5 text-right font-mono text-slate-500">{conversions}</td>
+                      <td className="py-3 px-5 text-right font-mono font-bold text-emerald-700">
                         ${prog.revenue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </td>
-                      <td className="py-3 px-5 text-right font-mono text-slate-400">
+                      <td className="py-3 px-5 text-right font-mono text-slate-500">
                         ${prog.epc.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </td>
                     </tr>
@@ -887,17 +885,17 @@ Generated via Aventur Admin Portal`;
         </section>
 
         {/* Live Logs Stream Tabs */}
-        <section className="bg-slate-900/30 border border-slate-800/80 rounded-2xl overflow-hidden flex flex-col min-h-[350px]">
+        <section className="bg-white border border-slate-200 rounded-2xl overflow-hidden flex flex-col min-h-[350px] shadow-sm">
           {/* Tabs header */}
-          <div className="bg-slate-900/50 border-b border-slate-800 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-1.5 bg-slate-950 p-1 rounded-xl border border-slate-850">
+          <div className="bg-slate-50 border-b border-slate-200 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl border border-slate-200">
               <button
                 id="btn-admin-tab-clicks"
                 onClick={() => setActiveTab('clicks')}
                 className={`px-4 py-2 rounded-lg text-xs font-bold transition whitespace-nowrap cursor-pointer flex items-center gap-1.5 ${
                   activeTab === 'clicks' 
-                    ? 'bg-blue-600 text-white shadow-md' 
-                    : 'text-slate-400 hover:text-white hover:bg-slate-900'
+                    ? 'bg-blue-600 text-white shadow-xs' 
+                    : 'text-slate-500 hover:text-slate-950 hover:bg-slate-200/50'
                 }`}
               >
                 <MousePointer className="w-3.5 h-3.5" />
@@ -909,8 +907,8 @@ Generated via Aventur Admin Portal`;
                 onClick={() => setActiveTab('traffic')}
                 className={`px-4 py-2 rounded-lg text-xs font-bold transition whitespace-nowrap cursor-pointer flex items-center gap-1.5 ${
                   activeTab === 'traffic' 
-                    ? 'bg-blue-600 text-white shadow-md' 
-                    : 'text-slate-400 hover:text-white hover:bg-slate-900'
+                    ? 'bg-blue-600 text-white shadow-xs' 
+                    : 'text-slate-500 hover:text-slate-950 hover:bg-slate-200/50'
                 }`}
               >
                 <Users className="w-3.5 h-3.5" />
@@ -925,11 +923,11 @@ Generated via Aventur Admin Portal`;
           </div>
 
           {/* Logs feed list */}
-          <div className="flex-1 overflow-y-auto max-h-96 p-4 space-y-2">
+          <div className="flex-1 overflow-y-auto max-h-96 p-4 space-y-2 bg-slate-50/30">
             <AnimatePresence mode="popLayout">
               {activeTab === 'clicks' ? (
                 filteredClicks.length === 0 ? (
-                  <div className="h-48 flex items-center justify-center text-xs text-slate-500">
+                  <div className="h-48 flex items-center justify-center text-xs text-slate-400">
                     No clicks logged yet. Click outbound links in traveler view or click "Seed Demo Data".
                   </div>
                 ) : (
@@ -941,38 +939,38 @@ Generated via Aventur Admin Portal`;
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0 }}
-                        className="bg-slate-900/60 hover:bg-slate-900 border border-slate-850 p-3 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs"
+                        className="bg-white hover:bg-slate-50/50 border border-slate-200 p-3 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-xs"
                       >
                         <div className="space-y-1">
                           <div className="flex items-center flex-wrap gap-2">
-                            <span className="font-bold text-slate-200 bg-slate-800 px-2 py-0.5 rounded text-[10px] tracking-wide uppercase">
+                            <span className="font-bold text-slate-700 bg-slate-200 px-2 py-0.5 rounded text-[10px] tracking-wide uppercase border border-slate-300">
                               {click.brand}
                             </span>
-                            <span className="text-slate-450 font-medium">
-                              → Destination: <span className="font-semibold text-slate-200">{click.destinationCity}</span>
+                            <span className="text-slate-600 font-medium">
+                              → Destination: <span className="font-semibold text-slate-800">{click.destinationCity}</span>
                             </span>
-                            <span className="text-slate-500 font-mono text-[10px]">
+                            <span className="text-slate-400 font-mono text-[10px]">
                               Type: {click.travelType}
                             </span>
                           </div>
-                          <div className="flex items-center gap-1 text-slate-500 truncate max-w-lg">
+                          <div className="flex items-center gap-1 text-slate-450 truncate max-w-lg">
                             <span className="font-mono text-[10px]">SubID: {click.subId}</span>
                           </div>
                         </div>
 
                         <div className="flex items-center justify-between sm:justify-end gap-4 shrink-0">
                           <div className="text-right">
-                            <span className="text-emerald-400 font-bold block font-mono text-sm">
+                            <span className="text-emerald-700 font-bold block font-mono text-sm">
                               +${(click.payout || 0).toFixed(2)}
                             </span>
-                            <span className="text-[10px] text-slate-500 block font-mono">{displayTime}</span>
+                            <span className="text-[10px] text-slate-400 block font-mono">{displayTime}</span>
                           </div>
                           
                           <a
                             href={click.dest}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="p-1.5 bg-slate-800 text-slate-400 hover:text-white rounded hover:bg-slate-700 transition"
+                            className="p-1.5 bg-slate-100 text-slate-550 hover:text-slate-800 rounded border border-slate-200 hover:bg-slate-200 transition"
                             title="Open target referral redirect link"
                           >
                             <ExternalLink className="w-3.5 h-3.5" />
@@ -984,7 +982,7 @@ Generated via Aventur Admin Portal`;
                 )
               ) : (
                 filteredTraffic.length === 0 ? (
-                  <div className="h-48 flex items-center justify-center text-xs text-slate-500">
+                  <div className="h-48 flex items-center justify-center text-xs text-slate-400">
                     No traffic logged yet.
                   </div>
                 ) : (
@@ -996,33 +994,33 @@ Generated via Aventur Admin Portal`;
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0 }}
-                        className="bg-slate-900/60 hover:bg-slate-900 border border-slate-850 p-3 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs"
+                        className="bg-white hover:bg-slate-50/50 border border-slate-200 p-3 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-xs"
                       >
                         <div className="space-y-1">
                           <div className="flex items-center flex-wrap gap-2">
                             <span className="text-lg select-none leading-none">
                               {getFlagEmoji(log.countryCode)}
                             </span>
-                            <span className="font-bold text-slate-200">
+                            <span className="font-bold text-slate-800">
                               {log.city || 'Unknown'}, {log.country || 'Unknown'}
                             </span>
                             <span className="text-slate-500">
-                              via <span className="font-medium text-slate-400">{log.source}</span>
+                              via <span className="font-medium text-slate-600">{log.source}</span>
                             </span>
-                            <span className="text-slate-500 font-mono text-[10px] bg-slate-850 px-1.5 py-0.5 rounded">
+                            <span className="text-slate-550 font-mono text-[10px] bg-slate-205 px-1.5 py-0.5 rounded border border-slate-250">
                               {log.device}
                             </span>
                           </div>
-                          <div className="text-slate-500 text-[10px] truncate max-w-lg">
+                          <div className="text-slate-450 text-[10px] truncate max-w-lg">
                             <span>Referrer: {log.referrer}</span>
                           </div>
                         </div>
 
                         <div className="text-right shrink-0">
-                          <span className="text-slate-400 font-medium block">
-                            Visited: <span className="font-mono">{log.path}</span>
+                          <span className="text-slate-600 font-medium block">
+                            Visited: <span className="font-mono text-slate-850 font-bold">{log.path}</span>
                           </span>
-                          <span className="text-[10px] text-slate-500 block font-mono">{displayTime}</span>
+                          <span className="text-[10px] text-slate-400 block font-mono">{displayTime}</span>
                         </div>
                       </motion.div>
                     );
@@ -1034,13 +1032,13 @@ Generated via Aventur Admin Portal`;
         </section>
 
         {/* Demo Operations & Maintenance Panel */}
-        <section className="bg-slate-900/30 border border-slate-800/80 p-6 rounded-2xl space-y-4">
-          <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
+        <section className="bg-white border border-slate-200 p-6 rounded-2xl space-y-4 shadow-sm">
+          <div className="flex items-center gap-2 border-b border-slate-200 pb-3">
             <Database className="w-4.5 h-4.5 text-blue-500" />
-            <h3 className="text-sm font-display font-extrabold">Demo Seeder & Sandboxed Database Controls</h3>
+            <h3 className="text-sm font-display font-extrabold text-slate-950">Demo Seeder & Sandboxed Database Controls</h3>
           </div>
 
-          <p className="text-xs text-slate-400 leading-relaxed max-w-3xl">
+          <p className="text-xs text-slate-500 leading-relaxed max-w-3xl">
             To prepare or run high-fidelity simulations during live presentations, use the seed controls to simulate full traffic loops, geographic distributions, and affiliate click actions across the system. 
           </p>
 
@@ -1050,7 +1048,7 @@ Generated via Aventur Admin Portal`;
               id="btn-admin-seed"
               onClick={handleSeed}
               disabled={actionLoading || loading}
-              className="px-4 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-550 hover:to-indigo-550 text-white text-xs font-bold rounded-xl shadow-lg shadow-blue-900/30 transition disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"
+              className="px-4 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-bold rounded-xl shadow-lg shadow-blue-500/10 transition disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"
             >
               <Sparkles className="w-4 h-4 text-amber-300 animate-pulse" />
               <span>{actionLoading ? 'Writing Sandboxes...' : 'Seed Demo Data'}</span>
@@ -1061,7 +1059,7 @@ Generated via Aventur Admin Portal`;
               id="btn-admin-clear"
               onClick={handleClear}
               disabled={actionLoading || loading}
-              className="px-4 py-2.5 bg-red-950/40 hover:bg-red-950/60 text-red-400 hover:text-red-300 rounded-xl border border-red-900/50 transition disabled:opacity-50 flex items-center gap-1.5 cursor-pointer font-bold text-xs"
+              className="px-4 py-2.5 bg-red-50 hover:bg-red-100 text-red-700 rounded-xl border border-red-200 transition disabled:opacity-50 flex items-center gap-1.5 cursor-pointer font-bold text-xs"
             >
               <Trash2 className="w-4 h-4" />
               <span>{actionLoading ? 'Purging collections...' : 'Wipe Database Logs'}</span>

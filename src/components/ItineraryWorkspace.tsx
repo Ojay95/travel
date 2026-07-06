@@ -12,6 +12,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { auth } from '../lib/firebase';
 import { generateTravelpayoutsLink, constructSubId } from '../lib/travelpayouts';
+import TripadvisorEnrichment from './TripadvisorEnrichment';
 
 interface ItineraryWorkspaceProps {
   destination: Destination;
@@ -665,9 +666,17 @@ export default function ItineraryWorkspace({
                         </p>
 
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mt-3.5 pt-3 border-t border-slate-100">
-                          <div className="flex items-center gap-1 text-xs text-blue-700 font-semibold">
-                            <MapPin className="w-3.5 h-3.5 shrink-0" />
-                            <span>{act.locationName}</span>
+                          <div className="flex items-center flex-wrap gap-2.5 text-xs text-blue-700 font-semibold">
+                            <div className="flex items-center gap-1">
+                              <MapPin className="w-3.5 h-3.5 shrink-0" />
+                              <span>{act.locationName}</span>
+                            </div>
+                            <span className="text-slate-300 select-none">|</span>
+                            <TripadvisorEnrichment 
+                              locationName={act.title}
+                              destinationName={destination.name}
+                              session={getUserIdOrSessionId()}
+                            />
                           </div>
                           
                           {/* Travelpayouts Affiliate Booking Link */}
@@ -729,23 +738,33 @@ export default function ItineraryWorkspace({
                           <p className="text-xs text-slate-500 line-clamp-2 mt-1 leading-relaxed">
                             {food.specialtyDetails}
                           </p>
-                          <div className="flex items-center justify-between gap-2 mt-3.5 pt-2.5 border-t border-slate-100">
-                            <div className="flex items-center gap-0.5 text-[10.5px] text-slate-500 font-medium leading-none truncate max-w-[55%]">
-                              <Utensils className="w-3 h-3 text-blue-500 shrink-0" />
-                              <span className="truncate">{food.venueRecommendation}</span>
+                          <div className="flex flex-col gap-2.5 mt-3.5 pt-2.5 border-t border-slate-100">
+                            <div className="flex items-center justify-between gap-2">
+                              <div className="flex items-center gap-1 text-[10.5px] text-slate-500 font-medium leading-none truncate">
+                                <Utensils className="w-3 h-3 text-blue-500 shrink-0" />
+                                <span className="truncate">{food.venueRecommendation}</span>
+                              </div>
+                              <TripadvisorEnrichment 
+                                locationName={food.venueRecommendation}
+                                destinationName={destination.name}
+                                session={getUserIdOrSessionId()}
+                              />
                             </div>
-                            <a
-                              href={getDynamicBookingLink(`https://www.yelp.com/search?find_desc=${encodeURIComponent(food.dishName)}&find_loc=${encodeURIComponent(food.venueRecommendation + ' ' + destination.name)}`, 'food')}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                triggerSimulatedAffiliateClick('food', `${food.dishName} Spot`, 1.50);
-                              }}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-[9.5px] font-black tracking-wide text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-2 py-1 rounded-md border border-emerald-200 transition leading-none whitespace-nowrap"
-                            >
-                              🍽️ Reserve Table
-                            </a>
+                            <div className="flex justify-between items-center mt-0.5">
+                              <span className="text-[10px] text-slate-400 font-bold font-mono">Cost: ~${food.avgCost}</span>
+                              <a
+                                href={getDynamicBookingLink(`https://www.yelp.com/search?find_desc=${encodeURIComponent(food.dishName)}&find_loc=${encodeURIComponent(food.venueRecommendation + ' ' + destination.name)}`, 'food')}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  triggerSimulatedAffiliateClick('food', `${food.dishName} Spot`, 1.50);
+                                }}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-[9.5px] font-black tracking-wide text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-2 py-1 rounded-md border border-emerald-200 transition leading-none whitespace-nowrap"
+                              >
+                                🍽️ Reserve Table
+                              </a>
+                            </div>
                           </div>
                         </div>
                       </div>

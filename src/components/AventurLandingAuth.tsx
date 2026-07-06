@@ -16,7 +16,9 @@ import {
   createUserWithEmailAndPassword, 
   signInWithPopup, 
   GoogleAuthProvider,
-  updateProfile
+  updateProfile,
+  sendEmailVerification,
+  signOut
 } from 'firebase/auth';
 
 interface AventurLandingAuthProps {
@@ -33,6 +35,13 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
   const [formError, setFormError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [verificationSent, setVerificationSent] = useState(false);
+
+  React.useEffect(() => {
+    if (!isAuthModalOpen) {
+      setVerificationSent(false);
+    }
+  }, [isAuthModalOpen]);
 
   // FAQ Toggle States
   const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(null);
@@ -108,15 +117,25 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
       if (authMode === 'signup') {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         await updateProfile(userCredential.user, { displayName: name });
-        const payload = {
-          name: name.charAt(0).toUpperCase() + name.slice(1),
-          email: userCredential.user.email || email.toLowerCase()
-        };
-        localStorage.setItem('aventur_user_session', JSON.stringify(payload));
-        setIsAuthModalOpen(false);
-        onAuthSuccess(payload);
+        
+        // Send email verification
+        await sendEmailVerification(userCredential.user);
+        
+        // Sign out right away to prevent unverified active session
+        await signOut(auth);
+        localStorage.removeItem('aventur_user_session');
+        
+        setVerificationSent(true);
       } else {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        
+        // Gate unverified accounts
+        if (!userCredential.user.emailVerified) {
+          await signOut(auth);
+          localStorage.removeItem('aventur_user_session');
+          throw new Error("Please verify your email address. A verification link was sent to your registered email address.");
+        }
+
         const displayName = userCredential.user.displayName || email.split('@')[0];
         const payload = {
           name: displayName.charAt(0).toUpperCase() + displayName.slice(1),
@@ -1021,102 +1040,131 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
                 </div>
               )}
 
-              <form onSubmit={handleAuthSubmit} className="space-y-4 text-left">
-                {authMode === 'signup' && (
-                  <div className="space-y-1">
-                    <label htmlFor="name-input" className="text-xs font-bold text-slate-550 block">Your Name</label>
-                    <div className="relative">
-                      <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-450" />
-                      <input
-                        id="name-input"
-                        type="text"
-                        required
-                        placeholder="e.g. Liam K."
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="w-full text-xs pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-1 focus:ring-blue-500 outline-none text-slate-900 placeholder-slate-400 font-sans"
-                      />
-                    </div>
+              {verificationSent ? (
+                <div className="space-y-5 text-center py-4">
+                  <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto border border-blue-105 shadow-xs">
+                    <Check className="w-6 h-6 stroke-[3px]" />
                   </div>
-                )}
-
-                <div className="space-y-1">
-                  <label htmlFor="email-input" className="text-xs font-bold text-slate-550 block">Email Address</label>
-                  <div className="relative">
-                    <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-450" />
-                    <input
-                      id="email-input"
-                      type="email"
-                      required
-                      placeholder="e.g. traveler@domain.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full text-xs pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-1 focus:ring-blue-500 outline-none text-slate-900 placeholder-slate-400 font-sans"
-                    />
+                  <div className="space-y-2">
+                    <h4 className="text-base font-display font-extrabold text-slate-905">Verify Your Email</h4>
+                    <p className="text-xs text-slate-500 leading-relaxed px-2 font-sans">
+                      A verification link has been sent to <span className="font-semibold text-slate-900">{email}</span>. 
+                      Please open the link to verify your email, then proceed to sign in.
+                    </p>
                   </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setVerificationSent(false);
+                      setAuthMode('login');
+                      setFormError(null);
+                    }}
+                    className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-md text-xs font-bold font-display cursor-pointer transition flex items-center justify-center gap-1.5"
+                  >
+                    <span>Proceed to Sign In</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
                 </div>
+              ) : (
+                <>
+                  <form onSubmit={handleAuthSubmit} className="space-y-4 text-left">
+                    {authMode === 'signup' && (
+                      <div className="space-y-1">
+                        <label htmlFor="name-input" className="text-xs font-bold text-slate-555 block">Your Name</label>
+                        <div className="relative">
+                          <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-450" />
+                          <input
+                            id="name-input"
+                            type="text"
+                            required
+                            placeholder="e.g. Liam K."
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            className="w-full text-xs pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-1 focus:ring-blue-500 outline-none text-slate-900 placeholder-slate-400 font-sans"
+                          />
+                        </div>
+                      </div>
+                    )}
 
-                <div className="space-y-1">
-                  <label htmlFor="password-input" className="text-xs font-bold text-slate-550 block">Password</label>
-                  <div className="relative">
-                    <input
-                      id="password-input"
-                      type={showPassword ? "text" : "password"}
-                      required
-                      placeholder="Min 6 characters passcode"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="w-full text-xs px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-1 focus:ring-blue-500 outline-none text-slate-900 placeholder-slate-400 font-sans"
-                    />
+                    <div className="space-y-1">
+                      <label htmlFor="email-input" className="text-xs font-bold text-slate-555 block">Email Address</label>
+                      <div className="relative">
+                        <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-450" />
+                        <input
+                          id="email-input"
+                          type="email"
+                          required
+                          placeholder="e.g. traveler@domain.com"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          className="w-full text-xs pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-1 focus:ring-blue-500 outline-none text-slate-900 placeholder-slate-400 font-sans"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-1">
+                      <label htmlFor="password-input" className="text-xs font-bold text-slate-555 block">Password</label>
+                      <div className="relative">
+                        <input
+                          id="password-input"
+                          type={showPassword ? "text" : "password"}
+                          required
+                          placeholder="Min 6 characters passcode"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          className="w-full text-xs px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-1 focus:ring-blue-500 outline-none text-slate-900 placeholder-slate-400 font-sans"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-650 cursor-pointer"
+                        >
+                          {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                      </div>
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={isLoading}
+                      id="btn-modal-auth-submit"
+                      className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-md text-xs font-bold font-display cursor-pointer transition select-none flex items-center justify-center gap-1.5 whitespace-nowrap"
+                    >
+                      <span>{isLoading ? 'Accessing Secure Desk...' : authMode === 'login' ? 'Sign In Securely' : 'Create Account'}</span>
+                      {!isLoading && <ArrowRight className="w-4 h-4 scale-95" />}
+                    </button>
+                  </form>
+
+                  <div className="relative my-4 text-center select-none">
+                    <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 border-t border-slate-150" />
+                    <span className="relative bg-white px-3 text-[9px] text-slate-400 font-bold uppercase tracking-widest">Or access desk via</span>
+                  </div>
+
+                  <div className="space-y-2">
+                    {/* Google Sign-in */}
                     <button
                       type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-650 cursor-pointer"
+                      onClick={handleGoogleSignIn}
+                      disabled={isLoading}
+                      className="w-full py-2.5 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 rounded-xl font-display font-extrabold text-xs cursor-pointer transition flex items-center justify-center gap-2 shadow-xs"
                     >
-                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      <Globe className="w-4 h-4 text-blue-600" />
+                      <span>Continue with Google</span>
+                    </button>
+
+                    {/* Explore guest demo */}
+                    <button
+                      type="button"
+                      onClick={triggerDemoLogin}
+                      id="btn-modal-guest-login"
+                      className="w-full py-2.5 border border-slate-200 bg-slate-50 text-slate-700 rounded-xl hover:bg-slate-100 text-xs font-bold font-display cursor-pointer transition flex items-center justify-center gap-1.5 whitespace-nowrap"
+                    >
+                      <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                      <span>Explore Guest Account (Demo)</span>
                     </button>
                   </div>
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  id="btn-modal-auth-submit"
-                  className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-md text-xs font-bold font-display cursor-pointer transition select-none flex items-center justify-center gap-1.5 whitespace-nowrap"
-                >
-                  <span>{isLoading ? 'Accessing Secure Desk...' : authMode === 'login' ? 'Sign In Securely' : 'Create Account'}</span>
-                  {!isLoading && <ArrowRight className="w-4 h-4 scale-95" />}
-                </button>
-              </form>
-
-              <div className="relative my-4 text-center select-none">
-                <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 border-t border-slate-150" />
-                <span className="relative bg-white px-3 text-[9px] text-slate-400 font-bold uppercase tracking-widest">Or access desk via</span>
-              </div>
-
-              <div className="space-y-2">
-                {/* Google Sign-in */}
-                <button
-                  type="button"
-                  onClick={handleGoogleSignIn}
-                  disabled={isLoading}
-                  className="w-full py-2.5 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 rounded-xl font-display font-extrabold text-xs cursor-pointer transition flex items-center justify-center gap-2 shadow-xs"
-                >
-                  <Globe className="w-4 h-4 text-blue-600" />
-                  <span>Continue with Google</span>
-                </button>
-
-                {/* Explore guest demo */}
-                <button
-                  type="button"
-                  onClick={triggerDemoLogin}
-                  id="btn-modal-guest-login"
-                  className="w-full py-2.5 border border-slate-200 bg-slate-50 text-slate-700 rounded-xl hover:bg-slate-100 text-xs font-bold font-display cursor-pointer transition flex items-center justify-center gap-1.5 whitespace-nowrap"
-                >
-                  <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-                  <span>Explore Guest Account (Demo)</span>
-                </button>
-              </div>
+                </>
+              )}
 
               <div className="pt-4 mt-5 border-t border-slate-100 flex items-center justify-between text-xs select-none">
                 <span className="text-slate-500">

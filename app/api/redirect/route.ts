@@ -42,6 +42,7 @@ export async function GET(request: Request) {
   else if (travelType === 'food') payout = 1.50;
   else if (travelType === 'guide') payout = 18.50;
   else if (travelType === 'supporter') payout = 15.00;
+  else if (travelType === 'tripadvisor') payout = 4.50;
 
   // Determine partner brand
   let brand = 'External';
@@ -49,7 +50,10 @@ export async function GET(request: Request) {
   else if (dest.includes('booking.com')) brand = 'Booking.com';
   else if (dest.includes('viator.com')) brand = 'Viator';
   else if (dest.includes('yelp.com')) brand = 'Yelp';
-  else {
+  else if (dest.includes('tripadvisor.com')) {
+    brand = 'Tripadvisor';
+    if (payout === 0) payout = 4.50;
+  } else {
     try {
       brand = new URL(dest).hostname.replace('www.', '');
     } catch {
