@@ -84,7 +84,7 @@ export default function AventurLogo({
   return (
     <div className={`inline-flex items-center ${className}`}>
       <img 
-        src="/logo.png" 
+        src="/aventtur_logo_no_bg.png" 
         alt="Aventur Logo" 
         className={`h-auto object-contain select-none ${
           size === 'sm' ? 'max-h-12 md:max-h-14' : size === 'lg' ? 'max-h-24 md:max-h-28' : 'max-h-16 md:max-h-20'
