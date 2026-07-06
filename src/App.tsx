@@ -517,79 +517,81 @@ export default function App() {
     <div className="min-h-screen bg-slate-50 text-gray-800 flex flex-col font-sans">
       
       {/* Brand Header */}
-      <header className="bg-white border-b border-slate-200 shadow-xs sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-          <div 
-            onClick={() => { if (user) setActivePhase('journal'); }} 
-            className={`flex items-center gap-2 group ${user ? 'cursor-pointer' : 'cursor-default'}`}
-            id="brand-navigation-logo"
-          >
-            <AventurLogo size="sm" showTagline={true} />
-            {isOffline && (
-              <span className="text-[9px] font-black text-amber-800 bg-amber-100 border border-amber-200 px-1.5 py-0.5 rounded-md uppercase tracking-wider animate-pulse inline-block leading-none self-center ml-1">
-                Offline
-              </span>
+      {(user || sharedPlan) && (
+        <header className="bg-white border-b border-slate-200 shadow-xs sticky top-0 z-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+            <div 
+              onClick={() => { if (user) setActivePhase('journal'); }} 
+              className={`flex items-center gap-2 group ${user ? 'cursor-pointer' : 'cursor-default'}`}
+              id="brand-navigation-logo"
+            >
+              <AventurLogo size="sm" showTagline={true} />
+              {isOffline && (
+                <span className="text-[9px] font-black text-amber-800 bg-amber-100 border border-amber-200 px-1.5 py-0.5 rounded-md uppercase tracking-wider animate-pulse inline-block leading-none self-center ml-1">
+                  Offline
+                </span>
+              )}
+            </div>
+
+            {/* Quick Nav elements / authenticated profile state */}
+            {user ? (
+              <div className="flex items-center gap-2 sm:gap-3">
+                <nav className="flex items-center gap-1">
+                  <button
+                    onClick={() => setActivePhase('journal')}
+                    className={`px-2 py-1.5 sm:px-3 sm:py-2 rounded-xl text-xs font-bold transition flex items-center gap-1 cursor-pointer whitespace-nowrap ${
+                      activePhase === 'journal' ? 'bg-blue-50 text-blue-700 font-black' : 'text-slate-600 hover:text-blue-700'
+                    }`}
+                  >
+                    <Luggage className="w-4 h-4 shrink-0" />
+                    <span className="font-sans whitespace-nowrap hidden md:inline">Offline Itinerary</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setUserInputs(null);
+                      setDestinations([]);
+                      setActivePhase('form');
+                    }}
+                    className={`px-2 py-1.5 sm:px-3 sm:py-2 rounded-xl text-xs font-bold transition flex items-center gap-1 cursor-pointer whitespace-nowrap ${
+                      activePhase === 'form' ? 'bg-blue-50 text-blue-700 font-black' : 'text-slate-600 hover:text-blue-700'
+                    }`}
+                  >
+                    <PlaneTakeoff className="w-4 h-4 shrink-0" />
+                    <span className="font-sans whitespace-nowrap hidden md:inline">Plan Vacation</span>
+                  </button>
+                </nav>
+
+                <div className="flex items-center gap-1.5 border-l border-slate-200 pl-2 sm:pl-3">
+                  <span className="text-xs font-black text-slate-800 bg-slate-100 px-2.5 py-1.5 rounded-xl flex items-center gap-1 select-none max-w-[90px] sm:max-w-[130px] truncate">
+                    👤 <span className="truncate">{user.name}</span>
+                  </span>
+                  <button
+                    onClick={() => {
+                      auth.signOut().catch(console.error);
+                      localStorage.removeItem('aventur_user_session');
+                      setUser(null);
+                      setUserInputs(null);
+                      setDestinations([]);
+                      setActivePhase('journal');
+                    }}
+                    title="Sign Out"
+                    id="btn-header-logout"
+                    className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition cursor-pointer whitespace-nowrap inline-flex items-center justify-center gap-1 text-xs font-bold shrink-0"
+                  >
+                    <LogOut className="w-4 h-4 shrink-0" />
+                    <span className="hidden lg:inline leading-none">Sign Out</span>
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center gap-1 text-xs select-none">
+                <span className="text-slate-400 font-bold hidden sm:inline tracking-wider uppercase text-[10px]">Login</span>
+                <span className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse align-middle ml-1" />
+              </div>
             )}
           </div>
-
-          {/* Quick Nav elements / authenticated profile state */}
-          {user ? (
-            <div className="flex items-center gap-2 sm:gap-3">
-              <nav className="flex items-center gap-1">
-                <button
-                  onClick={() => setActivePhase('journal')}
-                  className={`px-2 py-1.5 sm:px-3 sm:py-2 rounded-xl text-xs font-bold transition flex items-center gap-1 cursor-pointer whitespace-nowrap ${
-                    activePhase === 'journal' ? 'bg-blue-50 text-blue-700 font-black' : 'text-slate-600 hover:text-blue-700'
-                  }`}
-                >
-                  <Luggage className="w-4 h-4 shrink-0" />
-                  <span className="font-sans whitespace-nowrap hidden md:inline">Offline Itinerary</span>
-                </button>
-                <button
-                  onClick={() => {
-                    setUserInputs(null);
-                    setDestinations([]);
-                    setActivePhase('form');
-                  }}
-                  className={`px-2 py-1.5 sm:px-3 sm:py-2 rounded-xl text-xs font-bold transition flex items-center gap-1 cursor-pointer whitespace-nowrap ${
-                    activePhase === 'form' ? 'bg-blue-50 text-blue-700 font-black' : 'text-slate-600 hover:text-blue-700'
-                  }`}
-                >
-                  <PlaneTakeoff className="w-4 h-4 shrink-0" />
-                  <span className="font-sans whitespace-nowrap hidden md:inline">Plan Vacation</span>
-                </button>
-              </nav>
-
-              <div className="flex items-center gap-1.5 border-l border-slate-200 pl-2 sm:pl-3">
-                <span className="text-xs font-black text-slate-800 bg-slate-100 px-2.5 py-1.5 rounded-xl flex items-center gap-1 select-none max-w-[90px] sm:max-w-[130px] truncate">
-                  👤 <span className="truncate">{user.name}</span>
-                </span>
-                <button
-                  onClick={() => {
-                    auth.signOut().catch(console.error);
-                    localStorage.removeItem('aventur_user_session');
-                    setUser(null);
-                    setUserInputs(null);
-                    setDestinations([]);
-                    setActivePhase('journal');
-                  }}
-                  title="Sign Out"
-                  id="btn-header-logout"
-                  className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition cursor-pointer whitespace-nowrap inline-flex items-center justify-center gap-1 text-xs font-bold shrink-0"
-                >
-                  <LogOut className="w-4 h-4 shrink-0" />
-                  <span className="hidden lg:inline leading-none">Sign Out</span>
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div className="flex items-center gap-1 text-xs select-none">
-              <span className="text-slate-400 font-bold hidden sm:inline tracking-wider uppercase text-[10px]">Login</span>
-              <span className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse align-middle ml-1" />
-            </div>
-          )}
-        </div>
-      </header>
+        </header>
+      )}
 
       {/* Main Container Workspace */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">

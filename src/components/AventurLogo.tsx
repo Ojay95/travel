@@ -87,7 +87,7 @@ export default function AventurLogo({
         src="/aventtur_logo_no_bg.png" 
         alt="Aventur Logo" 
         className={`h-auto object-contain select-none ${
-          size === 'sm' ? 'max-h-12 md:max-h-14' : size === 'lg' ? 'max-h-24 md:max-h-28' : 'max-h-16 md:max-h-20'
+          size === 'sm' ? 'max-h-9 md:max-h-10' : size === 'lg' ? 'max-h-18 md:max-h-20' : 'max-h-12 md:max-h-14'
         } ${light ? 'bg-white/95 py-1 px-2.5 rounded-xl shadow-xs border border-white/10' : ''}`}
       />
     </div>
