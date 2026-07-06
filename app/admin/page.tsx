@@ -330,7 +330,7 @@ export default function AdminDashboard() {
     const topCountry = sortedCountries[0] ? `${sortedCountries[0].name} (${sortedCountries[0].count} visits)` : 'N/A';
     const topSource = sortedSources[0] ? `${sortedSources[0].source} (${sortedSources[0].count} views)` : 'N/A';
     
-    const summaryText = `📊 Aventur Analytics Report (${timeLabel})
+    const summaryText = `📊 Aventtur Analytics Report (${timeLabel})
 ----------------------------------------
 Gross Revenue: $${totalRevenue.toFixed(2)}
 Lead Referrals: ${totalLeads} clicks
@@ -342,7 +342,7 @@ Top Entry Channel: ${topSource}
 
 Report Generated on: ${new Date().toLocaleString()}
 ----------------------------------------
-Generated via Aventur Admin Portal`;
+Generated via Aventtur Admin Portal`;
 
     navigator.clipboard.writeText(summaryText);
     setSuccessMsg('Analytics summary copied to clipboard! You can now paste and share it.');
