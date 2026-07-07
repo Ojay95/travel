@@ -222,6 +222,17 @@ export default function App() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((firebaseUser) => {
       if (firebaseUser) {
+        // Gate unverified email/password accounts from auto-login on state change
+        const isPasswordProvider = firebaseUser.providerData.some(
+          (provider) => provider.providerId === 'password'
+        );
+        if (!firebaseUser.emailVerified && isPasswordProvider) {
+          auth.signOut().catch(console.error);
+          setUser(null);
+          localStorage.removeItem('aventur_user_session');
+          return;
+        }
+
         const parsed = {
           name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || "Traveler",
           email: firebaseUser.email || ""
