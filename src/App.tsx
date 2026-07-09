@@ -19,6 +19,7 @@ import {
   Share2, Copy
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import Link from 'next/link';
 
 export default function App() {
   const [user, setUser] = useState<{ name: string; email: string } | null>(null);
@@ -536,7 +537,14 @@ export default function App() {
               className={`flex items-center gap-2 group ${user ? 'cursor-pointer' : 'cursor-default'}`}
               id="brand-navigation-logo"
             >
-              <AventurLogo size="sm" showTagline={true} />
+              <Link href='/' className='cursor-pointer'>
+                <img
+                src="/aventtur_logo_no_bg.png"
+                alt="Aventur logo"
+                className="h-8 w-auto object-contain sm:h-10"
+                />
+              </Link>
+              {/* <AventurLogo size="sm" showTagline={true} /> */}
               {isOffline && (
                 <span className="text-[9px] font-black text-amber-800 bg-amber-100 border border-amber-200 px-1.5 py-0.5 rounded-md uppercase tracking-wider animate-pulse inline-block leading-none self-center ml-1">
                   Offline
@@ -605,7 +613,7 @@ export default function App() {
       )}
 
       {/* Main Container Workspace */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+      <main className="flex-1 w-full mx-auto space-y-6">
         
         {/* Error alert billboard */}
         {errorHeader && (() => {
@@ -767,7 +775,9 @@ export default function App() {
                         <Sparkles className="w-3.5 h-3.5 text-blue-400 animate-pulse" />
                         <span>Next-gen vacation planner</span>
                       </div>
-                      <h1 className="text-3xl md:text-4xl font-display font-extrabold tracking-tight">Your Personalized Trip, Perfected by AI</h1>
+                      <h1 className="text-3xl md:text-4xl font-display font-extrabold tracking-tight">
+                        Your Personalized Trip, Perfected by AI
+                      </h1>
                       <p className="text-sm md:text-base text-slate-350 leading-relaxed font-sans">
                         Configure your travel details, find flight pricing options, select accommodation tiers, and generate custom itineraries—fully stored offline for easy access.
                       </p>
@@ -872,7 +882,7 @@ export default function App() {
       </main>
 
       {/* Footer credits and details */}
-      <footer className="bg-white border-t border-gray-100 py-6 text-center text-xs text-gray-400">
+      <footer className="bg-white border-t border-gray-100 py-3 text-center text-xs text-gray-400">
         <div className="max-w-7xl mx-auto px-4">
           <p>© 2026 Aventtur Companion Services. All customized routes structured via elite Gemini 3.5 Models.</p>
         </div>
