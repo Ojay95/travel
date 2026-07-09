@@ -206,7 +206,7 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
   };
 
   return (
-    <div className="w-full space-y-24 animate-fade-in font-sans text-slate-800 bg-slate-50/50">
+    <div className="w-full space-y-2 animate-fade-in font-sans text-slate-800 bg-slate-50/50">
       
       {/* Sticky Header Navbar */}
       <nav className="bg-white/85 backdrop-blur-md border-b border-slate-200 fixed top-0 left-0 w-full z-45 px-6 py-3 shadow-xs">
@@ -385,7 +385,7 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
       </section>
 
       {/* SECTION 2: HOW IT WORKS */}
-      <section className="bg-white border-y border-slate-200 py-20 text-center" id="how-it-works">
+      <section className="bg-white border-y border-slate-200 py-20 text-center mb-24" id="how-it-works">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="space-y-3 max-w-2xl mx-auto">
             <span className="text-[10px] font-black uppercase tracking-widest text-blue-600 font-mono block">Zero Friction</span>
@@ -491,7 +491,7 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
       </section>
 
       {/* SECTION 4: SAMPLE AI GENERATED ITINERARY */}
-      <section className="bg-slate-900 text-white py-20 text-left relative overflow-hidden" id="sample-itinerary">
+      <section className="bg-slate-900 text-white py-20 text-left relative overflow-hidden my-12" id="sample-itinerary">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start relative z-10">
           
           <div className="lg:col-span-4 space-y-6">
@@ -587,7 +587,7 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
       </section>
 
       {/* SECTION 5: DESTINATION INSPIRATION */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 text-left" id="inspirations">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 text-left my-12" id="inspirations">
         <div className="space-y-2">
           <span className="text-[10px] font-black uppercase tracking-widest text-blue-600 font-mono block">Curated Inspirations</span>
           <h2 className="text-3xl font-extrabold text-slate-950 font-display tracking-tight">Worldwide Handpicked Escapes</h2>
@@ -653,7 +653,7 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
       </section>
 
       {/* SECTION 6: TESTIMONIALS */}
-      <section className="bg-blue-50/30 border-y border-blue-100/50 py-20 text-left" id="testimonials">
+      <section className="bg-blue-50/30 border-y border-blue-100/50 py-20 text-left my-12" id="testimonials">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="space-y-3 max-w-2xl">
             <span className="text-[10px] font-black uppercase tracking-widest text-blue-600 font-mono block">Traveler Stories</span>
@@ -731,7 +731,7 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
       </section>
 
       {/* SECTION 7: TRUST SIGNALS */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 py-10 border-b border-slate-200 select-none">
+      <section className="my-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 py-10 border-b border-slate-200 select-none">
         <div className="text-center space-y-1">
           <span className="text-3xl font-black text-blue-600 block font-display">50,000+</span>
           <span className="text-xs font-bold text-slate-450 uppercase tracking-wider block">Itineraries Generated</span>
@@ -747,7 +747,7 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
       </section>
 
       {/* SECTION 8: PRICING */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 text-center" id="pricing">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 text-center my-12" id="pricing">
         <div className="space-y-3 max-w-2xl mx-auto">
           <span className="text-[10px] font-black uppercase tracking-widest text-blue-600 font-mono block">Transparent SaaS Model</span>
           <h2 className="text-3xl font-extrabold text-slate-950 font-display tracking-tight">Flexible Plans for Every Traveler</h2>
@@ -857,7 +857,7 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
       </section>
 
       {/* SECTION 9: FAQ */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 text-left" id="faq">
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 text-left my-12" id="faq">
         <div className="text-center max-w-2xl mx-auto space-y-2">
           <h2 className="text-3xl font-extrabold text-slate-950 font-display tracking-tight">Frequently Asked Questions</h2>
           <p className="text-sm text-slate-500 leading-relaxed">
@@ -1003,9 +1003,17 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
       </footer>
 
       {/* Sticky Bottom Mobile CTA Bar */}
-      {/* <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 p-3 flex justify-between items-center md:hidden shadow-lg">
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 p-3 flex justify-between items-center md:hidden shadow-lg">
         <div className="flex items-center gap-1.5">
-          <AventurLogo size="sm" showTagline={false} />
+          {/* <AventurLogo size="sm" showTagline={false} /> */}
+          {/* BRAND LOGO */}
+          <Link href='/' className='cursor-pointer'>
+            <img
+            src="/aventtur_logo_no_bg.png"
+            alt="Aventur logo"
+            className="h-8 w-auto object-contain sm:h-10"
+            />
+          </Link>
         </div>
         <button
           onClick={() => { setAuthMode('signup'); setIsAuthModalOpen(true); }}
@@ -1013,7 +1021,7 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
         >
           Plan My Trip
         </button>
-      </div> */}
+      </div>
 
       {/* INJECTIVE AUTHENTICATION MODAL */}
       <AnimatePresence>
