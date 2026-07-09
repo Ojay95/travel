@@ -20,6 +20,7 @@ import {
   sendEmailVerification,
   signOut
 } from 'firebase/auth';
+import Link from 'next/link';
 
 interface AventurLandingAuthProps {
   onAuthSuccess: (user: { name: string; email: string }) => void;
@@ -210,8 +211,15 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
       {/* Sticky Header Navbar */}
       <nav className="bg-white/85 backdrop-blur-md border-b border-slate-200 fixed top-0 left-0 w-full z-45 px-6 py-3 shadow-xs">
         <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
-          <AventurLogo size="sm" showTagline={true} />
-
+          {/* <AventurLogo size="sm" showTagline={true} /> */}
+          {/* BRAND LOGO */}
+          <Link href='/' className='cursor-pointer'>
+            <img
+            src="/aventtur_logo_no_bg.png"
+            alt="Aventur logo"
+            className="h-8 w-auto object-contain sm:h-10"
+            />
+          </Link>
           {/* Desktop Nav Links */}
           <div className="hidden md:flex items-center gap-6 text-sm font-semibold text-slate-600">
             <a href="#how-it-works" className="hover:text-blue-600 transition">How It Works</a>
@@ -938,49 +946,64 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-900 border-t border-slate-800 text-slate-500 pt-12 pb-24 md:pb-12 text-xs font-medium text-left">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="space-y-3">
-            <AventurLogo size="sm" showTagline={true} light={true} />
-            <p className="text-[10px] text-slate-600 font-sans leading-relaxed">
-              Your AI travel concierge, compiling optimal travel details and itineraries in seconds.
-            </p>
-          </div>
+      <footer className="relative w-full overflow-hidden border-t border-white/10 bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 text-slate-300">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.14),_transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(34,211,238,0.12),_transparent_30%)]" />
+        <div className="absolute -top-20 right-0 h-48 w-48 rounded-full bg-blue-500/15 blur-3xl animate-pulse" />
+        <div className="absolute bottom-0 left-0 h-48 w-48 rounded-full bg-cyan-400/10 blur-3xl animate-pulse [animation-delay:2s]" />
 
-          <div className="space-y-3">
-            <h4 className="text-white font-display text-[10px] font-bold uppercase tracking-wider">Product Features</h4>
-            <div className="flex flex-col gap-2">
-              <a href="#hero" className="hover:text-white transition">Trip Planner</a>
-              <a href="#sample-itinerary" className="hover:text-white transition font-mono">Japan 7-Day Demo</a>
-              <a href="#features" className="hover:text-white transition">Features Overview</a>
+        <div className="relative mx-0 w-full px-4 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
+          <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-4">
+            <div className="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-5 shadow-lg shadow-slate-950/20 backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-blue-400/40 hover:bg-white/10">
+              <img
+                src="/aventtur_logo_no_bg.png"
+                alt="Aventur logo"
+                className="h-8 w-auto object-contain sm:h-10"
+              />
+              <p className="text-[10px] leading-relaxed text-slate-400 sm:text-xs">
+                Your AI travel concierge, compiling optimal travel details and itineraries in seconds.
+              </p>
+            </div>
+
+            <div className="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-5 shadow-lg shadow-slate-950/20 backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-cyan-400/40 hover:bg-white/10">
+              <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-white">Product Features</h4>
+              <div className="flex flex-col gap-2 text-sm text-slate-400">
+                <a href="#hero" className="transition duration-300 hover:-translate-x-1 hover:text-white">Trip Planner</a>
+                <a href="#sample-itinerary" className="transition duration-300 hover:-translate-x-1 hover:text-white font-mono">Japan 7-Day Demo</a>
+                <a href="#features" className="transition duration-300 hover:-translate-x-1 hover:text-white">Features Overview</a>
+              </div>
+            </div>
+
+            <div className="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-5 shadow-lg shadow-slate-950/20 backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-indigo-400/40 hover:bg-white/10">
+              <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-white">Trust & Security</h4>
+              <div className="flex flex-col gap-2 text-sm text-slate-400">
+                <span className="flex items-center gap-2 transition duration-300 hover:text-white"><Shield className="h-3.5 w-3.5" /> Privacy Policy</span>
+                <span className="flex items-center gap-2 transition duration-300 hover:text-white"><FileText className="h-3.5 w-3.5" /> Terms of Service</span>
+                <span className="flex items-center gap-2 transition duration-300 hover:text-white"><Database className="h-3.5 w-3.5" /> Data Security</span>
+              </div>
+            </div>
+
+            <div className="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-5 shadow-lg shadow-slate-950/20 backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-blue-400/40 hover:bg-white/10">
+              <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-white">Support Desk</h4>
+              <div className="flex flex-col gap-2 text-sm text-slate-400">
+                <span className="flex items-center gap-2 transition duration-300 hover:text-white"><Mail className="h-3.5 w-3.5" /> support@aventtur.com</span>
+                <span className="flex items-center gap-2 transition duration-300 hover:text-white"><Phone className="h-3.5 w-3.5" /> FAQ Support Accordion</span>
+              </div>
             </div>
           </div>
 
-          <div className="space-y-3">
-            <h4 className="text-white font-display text-[10px] font-bold uppercase tracking-wider">Trust & Security</h4>
-            <div className="flex flex-col gap-2">
-              <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5" /> Privacy Policy</span>
-              <span className="flex items-center gap-1.5"><FileText className="w-3.5 h-3.5" /> Terms of Service</span>
-              <span className="flex items-center gap-1.5"><Database className="w-3.5 h-3.5" /> Data Security</span>
+          <div className="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 text-center text-[10px] uppercase tracking-[0.25em] text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+            <span>© {new Date().getFullYear()} Aventtur AI Concierge Inc. All rights reserved.</span>
+            <div className="flex flex-wrap items-center justify-center gap-3 sm:justify-end">
+              <span className="transition duration-300 hover:text-white">Privacy</span>
+              <span className="transition duration-300 hover:text-white">Terms</span>
+              <span className="transition duration-300 hover:text-white">Support</span>
             </div>
           </div>
-
-          <div className="space-y-3">
-            <h4 className="text-white font-display text-[10px] font-bold uppercase tracking-wider">Support Desk</h4>
-            <div className="flex flex-col gap-2">
-              <span className="flex items-center gap-1.5"><Mail className="w-3.5 h-3.5" /> support@aventtur.com</span>
-              <span className="flex items-center gap-1.5"><Phone className="w-3.5 h-3.5" /> FAQ Support Accordion</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-800/80 pt-6 mt-8 text-center text-[10px] text-slate-600 font-mono">
-          © {new Date().getFullYear()} Aventtur AI Concierge Inc. All rights reserved.
         </div>
       </footer>
 
       {/* Sticky Bottom Mobile CTA Bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 p-3 flex justify-between items-center md:hidden shadow-lg">
+      {/* <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 p-3 flex justify-between items-center md:hidden shadow-lg">
         <div className="flex items-center gap-1.5">
           <AventurLogo size="sm" showTagline={false} />
         </div>
@@ -990,12 +1013,12 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
         >
           Plan My Trip
         </button>
-      </div>
+      </div> */}
 
       {/* INJECTIVE AUTHENTICATION MODAL */}
       <AnimatePresence>
         {isAuthModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="fxed inset-0 z-50 flex items-center justify-center p4">
             {/* Dark glass backdrop overlay */}
             <motion.div
               initial={{ opacity: 0 }}
