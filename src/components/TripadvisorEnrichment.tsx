@@ -89,16 +89,27 @@ export default function TripadvisorEnrichment({
       href={trackedUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center gap-1.5 hover:text-emerald-700 transition group select-none text-[10.5px] font-sans font-medium text-slate-500"
-      title="View on Tripadvisor (Affiliate Redirect)"
+      className="inline-flex items-center gap-2.5 px-3 py-1.5 bg-emerald-50/70 hover:bg-emerald-100/70 border border-emerald-200/50 hover:border-emerald-350/50 rounded-xl transition shadow-xs group select-none text-slate-800 font-sans"
+      title="View reviews on Tripadvisor (Affiliate link)"
     >
-      <span className="font-black text-emerald-600 group-hover:text-emerald-700 text-[11px] font-mono leading-none">
-        Tripadvisor
-      </span>
-      {renderBubbles(data.rating)}
-      <span className="text-slate-400 group-hover:text-slate-500 font-mono text-[10px]">
-        ({data.reviewsCount.toLocaleString()})
-      </span>
+      <div className="flex items-center gap-1 select-none">
+        {/* Tripadvisor Icon/Mark mimic */}
+        <span className="w-5 h-5 rounded-full bg-[#34e0a1] text-slate-950 font-black text-[9.5px] flex items-center justify-center border border-slate-950/10 leading-none">
+          🦉
+        </span>
+        <span className="font-black text-slate-900 text-xs tracking-tight">
+          Tripadvisor
+        </span>
+      </div>
+      
+      <div className="w-[1.5px] h-3.5 bg-emerald-250 self-center" />
+      
+      <div className="flex items-center gap-1.5">
+        {renderBubbles(data.rating)}
+        <span className="text-slate-600 font-mono text-xs font-bold leading-none">
+          {data.rating.toFixed(1)} ({data.reviewsCount.toLocaleString()})
+        </span>
+      </div>
     </a>
   );
 }

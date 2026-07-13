@@ -7,50 +7,44 @@ export async function POST(req: NextRequest) {
   try {
     const { origin, duration, companions, interests, budgetCategory, additionalDetails, specificDestination } = await req.json();
     
-    // 1. Compile search query text
-    const queryText = [
-      interests && interests.length > 0 ? interests.join(", ") : "",
-      companions ? `with ${companions}` : "",
-      budgetCategory ? `budget level: ${budgetCategory}` : "",
-      additionalDetails || ""
-    ].filter(Boolean).join(" ");
+    // 1. Build prompt based on whether they specified a city
+    let prompt = '';
+    const hasSpecificDest = specificDestination && specificDestination.trim();
 
-    // 2. Perform local similarity search (RAG retrieval)
-    console.log(`[find-destinations] Searching for matches with query: "${queryText}"`);
-    const matches = await findSimilarDestinations(queryText, 3);
-    const catalogMatches = matches.map(m => m.destination);
-    console.log(`[find-destinations] Retrieved ${catalogMatches.length} matches from catalog.`);
-
-    // 3. Compile prompt for Gemini
-    let destPrompt = '';
-    if (specificDestination && specificDestination.trim()) {
-      destPrompt = `The traveler specifically wants to go to: "${specificDestination}".
-      Your absolute top recommendation (the first item in the array) MUST be this exact destination with authentic country, local details, estimated flight costs from ${origin || "their departure location"}, and 3 tailored hotel options (budget, mid, and luxury).
-      The remaining 2 recommendations in the array MUST be selected from the VERIFIED catalog options below. For these 2, you MUST copy their fields (id, name, country, tagline, description, bestSeason, localVibe, estimatedFlightCost, recommendedHotels) EXACTLY from the catalog payload without any modifications, to prevent pricing or location hallucination.`;
+    if (hasSpecificDest) {
+      prompt = `Analyze the traveler's profile and recommend EXACTLY 1 destination matching this specific city or region: "${specificDestination.trim()}".
+      
+      Traveler Profile:
+      - Departure/Origin Location: ${origin || "Not specified"}
+      - Trip Duration (Days): ${duration || 5}
+      - Travel Companions: ${companions || "Solo"}
+      - Vibe & Interests: ${interests && interests.length > 0 ? interests.join(", ") : "general explore"}
+      - Budget Level: ${budgetCategory || "Midrange"}
+      - Specific Desires or Description: "${additionalDetails || "No further details"}"
+      
+      Instructions:
+      1. Calculate an integer matchScore (75-100) based on how well it fits.
+      2. Write a custom, personalized whyItFits explaining why this destination fits their specific interests, companions, and duration.
+      3. For the flight estimates and 3 recommended hotels (budget, mid, and luxury), provide highly realistic, real-world data and pricing based on the current departure location: ${origin || "their location"}.
+      4. Ensure the return JSON schema is followed exactly. Return an array containing exactly 1 item.`;
     } else {
-      destPrompt = `You MUST select your 3 recommendations from the VERIFIED catalog options below.
-      For each recommendation, you MUST copy all their fields (id, name, country, tagline, description, bestSeason, localVibe, estimatedFlightCost, recommendedHotels) EXACTLY from the catalog payload without any modifications, to prevent pricing or location hallucination.`;
+      prompt = `Analyze the traveler's profile and recommend EXACTLY 3 diverse, high-quality vacation destinations from around the world that best fit their preferences.
+      
+      Traveler Profile:
+      - Departure/Origin Location: ${origin || "Not specified"}
+      - Trip Duration (Days): ${duration || 5}
+      - Travel Companions: ${companions || "Solo"}
+      - Vibe & Interests: ${interests && interests.length > 0 ? interests.join(", ") : "general explore"}
+      - Budget Level: ${budgetCategory || "Midrange"}
+      - Specific Desires or Description: "${additionalDetails || "No further details"}"
+      
+      Instructions:
+      1. Recommend exactly 3 different matching destinations from anywhere in the world. Do not repeat recommendations.
+      2. For each recommendation, calculate an integer matchScore (75-100) based on how well it fits.
+      3. Write a custom, personalized whyItFits explaining why this destination fits their specific interests, companions, and duration.
+      4. Provide highly realistic, real-world flight cost estimates and 3 recommended hotels (budget, mid, and luxury) for each destination based on their departure location: ${origin || "their location"}.
+      5. Ensure the return JSON schema is followed exactly. Return an array containing exactly 3 items.`;
     }
-    
-    const prompt = `Analyze the traveler's profile and recommend exactly 3 vacation destinations:
-    
-    ${destPrompt}
-    
-    Traveler Profile:
-    - Departure/Origin Location: ${origin || "Not specified"}
-    - Trip Duration (Days): ${duration || 5}
-    - Travel Companions: ${companions || "Solo"}
-    - Vibe & Interests: ${interests && interests.length > 0 ? interests.join(", ") : "general explore"}
-    - Budget Level: ${budgetCategory || "Midrange"}
-    - Specific Desires or Description: "${additionalDetails || "No further details"}"
-    
-    VERIFIED catalog options:
-    ${JSON.stringify(catalogMatches, null, 2)}
-    
-    Instructions:
-    1. For each recommendation, calculate an integer matchScore (75-100) based on how well it fits the profile.
-    2. Write a custom, personalized whyItFits explaining why this destination fits their specific interests, companions, and duration.
-    3. Ensure the return JSON schema is followed exactly.`;
 
     const destinationsText = await generateContentWithFallback(
       prompt,

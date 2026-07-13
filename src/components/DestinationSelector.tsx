@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Destination, RecommendedHotel } from '../types';
 import { Plane, Calendar, Hotel, Check, Percent, Sparkles, MoveLeft, ArrowRight, ShieldCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import TripadvisorEnrichment from './TripadvisorEnrichment';
 
 interface DestinationSelectorProps {
   destinations: Destination[];
@@ -56,7 +57,9 @@ export default function DestinationSelector({
             <Sparkles className="w-6 h-6 text-blue-600" />
             Your AI Match Reports
           </h2>
-          <p className="text-slate-500 text-sm mt-0.5">We found 3 perfect matching cities for your vacation vibes.</p>
+          <p className="text-slate-500 text-sm mt-0.5">
+            We found {destinations.length} perfect matching {destinations.length === 1 ? 'city' : 'cities'} for your vacation vibes.
+          </p>
         </div>
 
         {/* Tab Switcher */}
@@ -202,7 +205,7 @@ export default function DestinationSelector({
                             </div>
                           )}
 
-                          <div className="flex items-baseline gap-2">
+                          <div className="flex items-baseline gap-2 flex-wrap">
                             <span className="text-sm font-bold text-slate-900 font-display">{hot.name}</span>
                             <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md uppercase tracking-wider ${
                               hot.tier === 'luxury'
@@ -215,8 +218,15 @@ export default function DestinationSelector({
                             </span>
                           </div>
 
-                          <div className="text-sm font-bold text-blue-700 mt-1">
-                            ${hot.costPerNight} <span className="text-xs font-normal text-slate-400">/ night avg</span>
+                          <div className="mt-1.5 flex items-center justify-between flex-wrap gap-2">
+                            <div className="text-sm font-bold text-blue-700">
+                              ${hot.costPerNight} <span className="text-xs font-normal text-slate-400">/ night avg</span>
+                            </div>
+                            <TripadvisorEnrichment 
+                              locationName={hot.name} 
+                              destinationName={dest.name} 
+                              session="guest" 
+                            />
                           </div>
 
                           <p className="text-xs text-slate-500 mt-2 line-clamp-2 leading-relaxed">

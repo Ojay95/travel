@@ -1078,6 +1078,13 @@ export default function ItineraryWorkspace({
                       <div className="flex-1">
                         <span className="text-[10px] font-bold text-blue-700 uppercase tracking-widest block">{selectedHotel.tier} LODGING TIER</span>
                         <h4 className="text-lg font-extrabold text-slate-900 font-display mt-0.5">{selectedHotel.name}</h4>
+                        <div className="mt-2 mb-2">
+                          <TripadvisorEnrichment 
+                            locationName={selectedHotel.name}
+                            destinationName={destination.name}
+                            session={getUserIdOrSessionId()}
+                          />
+                        </div>
                         <span className="text-xl font-black text-blue-700 mt-1 block">${selectedHotel.costPerNight} <span className="text-xs font-normal text-slate-400">/ night avg</span></span>
                       </div>
                     </div>
