@@ -461,16 +461,6 @@ export default function ItineraryWorkspace({
             </div>
           </div>
 
-          <a
-            href="/admin"
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Access the secure analytics admin control center"
-            className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 shadow-sm hover:bg-slate-800 hover:border-slate-700 text-white cursor-pointer transition flex items-center gap-1.5 text-sm font-sans"
-          >
-            <Compass className="w-4 h-4 text-emerald-400 shrink-0" />
-            <span className="hidden sm:inline font-bold">Admin Portal</span>
-          </a>
 
           <button
             onClick={exportPlanAsJSON}
