@@ -298,7 +298,7 @@ export default function AdminDashboard() {
     return acc;
   }, {});
   
-  const initialBrands = ['Skyscanner', 'Booking.com', 'Viator', 'Yelp'];
+  const initialBrands = ['Google Flights', 'Booking.com', 'Viator', 'Yelp'];
   const brandStatsTyped = brandStats as Record<string, { clicks: number; revenue: number }>;
   const programPerformanceList = [
     ...initialBrands.map(b => ({

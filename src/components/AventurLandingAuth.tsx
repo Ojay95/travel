@@ -368,7 +368,7 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
                 </div>
                 <div className="bg-sky-950/40 border border-sky-900/50 text-sky-400 px-2.5 py-1.5 rounded-lg flex items-center gap-1.5">
                   <CheckCircle className="w-3.5 h-3.5 text-sky-400" />
-                  <span>Skyscanner Tracked</span>
+                  <span>Google Flights Live</span>
                 </div>
               </div>
             </div>
@@ -414,7 +414,7 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
               </div>
               <h3 className="text-base font-bold font-display text-slate-950">Book and Enjoy the Journey</h3>
               <p className="text-xs text-slate-500 leading-relaxed">
-                Review verified Booking.com accommodations and Skyscanner flights. Save your itinerary offline, link up with local guides, and travel with peace of mind.
+                Review verified Booking.com accommodations and live flight searches. Save your itinerary offline, link up with local guides, and travel with peace of mind.
               </p>
             </div>
           </div>
@@ -869,7 +869,7 @@ export default function AventurLandingAuth({ onAuthSuccess }: AventurLandingAuth
             },
             {
               q: "Does Aventtur handle hotel or flight booking directly?",
-              a: "Aventtur is an AI travel planner and concierge, not a booking platform. We recommend optimal flight departure schedules and certified lodging properties, then link you directly to Skyscanner and Booking.com verified checkout gates to finalize bookings."
+              a: "Aventtur is an AI travel planner and concierge, not a booking platform. We recommend optimal flight departure schedules and certified lodging properties, then link you directly to Google Flights and Booking.com verified checkout gates to finalize bookings."
             },
             {
               q: "Can I access my travel plans offline?",

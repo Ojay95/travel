@@ -46,7 +46,7 @@ export async function GET(request: Request) {
 
   // Determine partner brand
   let brand = 'External';
-  if (dest.includes('skyscanner.com')) brand = 'Skyscanner';
+  if (dest.includes('google.com/travel/flights')) brand = 'Google Flights';
   else if (dest.includes('booking.com')) brand = 'Booking.com';
   else if (dest.includes('viator.com')) brand = 'Viator';
   else if (dest.includes('yelp.com')) brand = 'Yelp';
@@ -63,10 +63,10 @@ export async function GET(request: Request) {
 
   console.log(`[Affiliate Tracker] Redirecting: ${brand} | Dest: ${dest} | SubID: ${subId || 'none'} | Payout: $${payout}`);
 
-  // Write click tracking details to Firestore server-side
+  // Write click tracking details to Firestore server-side (Non-blocking redirect for instant client experience)
   try {
     const clicksRef = collection(db, 'affiliate_clicks');
-    await addDoc(clicksRef, {
+    addDoc(clicksRef, {
       dest,
       subId: subId || 'none',
       destinationCity,
@@ -75,10 +75,11 @@ export async function GET(request: Request) {
       payout,
       brand,
       timestamp: new Date().toISOString()
+    }).catch(err => {
+      console.error('[Affiliate Tracker] Non-blocking database write failed:', err);
     });
   } catch (err) {
-    console.error('[Affiliate Tracker] Failed to log click to Firestore:', err);
-    // Proceed to redirect anyways so traveler experience is not interrupted
+    console.error('[Affiliate Tracker] Failed to initiate click logging:', err);
   }
 
   return NextResponse.redirect(dest, 302);

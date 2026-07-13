@@ -10,6 +10,7 @@ export const auth = getAuth();
 
 // Validate Connection to Firestore on boot
 async function testConnection() {
+  if (typeof window === 'undefined') return;
   try {
     await getDocFromServer(doc(db, 'test', 'connection'));
   } catch (error) {

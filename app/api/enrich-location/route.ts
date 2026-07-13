@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/src/lib/firebase";
-import { doc, getDoc, setDoc } from "firebase/firestore";
 
 const fallbackImages = [
   "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=600&q=80",
@@ -38,26 +36,14 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Missing query parameter." }, { status: 400 });
     }
 
-    const normalizedQuery = query.toLowerCase().trim().replace(/[^a-z0-9]/g, "_");
-
-    // 1. Check Firestore Cache
-    try {
-      const cacheRef = doc(db, "tripadvisor_cache", normalizedQuery);
-      const cacheSnap = await getDoc(cacheRef);
-
-      if (cacheSnap.exists()) {
-        console.log(`[TripAdvisor API] Cache HIT for: ${query}`);
-        return NextResponse.json(cacheSnap.data());
-      }
-    } catch (cacheError) {
-      console.warn("[TripAdvisor API] Cache read failed, proceeding to API:", cacheError);
-    }
+    const responseHeaders = new Headers();
+    responseHeaders.set("Cache-Control", "public, s-maxage=86400, stale-while-revalidate=43200");
 
     // 2. Fetch TripAdvisor API
     const apiKey = process.env.TRIPADVISOR_API_KEY;
     if (apiKey) {
       try {
-        console.log(`[TripAdvisor API] Cache MISS. Querying live API for: ${query}`);
+        console.log(`[TripAdvisor API] Querying live API for: ${query}`);
         
         // Search Location ID
         const searchRes = await fetch(
@@ -99,42 +85,15 @@ export async function GET(req: NextRequest) {
             photo: photoUrl || getDeterministicMock(query).photo
           };
 
-          // Save to Firestore Cache
-          try {
-            const cacheRef = doc(db, "tripadvisor_cache", normalizedQuery);
-            await setDoc(cacheRef, {
-              ...result,
-              cachedAt: new Date().toISOString()
-            });
-            console.log(`[TripAdvisor API] Successfully cached response for: ${query}`);
-          } catch (cacheWriteError) {
-            console.warn("[TripAdvisor API] Failed to write to cache:", cacheWriteError);
-          }
-
-          return NextResponse.json(result);
+          return NextResponse.json(result, { headers: responseHeaders });
         }
       } catch (apiError) {
-        console.error("[TripAdvisor API] Live API call failed, falling back to deterministic mock:", apiError);
+        console.error("[TripAdvisor API] Live API call failed, falling back to mock:", apiError);
       }
     }
 
-    // 3. Resilient Fallback Mocks
-    console.log(`[TripAdvisor API] Using mock fallback for: ${query}`);
     const mockResult = getDeterministicMock(query);
-    
-    // Attempt caching mock data to avoid repeated failures/computations
-    try {
-      const cacheRef = doc(db, "tripadvisor_cache", normalizedQuery);
-      await setDoc(cacheRef, {
-        ...mockResult,
-        cachedAt: new Date().toISOString(),
-        isMock: true
-      });
-    } catch (err) {
-      // Ignore cache write errors
-    }
-
-    return NextResponse.json(mockResult);
+    return NextResponse.json(mockResult, { headers: responseHeaders });
   } catch (globalError: any) {
     console.error("[TripAdvisor API] Global enrichment handler failed:", globalError);
     return NextResponse.json({ error: globalError.message || "Enrichment failed." }, { status: 500 });

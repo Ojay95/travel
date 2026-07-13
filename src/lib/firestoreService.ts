@@ -318,7 +318,7 @@ export async function seedDemoData(): Promise<void> {
     const devices = ['Desktop', 'Mobile', 'Tablet'];
     const paths = ['/', '/plans', '/journal'];
 
-    const brands = ['Booking.com', 'Skyscanner', 'Viator', 'Yelp'];
+    const brands = ['Booking.com', 'Google Flights', 'Viator', 'Yelp'];
     const destinations = ['Tokyo', 'Paris', 'London', 'New York', 'Rome', 'Cape Town', 'Kyoto', 'Berlin'];
     const travelTypes = [
       { type: 'flight', payout: 1.50 },
@@ -376,8 +376,8 @@ export async function seedDemoData(): Promise<void> {
       let destUrl = '';
       if (brand === 'Booking.com') {
         destUrl = `https://www.booking.com/searchresults.html?city=${destCity.toLowerCase()}`;
-      } else if (brand === 'Skyscanner') {
-        destUrl = `https://www.skyscanner.com/transport/flights/lon/${destCity.toLowerCase().substring(0,3)}`;
+      } else if (brand === 'Google Flights') {
+        destUrl = `https://www.google.com/travel/flights?q=Flights+to+${destCity}`;
       } else if (brand === 'Viator') {
         destUrl = `https://www.viator.com/search/${destCity}`;
       } else {
