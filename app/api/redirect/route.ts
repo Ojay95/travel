@@ -82,5 +82,43 @@ export async function GET(request: Request) {
     console.error('[Affiliate Tracker] Failed to initiate click logging:', err);
   }
 
-  return NextResponse.redirect(dest, 302);
+  // Parse Travelpayouts marker and specific SubID parameters
+  let tpMarker = process.env.NEXT_PUBLIC_TRAVELPAYOUTS_MARKER || "534729";
+  let tpSubId = "";
+  if (subId) {
+    const dotIndex = subId.indexOf('.');
+    if (dotIndex !== -1) {
+      tpMarker = subId.substring(0, dotIndex);
+      tpSubId = subId.substring(dotIndex + 1);
+    } else {
+      tpMarker = subId;
+    }
+  }
+
+  let finalRedirectUrl = dest;
+  let programId = "";
+
+  // Assign corresponding Travelpayouts Program IDs
+  if (dest.includes("tripadvisor.com")) {
+    programId = "6862";
+  } else if (dest.includes("booking.com")) {
+    programId = "1525";
+  } else if (dest.includes("viator.com")) {
+    programId = "2092";
+  }
+
+  if (programId) {
+    const tpParams = new URLSearchParams({
+      marker: tpMarker,
+      p: programId,
+      u: dest
+    });
+    if (tpSubId) {
+      tpParams.set("subid", tpSubId);
+    }
+    finalRedirectUrl = `https://c.tp.media/r?${tpParams.toString()}`;
+    console.log(`[Affiliate Tracker] Wrapped affiliate redirect: ${finalRedirectUrl}`);
+  }
+
+  return NextResponse.redirect(finalRedirectUrl, 302);
 }

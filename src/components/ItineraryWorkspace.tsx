@@ -574,14 +574,14 @@ export default function ItineraryWorkspace({
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a
-                    href={getDynamicBookingLink(`https://www.google.com/travel/flights?q=Flights+from+${encodeURIComponent(userInputs.origin)}+to+${encodeURIComponent(destination.name)}`, 'flight')}
+                    href={getDynamicBookingLink(`https://flights.booking.com/flights/?origin=${encodeURIComponent(userInputs.origin)}&destination=${encodeURIComponent(destination.name)}`, 'flight')}
                     onClick={() => triggerSimulatedAffiliateClick('flight', `Flights to ${destination.name}`, 1.50)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 bg-white hover:bg-slate-50 border border-slate-200 text-slate-800 font-extrabold py-2.5 px-4 rounded-xl shadow-xs text-xs transition-all flex items-center justify-center gap-2 hover:border-blue-300 hover:text-blue-750"
                   >
                     <Plane className="w-4 h-4 text-blue-600 shrink-0" />
-                    <span>Search Flights on Google Flights</span>
+                    <span>Book Flights on Booking.com</span>
                   </a>
                   <a
                     href={getDynamicBookingLink(`https://www.booking.com/searchresults.html?ss=${encodeURIComponent(selectedHotel.name + ' ' + destination.name)}`, 'hotel')}
@@ -1040,13 +1040,13 @@ export default function ItineraryWorkspace({
 
                     <div className="pt-2">
                       <a
-                        href={getDynamicBookingLink(`https://www.google.com/travel/flights?q=Flights+from+${encodeURIComponent(userInputs.origin)}+to+${encodeURIComponent(destination.name)}`, 'flight')}
+                        href={getDynamicBookingLink(`https://flights.booking.com/flights/?origin=${encodeURIComponent(userInputs.origin)}&destination=${encodeURIComponent(destination.name)}`, 'flight')}
                         onClick={() => triggerSimulatedAffiliateClick('flight', `${userInputs.origin} ➔ ${destination.name}`, 1.50)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="w-full py-3 h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-md text-xs font-bold font-display transition flex items-center justify-center gap-1.5 whitespace-nowrap truncate"
                       >
-                        <span>Search Flights on Google Flights</span>
+                        <span>Book Flights on Booking.com</span>
                         <ExternalLink className="w-3.5 h-3.5 shrink-0" />
                       </a>
                     </div>
