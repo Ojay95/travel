@@ -116,7 +116,7 @@ export async function GET(request: Request) {
     if (tpSubId) {
       tpParams.set("subid", tpSubId);
     }
-    finalRedirectUrl = `https://c.tp.media/r?${tpParams.toString()}`;
+    finalRedirectUrl = `https://tp.media/r?${tpParams.toString()}`;
     console.log(`[Affiliate Tracker] Wrapped affiliate redirect: ${finalRedirectUrl}`);
   }
 
